@@ -3,6 +3,20 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Enable built-in package manager (no need for MELPA in Emacs 29+)
 
+
+;; Colors, fonts
+(use-package doric-themes
+  :ensure t
+  :demand t
+  :config
+  ;; These are the default values.
+  (setq doric-themes-to-toggle '(doric-light doric-dark))
+  (setq doric-themes-to-rotate doric-themes-collection)
+
+  (doric-themes-select 'doric-obsidian)
+)
+(set-face-attribute 'default nil :family "Monospace" :height 120)
+
 (use-package treemacs
   :ensure t
   :defer t  ; Load only when invoked
@@ -78,7 +92,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(modus-operandi-tinted))
  '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
