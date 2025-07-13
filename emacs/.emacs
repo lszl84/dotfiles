@@ -1,7 +1,7 @@
 
+(package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Enable built-in package manager (no need for MELPA in Emacs 29+)
-(package-initialize)
 
 (use-package treemacs
   :ensure t
