@@ -24,7 +24,7 @@
 (setq eglot-autoshutdown t)
 
 ;; Set up Wombat theme (built-in in modern Emacs)
-(load-theme 'wombat t)
+;(load-theme 'wombat t)
 (tool-bar-mode -1)   ; Optional: Also remove toolbar
 (menu-bar-mode 1)   ; Optional: Remove menu bar
 (scroll-bar-mode -1) ; Hide scrollbar
@@ -78,6 +78,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(modus-operandi-tinted))
  '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
