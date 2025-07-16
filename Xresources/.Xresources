@@ -1,0 +1,54 @@
+
+! Set default geometry (columns x rows)
+xterm*geometry: 78x23
+
+! Nord color scheme for xterm (https://www.nordtheme.com/)
+! Base colors
+*foreground:   #D8DEE9
+*background:   #04090C
+*cursorColor:  #D8DEE9
+
+! Black
+*color0:       #3B4252
+*color8:       #4C566A
+
+! Red
+*color1:       #BF616A
+*color9:       #BF616A
+
+! Green
+*color2:       #A3BE8C
+*color10:      #A3BE8C
+
+! Yellow
+*color3:       #EBCB8B
+*color11:      #EBCB8B
+
+! Blue
+*color4:       #81A1C1
+*color12:      #81A1C1
+
+! Magenta
+*color5:       #B48EAD
+*color13:      #B48EAD
+
+! Cyan
+*color6:       #88C0D0
+*color14:      #88C0D0
+
+! White
+*color7:       #E5E9F0
+*color15:      #ECEFF4
+
+! Font settings (Monospace 12)
+xterm*faceName: Monospace
+xterm*faceSize: 12
+xterm*renderFont: true
+xterm*utf8: 2
+xterm*locale: true
+
+! Disable scrollbar and set other useful options
+xterm*scrollBar: false
+xterm*selectToClipboard: false
+xterm*on3Clicks: word
+xterm*highlightSelection: true

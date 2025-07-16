@@ -13,7 +13,7 @@
   (setq doric-themes-to-toggle '(doric-light doric-dark))
   (setq doric-themes-to-rotate doric-themes-collection)
 
-  (doric-themes-select 'doric-obsidian)
+  (doric-themes-select 'doric-dark)
 )
 (set-face-attribute 'default nil :family "Monospace" :height 120)
 
