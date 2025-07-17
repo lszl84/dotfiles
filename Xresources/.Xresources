@@ -57,7 +57,7 @@ xterm*highlightSelection: true
 !! https://www.nordtheme.com/
 
 ! Geometry and basic settings
-URxvt*geometry: 79x23
+URxvt*geometry: 80x24
 URxvt*scrollBar: false
 URxvt*scrollstyle: plain
 URxvt*scrollTtyOutput: false
