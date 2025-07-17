@@ -118,3 +118,7 @@ URxvt*highlightSelection: true
 URxvt*secondaryScreen: 1
 URxvt*secondaryScroll: 1
 
+URxvt*perl-lib: /usr/lib/urxvt/perl
+URxvt*perl-ext-common: default,matcher,-confirm-paste
+URxvt*insecure: true
+
