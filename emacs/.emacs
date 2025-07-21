@@ -22,10 +22,50 @@
   :defer t  ; Load only when invoked
   :config
   ;; Optional: Auto-follow current file
+  (setq treemacs-width-is-initially-locked nil)
+(define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action)
   (treemacs-follow-mode t))
 (use-package all-the-icons
   :ensure t
   :if (display-graphic-p))
+
+(defun my/set-treemacs-variable-width-font ()
+  "Force variable-width font for all Treemacs text elements."
+  (interactive)
+  (let ((font-family "Noto Sans"))  ; Replace with your font name
+    (dolist (face '(treemacs-directory-face
+                    treemacs-directory-collapsed-face
+                    treemacs-file-face
+                    treemacs-root-face
+                    treemacs-root-unreadable-face
+                    treemacs-root-remote-face
+                    treemacs-root-remote-unreadable-face
+                    treemacs-root-remote-disconnected-face
+                    treemacs-tags-face
+                    treemacs-help-title-face
+                    treemacs-help-column-face
+                    treemacs-term-node-face
+                    treemacs-header-button-face
+                    treemacs-git-commit-diff-face
+                    treemacs-git-added-face
+                    treemacs-git-conflict-face
+                    treemacs-git-ignored-face
+                    treemacs-git-modified-face
+                    treemacs-git-renamed-face
+                    treemacs-git-untracked-face
+                    ))
+      (set-face-attribute face nil :family font-family :height 1.1)
+      ;; Clear any inheritance that might force monospace
+      (set-face-attribute face nil :inherit nil))
+    
+    ;; Special case for hl-line to avoid affecting the background
+    (set-face-attribute 'treemacs-hl-line-face nil :family font-family :inherit 'hl-line)
+    
+    ;; Make sure the default face in treemacs uses our font
+    (set-face-attribute 'treemacs-window-background-face nil :family font-family :inherit 'default)))
+
+(with-eval-after-load 'treemacs
+  (my/set-treemacs-variable-width-font))
 
 
 ;; Install eglot if missing
@@ -37,8 +77,6 @@
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (setq eglot-autoshutdown t)
 
-;; Set up Wombat theme (built-in in modern Emacs)
-;(load-theme 'wombat t)
 (tool-bar-mode -1)   ; Optional: Also remove toolbar
 (menu-bar-mode 1)   ; Optional: Remove menu bar
 (scroll-bar-mode -1) ; Hide scrollbar
