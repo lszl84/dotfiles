@@ -1,3 +1,12 @@
+```
+root@fedora:/home/luke# echo "1" > /sys/module/hid_apple/parameters/swap_opt_cmd
+root@fedora:/home/luke# ^C
+root@fedora:/home/luke# ^C
+root@fedora:/home/luke# ^C
+root@fedora:/home/luke# echo "1" > /sys/module/hid_apple/parameters/iso_layout 
+root@fedora:/home/luke# evtest
+```
+
 # dotfiles
 
 Great! Since you’ve cloned your dotfiles repo to `~/.dotfiles`, here’s a **step-by-step guide** to manage your XFCE config (or other dotfiles) with **GNU Stow**:
