@@ -1,10 +1,5 @@
 ```
-root@fedora:/home/luke# echo "1" > /sys/module/hid_apple/parameters/swap_opt_cmd
-root@fedora:/home/luke# ^C
-root@fedora:/home/luke# ^C
-root@fedora:/home/luke# ^C
-root@fedora:/home/luke# echo "1" > /sys/module/hid_apple/parameters/iso_layout 
-root@fedora:/home/luke# evtest
+echo 'options hid_apple fnmode=2' | sudo tee /etc/modprobe.d/hid_apple.conf
 ```
 
 # dotfiles
