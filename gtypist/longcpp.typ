@@ -128,4 +128,157 @@ S: #include <thread>
  :     std::mutex mutex;
  : };
 
+I: RAII and smart pointers are essential for modern C++ memory management.
+S: #include <memory>
+ : #include <iostream>
+ : 
+ : class Resource
+ : {
+ : public:
+ :     Resource(const std::string& name) : name_(name) {
+ :         std::cout << "Creating resource: " << name_ << std::endl;
+ :     }
+ :     ~Resource() {
+ :         std::cout << "Destroying resource: " << name_ << std::endl;
+ :     }
+ :     void use() const {
+ :         std::cout << "Using resource: " << name_ << std::endl;
+ :     }
+ : private:
+ :     std::string name_;
+ : };
+
+I: Perfect forwarding and variadic templates make C++ incredibly flexible.
+S: template<typename T, typename... Args>
+ : std::unique_ptr<T> make_unique_custom(Args&&... args)
+ : {
+ :     return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+ : }
+ : 
+ : template<typename Func, typename... Args>
+ : auto measure_time(Func&& func, Args&&... args) -> decltype(func(args...))
+ : {
+ :     auto start = std::chrono::high_resolution_clock::now();
+ :     auto result = std::forward<Func>(func)(std::forward<Args>(args)...);
+ :     auto end = std::chrono::high_resolution_clock::now();
+ :     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+ :     std::cout << "Execution time: " << duration.count() << " microseconds" << std::endl;
+ :     return result;
+ : }
+
+I: SFINAE and type traits enable compile-time polymorphism and introspection.
+S: #include <type_traits>
+ : 
+ : template<typename T>
+ : struct has_size_method
+ : {
+ : private:
+ :     template<typename U>
+ :     static auto test(int) -> decltype(std::declval<U>().size(), std::true_type{});
+ :     template<typename>
+ :     static std::false_type test(...);
+ : public:
+ :     static constexpr bool value = decltype(test<T>(0))::value;
+ : };
+ : 
+ : template<typename Container>
+ : std::enable_if_t<has_size_method<Container>::value, size_t>
+ : get_container_size(const Container& c) {
+ :     return c.size();
+ : }
+
+I: Concepts in C++20 make template constraints more readable and expressive.
+S: #include <concepts>
+ : #include <vector>
+ : #include <algorithm>
+ : 
+ : template<typename T>
+ : concept Sortable = requires(T t) {
+ :     { std::begin(t) } -> std::forward_iterator;
+ :     { std::end(t) } -> std::forward_iterator;
+ :     requires std::sortable<typename T::iterator>;
+ : };
+ : 
+ : template<Sortable Container>
+ : void sort_container(Container& container)
+ : {
+ :     std::sort(std::begin(container), std::end(container));
+ :     std::cout << "Container sorted successfully!" << std::endl;
+ : }
+
+I: Coroutines bring asynchronous programming to C++20 with elegant syntax.
+S: #include <coroutine>
+ : #include <iostream>
+ : #include <thread>
+ : 
+ : struct Task
+ : {
+ :     struct promise_type
+ :     {
+ :         Task get_return_object() { return Task{std::coroutine_handle<promise_type>::from_promise(*this)}; }
+ :         std::suspend_never initial_suspend() { return {}; }
+ :         std::suspend_never final_suspend() noexcept { return {}; }
+ :         void return_void() {}
+ :         void unhandled_exception() {}
+ :     };
+ :     std::coroutine_handle<promise_type> coro;
+ :     Task(std::coroutine_handle<promise_type> h) : coro(h) {}
+ :     ~Task() { if (coro) coro.destroy(); }
+ : };
+
+I: Move semantics and copy elision optimize performance by avoiding unnecessary copies.
+S: #include <utility>
+ : #include <vector>
+ : 
+ : class BigData
+ : {
+ : public:
+ :     BigData(size_t size) : data_(size, 42) {
+ :         std::cout << "BigData constructed with " << size << " elements" << std::endl;
+ :     }
+ :     BigData(const BigData& other) : data_(other.data_) {
+ :         std::cout << "BigData copy constructed" << std::endl;
+ :     }
+ :     BigData(BigData&& other) noexcept : data_(std::move(other.data_)) {
+ :         std::cout << "BigData move constructed" << std::endl;
+ :     }
+ :     BigData& operator=(BigData&& other) noexcept {
+ :         if (this != &other) {
+ :             data_ = std::move(other.data_);
+ :         }
+ :         return *this;
+ :     }
+ : private:
+ :     std::vector<int> data_;
+ : };
+
+I: Template specialization allows fine-tuned behavior for specific types.
+S: #include <string>
+ : #include <sstream>
+ : 
+ : template<typename T>
+ : struct Serializer
+ : {
+ :     static std::string serialize(const T& obj) {
+ :         std::ostringstream oss;
+ :         oss << obj;
+ :         return oss.str();
+ :     }
+ : };
+ : 
+ : template<>
+ : struct Serializer<std::vector<int>>
+ : {
+ :     static std::string serialize(const std::vector<int>& vec) {
+ :         std::ostringstream oss;
+ :         oss << "[";
+ :         for (size_t i = 0; i < vec.size(); ++i) {
+ :             if (i > 0) oss << ", ";
+ :             oss << vec[i];
+ :         }
+ :         oss << "]";
+ :         return oss.str();
+ :     }
+ : };
+
 
