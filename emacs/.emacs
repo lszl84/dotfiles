@@ -1,21 +1,13 @@
-
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Enable built-in package manager (no need for MELPA in Emacs 29+)
-
 
 ;; Colors, fonts
-(use-package doric-themes
-  :ensure t
-  :demand t
-  :config
-  ;; These are the default values.
-  (setq doric-themes-to-toggle '(doric-light doric-dark))
-  (setq doric-themes-to-rotate doric-themes-collection)
-
-  (doric-themes-select 'doric-dark)
-)
+(use-package nord-theme
+  :ensure t)
+(load-theme 'nord t)
+(set-face-background 'default "#111111")
 (set-face-attribute 'default nil :family "Monospace" :height 120)
+
 
 (use-package treemacs
   :ensure t
@@ -68,17 +60,8 @@
   (my/set-treemacs-variable-width-font))
 
 
-;; Install eglot if missing
-(unless (package-installed-p 'eglot)
-  (package-refresh-contents)
-  (package-install 'eglot))
-
-;; Configure eglot for C++
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(setq eglot-autoshutdown t)
-
 (tool-bar-mode -1)   ; Optional: Also remove toolbar
-(menu-bar-mode 1)   ; Optional: Remove menu bar
+(menu-bar-mode -1)   ; Optional: Remove menu bar
 (scroll-bar-mode -1) ; Hide scrollbar
 
 ;; Function to find project root (both CMakeLists.txt and .git)
