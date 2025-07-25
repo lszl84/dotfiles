@@ -6,6 +6,10 @@
   :ensure t)
 (load-theme 'nord t)
 (set-face-background 'default "#111111")
+(set-face-background 'scroll-bar "#111111")
+(set-face-background 'fringe "#111111")
+(set-face-background 'mode-line "#41474C")
+(set-face-background 'mode-line-inactive "#22242A")
 (set-face-attribute 'default nil :family "Monospace" :height 120)
 
 
