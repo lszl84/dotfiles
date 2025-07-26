@@ -13,7 +13,7 @@
     <default/>
     <!-- Use a different terminal emulator -->
     <keybind key="W-Return">
-      <action name="Execute" command="foot"/>
+      <action name="Execute" command="footclient"/>
     </keybind>
     <keybind key="W-l">
       <action name="Execute" command="swaylock -c 000000"/>
