@@ -1,8 +1,11 @@
 #!/bin/bash
 
-my_swaypid=0
-my_swaypid_new=0
 killall swaybg
+
+# run first to avoid imagemagick delay
+swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
+my_swaypid=$!
+my_swaypid_new=0
 
 while true; do
   for i in {1..30}; do
@@ -10,7 +13,7 @@ while true; do
     echo >> /tmp/ff.txt
     echo "$((30 - i)) minutes to break" >> /tmp/ff.txt
  
-    convert ~/Downloads/debian-infinite-large.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#ccccdc'   -annotate +$(( $(identify -format "%w" ~/Downloads/debian-infinite-large.png) / 2 +340 ))+1520 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
+    convert ~/.config/labwc/debian-infinite-large2.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#ccccdc'   -annotate +$(( $(identify -format "%w" ~/Downloads/debian-infinite-large.png) / 2 +700))+2060 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
     swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
     my_swaypid_new=$!
     sleep 60
