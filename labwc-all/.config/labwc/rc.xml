@@ -18,9 +18,9 @@
     <keybind key="W-l">
       <action name="Execute" command="swaylock -c 000000"/>
     </keybind>
-<keybind key="W-Space">
-    <action name="Execute" command="fuzzel"/> 
-</keybind>
+    <keybind key="W-Space">
+      <action name="Execute" command="fuzzel"/>
+    </keybind>
     <!--
       Remove a previously defined keybind
       A shorter alternative is <keybind key="W-F4" />
@@ -40,7 +40,7 @@
   </mouse>
   <libinput>
     <device>
-      <naturalScroll/>
+      <naturalScroll>yes</naturalScroll>
     </device>
   </libinput>
 </labwc_config>
