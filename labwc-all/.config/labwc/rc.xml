@@ -21,6 +21,12 @@
     <keybind key="W-Space">
       <action name="Execute" command="fuzzel"/>
     </keybind>
+    <keybind key="W-C-Left">
+      <action name="GoToDesktop" to="left" />
+    </keybind>
+    <keybind key="W-C-Right">
+      <action name="GoToDesktop" to="right" />
+    </keybind>
     <!--
       Remove a previously defined keybind
       A shorter alternative is <keybind key="W-F4" />
