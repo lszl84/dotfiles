@@ -1,11 +1,11 @@
 # Example autostart file
 
 # Set background color.
-swaybg -i /home/luke/Downloads/debian-infinite-large.png --mode center >/dev/null 2>&1 &
+#swaybg -i /home/luke/Downloads/debian-infinite-large.png --mode center >/dev/null 2>&1 &
+/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
 
 foot --server >/dev/null 2>&1 &
 
-(exec -a "BreakReminder" bash -c 'while :; do sleep 2000; notify-send "Time for a break!"; done') &
 
 # Configure output directives such as mode, position, scale and transform.
 # Use wlr-randr to get your output names
