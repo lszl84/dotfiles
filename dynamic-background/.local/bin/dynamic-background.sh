@@ -12,6 +12,8 @@ while true; do
     fastfetch --pipe true -l none > /tmp/ff.txt
     echo >> /tmp/ff.txt
     echo "$(date). Break in $((30 - i)) minutes." >> /tmp/ff.txt
+    echo >> /tmp/ff.txt
+    sudo apt update 2>/dev/null|grep 'can be up' >> /tmp/ff.txt
  
     convert ~/.config/labwc/debian-infinite-large2.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#ccccdc'   -annotate +$(( $(identify -format "%w" ~/Downloads/debian-infinite-large.png) / 2 +730))+2067 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
     swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
