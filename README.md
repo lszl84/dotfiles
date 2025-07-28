@@ -1,3 +1,27 @@
+# Wayland Environment
+
+- `labwc` for window management and lightdm login
+- `swaybg` for the background, but I'm using my own `dynamic-background.sh` script that generates the background by mixing in `fastfetch` output
+- `kanshi` for monitor and scaling management
+- `mako` for notifications
+- `swayidle` for locking the screen
+  - `swaylock` does the actual locking
+  - then after a delay, I simply call `systemctl suspend`. I don't turn off the screens with `wlopm` because this has problems with waking up the screens sometimes
+- `thunar` works well as a file manager, without Xwayland,
+- to make `emacs` work properly on Wayland, a package named sth like `emacs-pgtk` or whatever, needs to be installed
+- `fuzzer` for launcher menu, bound to Super-Space
+- `foot` as a nice and light terminal. Start `foot --server` on autostart and then use `footclient` for terminals
+- `wl-recorder` for screen recording. Supports geometry. NOTE: with the 2x `kanshi` scaling, the geometry should be halved, i.e. '1920x1080' for 4K region,
+- `slurp` for screen region selector
+
+TODO:
+- volume settings?
+- sound output selection?
+- brightness controls, also for the studio display
+
+# Misc
+
+## For LoFree keyboard - F keys will send F commands instead of brightness etc
 ```
 echo 'options hid_apple fnmode=2' | sudo tee /etc/modprobe.d/hid_apple.conf
 ```
