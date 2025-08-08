@@ -50,7 +50,7 @@
                     treemacs-git-renamed-face
                     treemacs-git-untracked-face
                     ))
-      (set-face-attribute face nil :family font-family :height 1.1)
+      (set-face-attribute face nil :family font-family :height 1.0)
       ;; Clear any inheritance that might force monospace
       (set-face-attribute face nil :inherit nil))
     
@@ -110,7 +110,6 @@
             (setq c-basic-offset 4)
             (setq tab-width 4)
             (setq indent-tabs-mode nil)))
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
