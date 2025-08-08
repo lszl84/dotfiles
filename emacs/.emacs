@@ -68,6 +68,8 @@
 (menu-bar-mode -1)   ; Optional: Remove menu bar
 (scroll-bar-mode -1) ; Hide scrollbar
 
+(setq-default cursor-type 'bar)
+
 ;; Function to find project root (both CMakeLists.txt and .git)
 (defun find-project-root (start-dir)
   "Find the nearest parent directory containing both CMakeLists.txt and .git"
