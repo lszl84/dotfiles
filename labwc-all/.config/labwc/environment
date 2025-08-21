@@ -1,5 +1,6 @@
 
-GTK_THEME=Materia-dark
+GTK_THEME=Adwaita:dark
+ELECTRON_OZONE_PLATFORM_HINT=auto
 
 
 ##
@@ -76,5 +77,5 @@ GTK_THEME=Materia-dark
 
 # LABWC_FALLBACK_OUTPUT=NOOP-fallback
 
-XCURSOR_THEME=Bibata-Modern-Classic
+XCURSOR_THEME=Adwaita
 XCURSOR_SIZE=24

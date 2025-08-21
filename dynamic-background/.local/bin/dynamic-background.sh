@@ -15,7 +15,7 @@ while true; do
     echo >> /tmp/ff.txt
     sudo apt update 2>/dev/null|grep 'can be up' >> /tmp/ff.txt
  
-    convert ~/.config/labwc/debian-infinite-large2.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#ccccdc'   -annotate +$(( $(identify -format "%w" ~/Downloads/debian-infinite-large.png) / 2 +730))+2117 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
+    convert ~/.config/labwc/debian-infinite-large2.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#ccccdc'   -annotate +$(( $(identify -format "%w" ~/.config/labwc/debian-infinite-large2.png) / 2 +730))+2117 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
     swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
     my_swaypid_new=$!
     sleep 60
