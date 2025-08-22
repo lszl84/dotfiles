@@ -16,9 +16,7 @@ while true; do
     sudo apt update 2>/dev/null|grep 'can be up' >> /tmp/ff.txt
     updates=$(dnf check-update -q)
 
-	if [ -z "$updates" ]; then
-	    echo "No updates available." >>/tmp/ff.txt
-	else
+	if [ -n "$updates" ]; then
 	    echo "Updates are available!" >>/tmp/ff.txt
 	fi
  
