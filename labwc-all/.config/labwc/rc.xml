@@ -59,6 +59,9 @@
     <keybind key="W-F4">
       <action name="None"/>
     </keybind>
+    <keybind key="W-m">
+	    <action name="Iconify"/>
+    </keybind>
   </keyboard>
   <mouse>
     <default/>

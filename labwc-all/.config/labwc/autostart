@@ -5,7 +5,7 @@
 /home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
 
 foot --server >/dev/null 2>&1 &
-
+(sleep 10; amixer -c 0 sset "Speaker" unmute) >/dev/null 2>&1 &
 
 # Configure output directives such as mode, position, scale and transform.
 # Use wlr-randr to get your output names
