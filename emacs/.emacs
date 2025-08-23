@@ -2,16 +2,19 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; Colors, fonts
-(use-package nord-theme
-  :ensure t)
-(load-theme 'nord t)
-(set-face-background 'default "#111111")
-(set-face-background 'scroll-bar "#111111")
-(set-face-background 'fringe "#111111")
-(set-face-background 'mode-line "#41474C")
-(set-face-background 'mode-line-inactive "#22242A")
-(set-face-attribute 'default nil :family "Monospace" :height 120)
+(use-package doric-themes
+  :ensure t
+  :config
+   (doric-themes-select 'doric-dark))
 
+(set-face-attribute 'default nil :family "Monospace" :height 120)
+(set-face-foreground 'vertical-border "gray")
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(fringe ((t (:background nil)))))
 
 (use-package treemacs
   :ensure t
@@ -118,10 +121,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages '(all-the-icons doric-themes ef-themes treemacs)))
+
