@@ -1,7 +1,7 @@
 
 GTK_THEME=Adwaita:dark
 ELECTRON_OZONE_PLATFORM_HINT=auto
-XKB_DEFAULT_OPTIONS=caps:swapescape
+XKB_DEFAULT_OPTIONS=caps:escape
 
 
 ##
