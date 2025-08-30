@@ -1,6 +1,8 @@
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
+(pixel-scroll-precision-mode 1)
+
 ;; Colors, fonts
 (use-package doric-themes
   :ensure t
