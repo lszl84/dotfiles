@@ -14,6 +14,28 @@
 - `wl-recorder` for screen recording. Supports geometry. NOTE: with the 2x `kanshi` scaling, the geometry should be halved, i.e. '1920x1080' for 4K region,
 - `slurp` for screen region selector
 
+# Autologin
+
+```bash
+mkdir -p /etc/systemd/system/getty@tty1.service.d
+```
+
+Add the file `/etc/systemd/system/getty@tty1.service.d/override.conf`:
+
+```
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin luke --noclear %I 38400 linux
+```
+
+Then in `~/.bashrc`:
+
+```
+[ `tty` == /dev/tty1 ] && /home/luke/Developer/labwc/build/labwc && exit
+```
+
+Source: https://unix.stackexchange.com/questions/401759/automatically-login-on-debian-9-2-1-command-line
+
 TODO:
 - volume settings?
 - sound output selection?
