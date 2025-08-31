@@ -1,5 +1,5 @@
 
-GTK_THEME=Adwaita:dark
+#GTK_THEME=Adwaita:dark
 ELECTRON_OZONE_PLATFORM_HINT=auto
 XKB_DEFAULT_OPTIONS=caps:escape
 
@@ -78,5 +78,5 @@ XKB_DEFAULT_OPTIONS=caps:escape
 
 # LABWC_FALLBACK_OUTPUT=NOOP-fallback
 
-XCURSOR_THEME=Adwaita
+XCURSOR_THEME=breeze_cursors
 XCURSOR_SIZE=24

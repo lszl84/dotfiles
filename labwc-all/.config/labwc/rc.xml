@@ -5,8 +5,8 @@
 -->
 <labwc_config>
   <theme>
-    <name>Adwaita-Lukasz</name>
-    <cornerRadius>0</cornerRadius>
+    <name>GTK</name>
+    <cornerRadius>12</cornerRadius>
     <font name="sans" size="10"/>
   </theme>
   <keyboard>

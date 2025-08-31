@@ -20,7 +20,7 @@ while true; do
 	    echo "Updates are available!" >>/tmp/ff.txt
 	fi
  
-    convert ~/.config/labwc/fedora-bw.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#eeeeee'   -annotate +$(( $(identify -format "%w" ~/.config/labwc/fedora-bw.png) / 2 +77))+1120 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
+    convert ~/.config/labwc/debian-red.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#eeeeee'   -annotate +$(( $(identify -format "%w" ~/.config/labwc/debian-red.png) / 2 +77))+1120 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
     swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
     my_swaypid_new=$!
     sleep 60
