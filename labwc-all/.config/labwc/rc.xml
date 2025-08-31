@@ -5,8 +5,8 @@
 -->
 <labwc_config>
   <theme>
-    <name>Adwaita-Labwc-dark</name>
-    <cornerRadius>8</cornerRadius>
+    <name>Adwaita-Lukasz</name>
+    <cornerRadius>0</cornerRadius>
     <font name="sans" size="10"/>
   </theme>
   <keyboard>
@@ -60,7 +60,7 @@
       <action name="None"/>
     </keybind>
     <keybind key="W-m">
-	    <action name="Iconify"/>
+      <action name="Iconify"/>
     </keybind>
   </keyboard>
   <mouse>

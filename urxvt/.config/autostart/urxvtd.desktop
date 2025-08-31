@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=URxvt Daemon
-Exec=urxvtd -q -f -o
-Comment=Starts the URxvt terminal daemon for faster terminal launches
-Terminal=false
-X-GNOME-Autostart-enabled=true
