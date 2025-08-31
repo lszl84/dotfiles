@@ -4,3 +4,4 @@
 # For further details see labwc-config(5).
 
 killall dynamic-background.sh
+killall break-reminder.sh

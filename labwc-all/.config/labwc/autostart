@@ -1,8 +1,9 @@
 # Example autostart file
 
 # Set background color.
-#swaybg -i /home/luke/Downloads/debian-infinite-large.png --mode center >/dev/null 2>&1 &
-/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
+swaybg -i /home/luke/.config/labwc/pexels-leonardo-vazquez.jpg --mode fill >/dev/null 2>&1 &
+#/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
+/home/luke/.local/bin/break-reminder.sh >/dev/null 2>&1 &
 
 foot --server >/dev/null 2>&1 &
 (sleep 10; amixer -c 0 sset "Speaker" unmute) >/dev/null 2>&1 &
