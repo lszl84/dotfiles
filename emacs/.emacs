@@ -33,7 +33,7 @@
 (defun my/set-treemacs-variable-width-font ()
   "Force variable-width font for all Treemacs text elements."
   (interactive)
-  (let ((font-family "Noto Sans"))  ; Replace with your font name
+  (let ((font-family "DejaVu Sans"))  ; Replace with your font name
     (dolist (face '(treemacs-directory-face
                     treemacs-directory-collapsed-face
                     treemacs-file-face

@@ -36,6 +36,23 @@ Then in `~/.bashrc`:
 
 Source: https://unix.stackexchange.com/questions/401759/automatically-login-on-debian-9-2-1-command-line
 
+# Bluetooth Wakeup
+
+I got it set up on Fedora Server but it does not seem to work on Debian hmmm. Kernel issue?
+
+Arch linux recommends this, but does not work for me on Debian:
+
+```
+luke@debian:~$ cat /etc/udev/rules.d/*
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", \
+    ATTR{bDeviceClass}=="e0", \
+    ATTR{bDeviceProtocol}=="01", \
+    ATTR{bDeviceSubClass}=="01", \
+ATTR{power/wakeup}="enabled"
+luke@debian:~$ ls /etc/udev/rules.d/*
+/etc/udev/rules.d/91-bluetooth-wakeup.rules
+```
+
 TODO:
 - volume settings?
 - sound output selection?
