@@ -6,7 +6,7 @@
 <labwc_config>
   <theme>
     <name>GTK</name>
-    <cornerRadius>12</cornerRadius>
+    <cornerRadius>6</cornerRadius>
     <font name="sans" size="10"/>
   </theme>
   <keyboard>
