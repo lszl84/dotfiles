@@ -37,5 +37,5 @@ mako >/dev/null 2>&1 &
 # https://git.sr.ht/~leon_plickat/wlopm
 swayidle -w \
 	timeout 300 'swaylock -f -c 000000' \
-	timeout 330 'systemctl suspend' \
+	timeout 330 'doas zzz -s' \
 	before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
