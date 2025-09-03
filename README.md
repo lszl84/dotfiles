@@ -1,3 +1,8 @@
+# Stow
+
+## IMPORTANT for mytools use `doas stow -t /usr/local mytools`
+
+These contain small tools to be used inside `vi`'s non-interactive shell, to they must be accessible globally.
 # Wayland Environment
 
 - `labwc` for window management and lightdm login
