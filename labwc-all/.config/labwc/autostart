@@ -3,6 +3,8 @@
 # Alpine linux
 openrc -U gui
 
+spotifyd &
+
 # Set background color.
 swaybg -i /home/luke/.config/labwc/pexels-leonardo-vazquez.jpg --mode fill >/dev/null 2>&1 &
 #/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
