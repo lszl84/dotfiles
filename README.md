@@ -41,27 +41,96 @@ Then in `~/.bashrc`:
 
 Source: https://unix.stackexchange.com/questions/401759/automatically-login-on-debian-9-2-1-command-line
 
-# Bluetooth Wakeup
+# Running Windows 11 with `qemu` on Alpine Linux host
 
-I got it set up on Fedora Server but it does not seem to work on Debian hmmm. Kernel issue?
+Installing apks:
 
-Arch linux recommends this, but does not work for me on Debian:
-
-```
-luke@debian:~$ cat /etc/udev/rules.d/*
-ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", \
-    ATTR{bDeviceClass}=="e0", \
-    ATTR{bDeviceProtocol}=="01", \
-    ATTR{bDeviceSubClass}=="01", \
-ATTR{power/wakeup}="enabled"
-luke@debian:~$ ls /etc/udev/rules.d/*
-/etc/udev/rules.d/91-bluetooth-wakeup.rules
+```sh
+doas apk add qemu-system-x86_64 qemu-img
+doas apk add  qemu-modules libvirt libvirt-qemu
+doas apk add ovmf edk2
+doas apk add swtpm
 ```
 
-TODO:
-- volume settings?
-- sound output selection?
-- brightness controls, also for the studio display
+Module, group and rc setup:
+
+```sh
+echo tun |doas tee /etc/modules
+doas modprobe tun
+doas addgroup luke kvm
+doas adduser luke qemu
+doas rc-update add libvirtd
+doas rc-update add libvirt-guests
+```
+
+Download Windows 11 ISO to `~/Machines/`: `/home/luke/Machines/Win11_24H2_English_x64.iso`
+
+Download Virtio drivers ISO - it will be mounted as CD during Windows installation. This will
+be needed for hard disk and network to work when installing Windows.
+
+```sh
+mkdir -p ~/Machines/windows-vm
+wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+```
+
+Create the disk
+
+```sh
+cd ~/Machines/windows-vm
+qemu-img create -f qcow2 windows11.qcow2 64G
+```
+
+Create the script to run the VM:
+
+```sh
+#!/bin/sh
+
+# Create TPM directory
+mkdir -p /tmp/tpm
+
+# Start software TPM
+swtpm socket --tpmstate dir=/tmp/tpm --ctrl type=unixio,path=/tmp/tpm/swtpm-sock &
+
+qemu-system-x86_64 \
+  -enable-kvm \
+  -cpu host \
+  -smp 8 \
+  -m 8G \
+  -drive file=windows11.qcow2,if=virtio,format=qcow2 \
+  -cdrom ~/Machines/Win11_24H2_English_x64.iso \
+  -drive file=virtio-win.iso,media=cdrom \
+  -boot order=d \
+  -bios /usr/share/OVMF/OVMF.fd \
+  -device virtio-vga \
+  -device virtio-net,netdev=net0 \
+  -netdev user,id=net0 \
+  -usb -device usb-tablet \
+  -device virtio-rng-pci \
+  -chardev socket,id=chrtpm,path=/tmp/tpm/swtpm-sock \
+  -tpmdev emulator,id=tpm0,chardev=chrtpm \
+  -device tpm-tis,tpmdev=tpm0
+
+# Cleanup
+pkill swtpm
+```
+
+Run the machine. When prompted, hit enter to boot the Windows installer from CD:
+
+```sh
+chmod +x run.sh
+./run.sh
+```
+
+During installation, you will need to load drivers from `virtio-win.iso` which 
+is mounted as the 2nd CDROM:
+1. Drivers for the hard disk: `viostor -> w11 -> amd64`
+2. Network drivers: `NetKVM -> w11 -> amd64`
+
+After installation it's recommended to install the Display Dirivers for better
+resolution and performance. 
+
+Right click on the start button -> Device Manager. Find Display adapters and change
+the driver for the device: use the folder `viogpudo -> w11 -> amd64`.
 
 # Misc
 
