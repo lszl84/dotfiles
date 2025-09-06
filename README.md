@@ -63,6 +63,8 @@ doas rc-update add libvirtd
 doas rc-update add libvirt-guests
 ```
 
+TODO: **It looks like these rc services are not really needed for Windows guest to work (?)**
+
 Download Windows 11 ISO to `~/Machines/`: `/home/luke/Machines/Win11_24H2_English_x64.iso`
 
 Download Virtio drivers ISO - it will be mounted as CD during Windows installation. This will
