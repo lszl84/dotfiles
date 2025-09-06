@@ -16,7 +16,7 @@ kanshi >/dev/null 2>&1 &
 mako >/dev/null 2>&1 &
 
 # Background
-swaybg -c 0c3246
+swaybg -c 0c3246 &
 
 # Reminder for taking breaks!
 /home/luke/.local/bin/break-reminder.sh >/dev/null 2>&1 &
