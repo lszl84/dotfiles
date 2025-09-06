@@ -1,42 +1,25 @@
 # Example autostart file
 
-# Alpine linux
+# Alpine Linux stuff
 openrc -U gui
+
+# Monitor Scaling
+kanshi >/dev/null 2>&1 &
+
+# Notifications
+mako >/dev/null 2>&1 &
+
+# Background
+swaybg -c 0c3246
+
+# Terminal Server - so that the clients use less resources
+foot --server >/dev/null 2>&1 &
+
+# Reminder for taking breaks!
+/home/luke/.local/bin/break-reminder.sh >/dev/null 2>&1 &
 
 spotifyd &
 
-# Set background color.
-swaybg -i /home/luke/.config/labwc/pexels-leonardo-vazquez.jpg --mode fill >/dev/null 2>&1 &
-#/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
-/home/luke/.local/bin/break-reminder.sh >/dev/null 2>&1 &
-
-foot --server >/dev/null 2>&1 &
-(sleep 10; amixer -c 0 sset "Speaker" unmute) >/dev/null 2>&1 &
-
-# Configure output directives such as mode, position, scale and transform.
-# Use wlr-randr to get your output names
-# Example ~/.config/kanshi/config below:
-#   profile {
-#     output HDMI-A-1 position 1366,0
-#     output eDP-1 position 0,0
-#   }
-kanshi >/dev/null 2>&1 &
-
-# Launch a panel such as yambar or waybar.
-#waybar >/dev/null 2>&1 &
-
-# Enable notifications. Typically GNOME/KDE application notifications go
-# through the org.freedesktop.Notifications D-Bus API and require a client such
-# as mako to function correctly. Thunderbird is an example of this.
-mako >/dev/null 2>&1 &
-
-# Lock screen after 5 minutes; turn off display after another 5 minutes.
-#
-# Note that in the context of idle system power management, it is *NOT* a good
-# idea to turn off displays by 'disabling outputs' for example by
-# `wlr-randr --output <whatever> --off` because this re-arranges views
-# (since a837fef). Instead use a wlr-output-power-management client such as
-# https://git.sr.ht/~leon_plickat/wlopm
 swayidle -w \
 	timeout 300 'swaylock -f -c 000000' \
 	timeout 330 'doas zzz -s' \
