@@ -1,32 +1,34 @@
-#!/bin/bash
+#!/bin/sh
 
-killall swaybg
+my_color="0c3246"
+
+pidof swaybg && killall swaybg
 
 # run first to avoid imagemagick delay
-swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
+swaybg -c "$my_color" &
 my_swaypid=$!
 my_swaypid_new=0
 
 while true; do
-  for i in {1..30}; do
+  # 90 iterations of 20s = 30min. TODO: use variables
+  for i in $(seq 1 90); do
     fastfetch --pipe true -l none > /tmp/ff.txt
     echo >> /tmp/ff.txt
-    echo "$(date '+%A, %d %B %Y %H:%M'). Break in $((30 - i)) minutes." >> /tmp/ff.txt
+    date '+%A, %d %B %Y %H:%M' >> /tmp/ff.txt
     echo >> /tmp/ff.txt
-    sudo apt update 2>/dev/null|grep 'can be up' >> /tmp/ff.txt
-    updates=$(dnf check-update -q)
-
-	if [ -n "$updates" ]; then
-	    echo "Updates are available!" >>/tmp/ff.txt
-	fi
+    [ "$(apk version -l '<' | wc -l)" -gt 1 ] && echo "Updates are available!" >> /tmp/ff.txt
  
-    convert ~/.config/labwc/debian-red.png   -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#eeeeee'   -annotate +$(( $(identify -format "%w" ~/.config/labwc/debian-red.png) / 2 +77))+1120 "$(cat /tmp/ff.txt)"   ~/.config/fastfetch_wallpaper.png && rm /tmp/ff.txt
-    swaybg -i ~/.config/fastfetch_wallpaper.png -m center &
+    magick -background transparent -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#eeeeee' label:"$(cat /tmp/ff.txt)" /tmp/background.png
+    swaybg -c "$my_color" -m center -i /tmp/background.png &
     my_swaypid_new=$!
-    sleep 60
-    [ "$my_swaypid" -gt 0 ] && echo "killing old process $my_swaypid" && kill $my_swaypid
+
+    # avoid swaybg flicker after kill
+    sleep 1 
+    [ "$my_swaypid" -gt 0 ] && kill $my_swaypid
+
+    # total 20 seconds between refreshes
+    sleep 19
     my_swaypid=$my_swaypid_new
-    echo "new process is $my_swaypid"
   done
   notify-send -u normal -t 10000 "Break Reminder" "Time to take a screen break!"
 done

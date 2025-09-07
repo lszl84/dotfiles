@@ -15,11 +15,8 @@ kanshi >/dev/null 2>&1 &
 # Notifications
 mako >/dev/null 2>&1 &
 
-# Background
-swaybg -c 0c3246 &
-
-# Reminder for taking breaks!
-/home/luke/.local/bin/break-reminder.sh >/dev/null 2>&1 &
+# Fastfetch background + break reminders
+/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
 
 # Screen lock and suspend
 swayidle -w \
