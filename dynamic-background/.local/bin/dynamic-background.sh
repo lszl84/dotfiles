@@ -11,6 +11,7 @@ my_swaypid_new=0
 
 while true; do
   # 90 iterations of 20s = 30min. TODO: use variables
+  doas apk update 2>&1 >/dev/null &
   for i in $(seq 1 90); do
     fastfetch --pipe true -l none > /tmp/ff.txt
     echo >> /tmp/ff.txt
