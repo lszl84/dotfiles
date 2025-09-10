@@ -9,11 +9,11 @@
     <cornerRadius>6</cornerRadius>
     <font name="sans" size="10"/>
   </theme>
-    <windowRules>
-    <windowRule identifier="qemu" serverDecoration="no" />
+  <windowRules>
+    <windowRule identifier="qemu" serverDecoration="no"/>
     <windowRule identifier="qemu">
-        <action name="ResizeTo" width="1280" height="720" />
-        <action name="MoveTo" x="0" y="0" />
+      <action name="ResizeTo" width="1280" height="720"/>
+      <action name="MoveTo" x="0" y="0"/>
     </windowRule>
   </windowRules>
   <keyboard>
