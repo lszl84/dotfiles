@@ -65,7 +65,7 @@
        id="circle3" />
     <path
        d="m12 18h8v2h-8z"
-       opacity=".6"
+       opacity="1.0"
        id="path3" />
   </g>
 </svg>
