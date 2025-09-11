@@ -7,6 +7,9 @@ vim.keymap.set("n", "<leader>p", '"+p', { desc = "Paste from system clipboard" }
 vim.keymap.set("n", "<F5>", ":!bb<CR>", { desc = "Run bb command" })
 vim.keymap.set("n", "<leader>f", ":!cfi %<CR>", { desc = "Reformat current file" })
 
+vim.keymap.set('n', '<C-n>', ':bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<C-p>', ':bprev<CR>', { desc = 'Previous buffer' })
+
 -- Map Leader+Enter to open footclient in current directory
 vim.keymap.set("n", "<Leader><Enter>", function()
     local current_dir = vim.fn.expand("%:p:h")
