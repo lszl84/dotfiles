@@ -7,6 +7,12 @@ vim.keymap.set("n", "<leader>p", '"+p', { desc = "Paste from system clipboard" }
 vim.keymap.set("n", "<F5>", ":!bb<CR>", { desc = "Run bb command" })
 vim.keymap.set("n", "<leader>f", ":!cfi %<CR>", { desc = "Reformat current file" })
 
+-- Map Leader+Enter to open footclient in current directory
+vim.keymap.set("n", "<Leader><Enter>", function()
+    local current_dir = vim.fn.expand("%:p:h")
+    vim.fn.system("footclient --working-directory " .. vim.fn.shellescape(current_dir) .. " &")
+end, { noremap = true, silent = true, desc = "Open foot terminal in current directory" })
+
 -- Readline-style navigation in command mode
 vim.keymap.set("c", "<M-f>", "<S-Right>", { desc = "Move forward one word" })
 vim.keymap.set("c", "<M-b>", "<S-Left>", { desc = "Move backward one word" })
