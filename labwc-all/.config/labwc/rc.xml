@@ -6,7 +6,7 @@
 <labwc_config>
   <theme>
     <name>GTK</name>
-    <cornerRadius>6</cornerRadius>
+    <cornerRadius>0</cornerRadius>
     <font name="sans" size="10"/>
   </theme>
   <windowRules>
@@ -14,6 +14,13 @@
     <windowRule identifier="qemu">
       <action name="ResizeTo" width="1280" height="720"/>
       <action name="MoveTo" x="0" y="0"/>
+    </windowRule>
+    <windowRule identifier="ani">
+      <action name="ResizeTo" width="1200" height="640"/>
+      <action name="MoveTo" x="40" y="20"/>
+    </windowRule>
+    <windowRule identifier="main">
+      <action name="MoveTo" x="400" y="200"/>
     </windowRule>
   </windowRules>
   <keyboard>
