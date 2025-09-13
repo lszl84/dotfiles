@@ -20,7 +20,12 @@
       <action name="MoveTo" x="40" y="20"/>
     </windowRule>
     <windowRule identifier="main">
-      <action name="MoveTo" x="400" y="200"/>
+      <action name="MoveTo" x="1080" y="570"/>
+      <action name="ResizeTo" width="400" height="300"/>
+    </windowRule>
+    <windowRule title="Neovide">
+      <action name="MoveTo" x="320" y="180"/>
+      <action name="ResizeTo" width="1920" height="1080"/>
     </windowRule>
   </windowRules>
   <keyboard>
