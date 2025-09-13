@@ -1,3 +1,4 @@
 alias vi='busybox vi -c "set ai et ts=4"'
+alias rec="$HOME/Developer/gpu-screen-recorder/build/gpu-screen-recorder -w region -f 60 -region '3840x2160+640+360' -o"
 
 export MANPATH="/home/luke/Developer/docs/wxWidgets-3.2.5/man:$MANPATH"
