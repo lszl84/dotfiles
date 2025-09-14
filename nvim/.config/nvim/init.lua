@@ -68,7 +68,7 @@ vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
 
 vim.cmd('colorscheme default')
 
-local my_dark_color = '#111112' --'#15181e'
+local my_dark_color = '#05090e' --'#15181e'
 
 vim.api.nvim_set_hl(0, 'String', { fg = '#A7C7E7', italic = false })  -- Soft periwinkle
 
