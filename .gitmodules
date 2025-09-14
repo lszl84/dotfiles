@@ -1,0 +1,9 @@
+[submodule "nvim/.config/nvim/pack/plugins/start/nord.nvim"]
+	path = nvim/.config/nvim/pack/plugins/start/nord.nvim
+	url = https://github.com/shaunsingh/nord.nvim.git
+[submodule "nvim/.config/nvim/pack/plugins/start/nvim-tree.lua"]
+	path = nvim/.config/nvim/pack/plugins/start/nvim-tree.lua
+	url = https://github.com/nvim-tree/nvim-tree.lua.git
+[submodule "nvim/.config/nvim/pack/plugins/start/nvim-web-devicons"]
+	path = nvim/.config/nvim/pack/plugins/start/nvim-web-devicons
+	url = https://github.com/nvim-tree/nvim-web-devicons.git

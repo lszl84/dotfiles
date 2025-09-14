@@ -31,3 +31,38 @@ vim.opt.number = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+
+-- neovide
+if vim.g.neovide then
+    vim.g.neovide_scroll_animation_length = 0.1
+    vim.g.neovide_cursor_animation_length = 0.07
+    vim.g.neovide_cursor_trail_size = 0
+    vim.g.neovide_cursor_vfx_mode = ""
+end
+
+-- netrw configuration
+vim.g.netrw_liststyle = 3         -- Enables tree-style list view
+vim.g.netrw_banner = 0            -- Hides the top banner (preamble)
+
+require("nvim-tree").setup({
+  view = {
+    width = 30,
+    -- other view options...
+  },
+  renderer = {
+    group_empty = true,
+    -- other renderer options...
+  },
+  -- Sync with Neovim's current working directory
+  sync_root_with_cwd = true,
+  respect_buf_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_root = true, -- Try this if the above isn't enough
+  },
+})
+
+-- Set a keymap to open it, just like before.
+vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
+
+vim.cmd('colorscheme nord')
