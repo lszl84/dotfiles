@@ -34,6 +34,7 @@ vim.opt.expandtab = true
 
 -- neovide
 if vim.g.neovide then
+    vim.o.guifont = "FiraCode Nerd Font Mono Light"
     vim.g.neovide_scroll_animation_length = 0.1
     vim.g.neovide_cursor_animation_length = 0.07
     vim.g.neovide_cursor_trail_size = 0
@@ -65,4 +66,13 @@ require("nvim-tree").setup({
 -- Set a keymap to open it, just like before.
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
 
+local my_dark_color = '#15181e'
+
 vim.cmd('colorscheme nord')
+
+vim.cmd('highlight Normal guibg=' .. my_dark_color)
+vim.cmd('highlight NormalNC guibg=' .. my_dark_color)
+vim.cmd('highlight LineNr guibg=' .. my_dark_color)
+vim.cmd('highlight SignColumn guibg=' .. my_dark_color) -- Gutter for signs (e.g., LSP, git)
+vim.cmd('highlight Folded guibg=' .. my_dark_color)     -- Background for folded code
+vim.cmd('highlight EndOfBuffer guibg=' .. my_dark_color) -- Tilde lines after file end
