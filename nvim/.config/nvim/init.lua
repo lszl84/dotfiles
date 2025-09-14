@@ -66,9 +66,11 @@ require("nvim-tree").setup({
 -- Set a keymap to open it, just like before.
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>')
 
-local my_dark_color = '#15181e'
+vim.cmd('colorscheme default')
 
-vim.cmd('colorscheme nord')
+local my_dark_color = '#111112' --'#15181e'
+
+vim.api.nvim_set_hl(0, 'String', { fg = '#A7C7E7', italic = false })  -- Soft periwinkle
 
 vim.cmd('highlight Normal guibg=' .. my_dark_color)
 vim.cmd('highlight NormalNC guibg=' .. my_dark_color)
