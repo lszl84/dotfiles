@@ -21,5 +21,5 @@ mako >/dev/null 2>&1 &
 # Screen lock and suspend
 swayidle -w \
 	timeout 300 'swaylock -f -c 000000' \
-	timeout 330 'doas zzz -s' \
+	timeout 330 'systemctl suspend' \
 	before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
