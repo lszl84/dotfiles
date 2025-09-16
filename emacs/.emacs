@@ -7,9 +7,9 @@
 (use-package doric-themes
   :ensure t
   :config
-   (doric-themes-select 'doric-dark))
+   (doric-themes-select 'doric-obsidian))
 
-(set-face-attribute 'default nil :family "Monospace" :height 160)
+(set-face-attribute 'default nil :family "Monospace" :height 120)
 (set-face-foreground 'vertical-border "gray")
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
