@@ -1,11 +1,12 @@
 #!/bin/sh
 
 my_color="0c3246"
+my_bck="$HOME/.config/labwc/ape.jpg"
 
 pidof swaybg && killall swaybg
 
 # run first to avoid imagemagick delay
-swaybg -c "$my_color" &
+swaybg -m fit -i "$my_bck" &
 my_swaypid=$!
 my_swaypid_new=0
 
@@ -19,10 +20,12 @@ while true; do
     echo >> /tmp/ff.txt
     #[ "$(apk version -l '<' | wc -l)" -gt 1 ] && echo "Updates are available!" >> /tmp/ff.txt
  
-    checkupdates >> /tmp/ff.txt
+    checkupdates --nocolor >> /tmp/ff.txt
 
-    magick -background transparent -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#eeeeee' label:"$(cat /tmp/ff.txt)" /tmp/background.png
-    swaybg -c "$my_color" -m center -i /tmp/background.png &
+    magick "$my_bck" -font "DejaVu-Sans-Mono" -pointsize 56 -fill '#999999' \
+-gravity northwest -annotate +80+80 "$(cat /tmp/ff.txt)" /tmp/background.png
+    #magick -background transparent -font "DejaVu-Sans-Mono" -pointsize 32 -fill '#999999' label:"$(cat /tmp/ff.txt)" /tmp/background.png
+    swaybg -m fit -i /tmp/background.png &
     my_swaypid_new=$!
 
     # avoid swaybg flicker after kill
