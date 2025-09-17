@@ -1,0 +1,33 @@
+C-x C-c - See Section 31.10 [Saving Emacs Sessions]
+
+M-N - numeric argument
+M-5 0 0 - e.g. to enter 500 hold M only for 5 and release for 0s
+C-u N - numeric argument before a command
+C-u - without the numeric argument, it acts like C-u 4. Can be useful
+
+C-j - new line without indentation
+
+M-r - reposition point to center line, top line, bottom line. Without scrolling
+
+M-g c - go to char
+M-g g - go to line
+
+C-d - delete next char
+M-d - delete next word
+M-BACKSPACE - delete to the beginning of the word (not C-w like readline!)
+
+C-k - kill to EOL. At EOL joins the next line
+C-u C-k - kill four lines. Might be interesting, like d4j in vim
+
+C-o - break line at cursor (the cursor stays)
+C-x C-o - delete blank lines
+
+C-x z - repeat command. CAN IT BE ALMOST AS GOOD AS THE DOT COMMAND???
+C-x z z z ... - repeat many times
+
+C-x o - other window
+C-x o o o ... - keep switching to the other window
+
+M-g n - next error in the compilation window
+M-g p - prev error
+M-g n n n ... - next error and next error etc...
