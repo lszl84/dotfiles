@@ -1,13 +1,5 @@
-# Example autostart file
-
-# Alpine Linux stuff
-openrc -U gui
-
 # Terminal Server - so that the clients use less resources
 foot --server >/dev/null 2>&1 &
-
-# Spotify sink
-spotifyd &
 
 # Monitor Scaling
 kanshi >/dev/null 2>&1 &

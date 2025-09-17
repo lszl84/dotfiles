@@ -1,9 +1,0 @@
-https://www.gnu.org/gnu/gnu-linux-faq.html
-
-Can't Linux be used without GNU? (#justlinux)
-
-    Linux is used without GNU, often with other small programs, in some appliances. These small software systems are a far cry from the GNU/Linux system, and if users install one of these on their PC, they will find it rather disappointing, but they are widely used on the systems they are meant for.
-
-    For instance, Linux can be used with the BusyBox mini-userland (we call this combination BusyBox/Linux), or in some cases with only application-specific software. It is only a small omission to refer to BusyBox/Linux as “just Linux;” however, the longer name makes a distinction that helps people understand these systems and gives credit to the developers of BusyBox.
-
-
