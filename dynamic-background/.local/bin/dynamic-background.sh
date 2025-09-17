@@ -11,27 +11,26 @@ my_swaypid_new1=0
 my_swaypid2=0
 my_swaypid_new2=0
 
+last_checkupdates_run_file="${XDG_CACHE_HOME:-$HOME/.cache}/checkupdates_last_run"
+
 while true; do
   # 90 iterations of 20s = 30min. TODO: use variables
-  doas apk update 2>&1 >/dev/null &
   for i in $(seq 1 90); do
     fastfetch --pipe true -l none > /tmp/ff.txt
     echo >> /tmp/ff.txt
     date '+%A, %d %B %Y %H:%M' >> /tmp/ff.txt
     echo >> /tmp/ff.txt
- 
-    checkupdates --nocolor >> /tmp/ff.txt
 
-    # magick -size 3120x2080 canvas:transparent \
-    #    -font "DejaVu-Sans-Mono" -pointsize 28 -fill '#999999' \
-    #    -annotate +80+100 "$(cat /tmp/ff.txt)" \
-    #    /tmp/background_3k.png
+    last_check_day=$(cat "$last_checkupdates_run_file" 2>/dev/null || echo "")
+    current_day=$(date +%j)
     
-    # magick -size 5120x2880 canvas:transparent \
-    #    -font "DejaVu-Sans-Mono" -pointsize 28 -fill '#999999' \
-    #    -annotate +80+100 "$(cat /tmp/ff.txt)" \
-    #    /tmp/background_5k.png
-
+    if expr "$current_day" % 3 = 0 >/dev/null; then
+	if [ "$last_check_day" != "$current_day" ]; then
+            checkupdates --nocolor >> /tmp/ff.txt
+	    echo "$current_day" > "$last_checkupdates_run_file"
+	fi
+    fi
+    
     magick "$my_bck" -resize 3120x2080^ -gravity center -extent 3120x2080 \
        -gravity none \
        -font "DejaVu-Sans-Mono" -pointsize 28 -fill '#999999' \
@@ -43,6 +42,7 @@ while true; do
        -font "DejaVu-Sans-Mono" -pointsize 28 -fill '#999999' \
        -annotate +80+100 "$(cat /tmp/ff.txt)" \
        /tmp/background_5k.png
+    
     swaybg -o DP-2 -i /tmp/background_5k.png -m fill &
     my_swaypid_new1=$!
     
