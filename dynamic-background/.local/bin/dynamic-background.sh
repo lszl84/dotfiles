@@ -15,7 +15,7 @@ while true; do
   # 90 iterations of 20s = 30min. TODO: use variables
   for i in $(seq 1 90); do
     fastfetch --pipe true -l none > /tmp/ff.txt
-    echo "Packages to Update: $(checkupdates | wc -l)" >> /tmp/ff.txt
+    echo "Updates: $(checkupdates | wc -l)" >> /tmp/ff.txt
     echo >> /tmp/ff.txt
     date '+%A, %d %B %Y %H:%M' >> /tmp/ff.txt
     echo >> /tmp/ff.txt
