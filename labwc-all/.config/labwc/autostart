@@ -4,6 +4,9 @@ foot --server >/dev/null 2>&1 &
 # Monitor Scaling
 kanshi >/dev/null 2>&1 &
 
+# Hack for Studio Display not turning on after restart
+(wlr-randr | grep -q "DP-2" && wlr-randr --output DP-2 --off && sleep 0.5 && wlr-randr --output DP-2 --on) &
+
 # Notifications
 mako >/dev/null 2>&1 &
 
