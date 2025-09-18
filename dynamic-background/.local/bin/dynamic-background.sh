@@ -15,11 +15,12 @@ while true; do
   # 90 iterations of 20s = 30min. TODO: use variables
   for i in $(seq 1 90); do
     fastfetch --pipe true -l none > /tmp/ff.txt
-    echo "Updates: $(checkupdates | wc -l)" >> /tmp/ff.txt
     echo >> /tmp/ff.txt
     date '+%A, %d %B %Y %H:%M' >> /tmp/ff.txt
     echo >> /tmp/ff.txt
 
+    [ "$(checkupdates | wc -l)" -gt 20 ] && checkupdates >> /tmp/ff.txt
+    
     magick "$my_bck" -resize 3120x2080^ -gravity center -extent 3120x2080 \
        -gravity none \
        -font "DejaVu-Sans-Mono" -pointsize 28 -fill '#999999' \
