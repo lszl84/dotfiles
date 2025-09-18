@@ -1,3 +1,11 @@
+# Things that would be useful but I don't know how to do:
+
+- delete the current line when the cursor is in the middle, but with just one key, instead of using C-a C-k
+- persistent minibuffer history - I quit emacs, then open it again and I need an easy way to find previously opened file with C-x C-f
+- delete current word while being in the middle of it
+- stuff like ci", ci'
+
+
 C-x C-c - See Section 31.10 [Saving Emacs Sessions]
 
 M-N - numeric argument
