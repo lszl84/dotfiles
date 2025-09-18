@@ -102,7 +102,7 @@
     (if project-root
         (let ((default-directory project-root))
           (compile (concat "cd " project-root " && "
-                         "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug "
+                         "CC=clang CXX=clang++ cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug "
                          "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -GNinja && "
                          "cmake --build build -j && "
                          "build/main")))
