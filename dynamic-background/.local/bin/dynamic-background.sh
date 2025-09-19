@@ -19,7 +19,7 @@ while true; do
     date '+%A, %d %B %Y %H:%M' >> /tmp/ff.txt
     echo >> /tmp/ff.txt
 
-    [ "$(checkupdates | wc -l)" -gt 20 ] && checkupdates >> /tmp/ff.txt
+    checkupdates >> /tmp/ff.txt
     
     magick "$my_bck" -resize 3120x2080^ -gravity center -extent 3120x2080 \
        -gravity none \
