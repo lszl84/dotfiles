@@ -4,3 +4,5 @@ export PS1='\w\$ '
 export CC=clang
 export CXX=clang++
 export CMAKE_GENERATOR=Ninja
+
+alias ff="fastfetch --logo small"

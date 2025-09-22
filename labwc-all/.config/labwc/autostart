@@ -10,8 +10,12 @@ kanshi >/dev/null 2>&1 &
 # Notifications
 mako >/dev/null 2>&1 &
 
-# Fastfetch background + break reminders
-/home/luke/.local/bin/dynamic-background.sh >/dev/null 2>&1 &
+# Break reminders and low battery warning
+"$HOME/.local/bin/battery-notifier.sh" &
+"$HOME/.local/bin/break-reminder.sh" &
+
+# Background
+swaybg -m fill -i /usr/share/wallpapers/cachyos-wallpapers/wave2.png &
 
 # Screen lock and suspend
 swayidle -w \
