@@ -3,16 +3,14 @@
 
 (pixel-scroll-precision-mode 1)
 
-(load-theme 'wombat t)
+(use-package adwaita-dark-theme
+  :ensure t
+  :config
+  (load-theme 'adwaita-dark t))
+
 
 (set-face-attribute 'default nil :family "Monospace" :height 120)
 (set-face-foreground 'vertical-border "gray")
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(fringe ((t (:background nil)))))
 
 (use-package treemacs
   :ensure t
@@ -115,10 +113,5 @@
             (setq tab-width 4)
             (setq indent-tabs-mode nil)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
+
 
