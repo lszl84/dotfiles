@@ -3,11 +3,7 @@
 
 (pixel-scroll-precision-mode 1)
 
-;; Colors, fonts
-(use-package doric-themes
-  :ensure t
-  :config
-   (doric-themes-select 'doric-obsidian))
+(load-theme 'wombat t)
 
 (set-face-attribute 'default nil :family "Monospace" :height 120)
 (set-face-foreground 'vertical-border "gray")
@@ -74,6 +70,7 @@
 (scroll-bar-mode -1) ; Hide scrollbar
 
 (setq-default cursor-type 'bar)
+(setq inhibit-startup-screen t)
 
 ;; Function to find project root (both CMakeLists.txt and .git)
 (defun find-project-root (start-dir)
