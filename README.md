@@ -1,3 +1,11 @@
+## Installing vaapi on Arch
+
+```
+sudo pacman -S intel-media-driver libva-intel-driver
+sudo pacman -S libva libva-utils
+sudo pacman -S intel-media-sdk
+
+```
 ## Will this help with farting sound?
 
 ```
