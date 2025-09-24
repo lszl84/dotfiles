@@ -1,3 +1,13 @@
+## Stow requires folders
+
+To prevent linking the whole .local or .local/bin folders to dotfiles (and having apps put their
+garbage in the repo), it's important to create the folders before stowing:
+
+```
+mkdir -p ~/.local/bin
+mkdif -p ~/.local/share
+```
+
 ## Installing vaapi on Arch
 
 ```
