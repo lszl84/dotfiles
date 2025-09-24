@@ -1,3 +1,8 @@
+```
+... quiet i916.enable_dc=0
+/boot/loader/entries/linux-zen.conf
+```
+
 # Stow
 
 ## IMPORTANT for mytools use `doas stow -t /usr/local mytools`
