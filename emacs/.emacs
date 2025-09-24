@@ -3,10 +3,10 @@
 
 (pixel-scroll-precision-mode 1)
 
-(use-package adwaita-dark-theme
+(use-package nord-theme
   :ensure t
   :config
-  (load-theme 'adwaita-dark t))
+  (load-theme 'nord t))
 
 
 (set-face-attribute 'default nil :family "Monospace" :height 120)
@@ -103,8 +103,12 @@
                          "build/main")))
       (message "Could not find project root (needs both CMakeLists.txt and .git)"))))
 
-;; Set F5 keybinding
-(global-set-key (kbd "<f5>") 'build-and-run-project)
+
+;; Change from F5 to C-c C-b
+(global-set-key (kbd "C-c C-b") 'build-and-run-project)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-b") 'build-and-run-project)))
 
 ;; Basic C++ setup
 (add-hook 'c++-mode-hook
