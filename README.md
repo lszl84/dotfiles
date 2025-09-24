@@ -1,3 +1,13 @@
+## Will this help with farting sound?
+
+```
+sudo pacman -S linux-zen linux-zen-headers realtime-privileges pipewire pipewire-pulse
+sudo usermod -a -G realtime $USER
+
+sudo pacman -S sof-firmware
+```
+
+
 ```
 ... quiet i916.enable_dc=0
 /boot/loader/entries/linux-zen.conf
