@@ -20,5 +20,5 @@ swaybg -m fill -i  /usr/share/backgrounds/cosmic/otherworldly_earth_nasa_ISS064-
 # Screen lock and suspend
 swayidle -w \
 	timeout 300 'swaylock -f -c 000000' \
-	timeout 330 'systemctl suspend' \
+	timeout 330 'sudo systemctl suspend' \
 	before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
