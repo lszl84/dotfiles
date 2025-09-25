@@ -9,27 +9,7 @@
     <cornerRadius>0</cornerRadius>
     <font name="sans" size="10"/>
   </theme>
-  <windowRules>
-    <windowRule identifier="qemu" serverDecoration="no"/>
-    <windowRule identifier="qemu">
-      <action name="ResizeTo" width="1280" height="720"/>
-      <action name="MoveTo" x="0" y="0"/>
-    </windowRule>
-    <windowRule identifier="ani">
-      <action name="ResizeTo" width="1200" height="640"/>
-      <action name="MoveTo" x="40" y="20"/>
-    </windowRule>
-    <windowRule identifier="main">
-      <action name="MoveTo" x="1080" y="570"/>
-      <action name="ResizeTo" width="400" height="300"/>
-    </windowRule>
-    <!-- keeping some margin around 320,180 1920x1080 -->
-    <!-- (which with Kanshi 2x is really 4k -->
-    <windowRule title="Neovide">
-      <action name="MoveTo" x="640" y="210"/>
-      <action name="ResizeTo" width="1280" height="980"/>
-    </windowRule>
-  </windowRules>
+
   <keyboard>
     <default/>
     <!-- Use a different terminal emulator -->
