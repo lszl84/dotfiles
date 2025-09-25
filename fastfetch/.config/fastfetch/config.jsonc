@@ -3,6 +3,9 @@
   "logo": {
     "type" : "small"
   },
+  "display" : {
+    "pipe": true
+  },
   "modules": [
     "title",
     "separator",
