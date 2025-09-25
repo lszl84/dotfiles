@@ -1,0 +1,73 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-o": null
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-n": null
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "ctrl-n": null
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-p": null
+    }
+  },
+  {
+    "context": "(FileFinder || FileFinder > Picker > Editor)",
+    "bindings": {
+      "ctrl-p": null
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-shift-o": "workspace::Open"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-shift-b": null
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-alt-shift-k": "zed::OpenKeymapEditor"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-k ctrl-s": null
+    }
+  }
+]
