@@ -1,14 +1,11 @@
 # Terminal Server - so that the clients use less resources
 foot --server >/dev/null 2>&1 &
 
-# Monitor Scaling
-kanshi >/dev/null 2>&1 &
-
-# Hack for Studio Display not turning on after restart
-(wlr-randr | grep -q "DP-2" && wlr-randr --output DP-2 --off && sleep 0.5 && wlr-randr --output DP-2 --on) &
-
 # Notifications
 mako >/dev/null 2>&1 &
+
+# Laptop Screen Settings
+wlr-randr --output eDP-1 --scale 2.2 --adaptive-sync enabled
 
 # Break reminders and low battery warning
 "$HOME/.local/bin/battery-notifier.sh" &

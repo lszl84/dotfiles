@@ -1,8 +1,0 @@
-profile {
-  output eDP-1 disable scale 2.5 position 0,1440
-  output DP-2 enable scale 2 position 0,0
-}
-
-profile {
-  output eDP-1 enable scale 2 position 0,0 adaptive_sync on
-}
