@@ -5,7 +5,7 @@ foot --server >/dev/null 2>&1 &
 mako >/dev/null 2>&1 &
 
 # Laptop Screen Settings
-wlr-randr --output eDP-1 --scale 2.2 --adaptive-sync enabled
+wlr-randr --output eDP-1 --scale 2.25 --adaptive-sync enabled &
 
 # Break reminders and low battery warning
 "$HOME/.local/bin/battery-notifier.sh" &
