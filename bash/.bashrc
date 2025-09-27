@@ -1,8 +1,15 @@
-export EDITOR=/usr/bin/mg
-export PS1='\w\$ '
+EDITOR=/usr/bin/mg
+PS1='\w\$ '
 
-export CC=clang
-export CXX=clang++
-export CMAKE_GENERATOR=Ninja
+CC=clang
+CXX=clang++
+CMAKE_GENERATOR=Ninja
 
-export MANPATH="$HOME/.local/share/man:"
+MANPATH="$HOME/.local/share/man:"
+
+HISTSIZE=10000
+HISTFILESIZE=20000
+HISTTIMEFORMAT="%d/%m/%y %T "
+
+HISTCONTROL=ignoreboth:erasedups
+HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
