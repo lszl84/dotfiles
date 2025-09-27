@@ -10,6 +10,24 @@
     <font name="sans" size="10"/>
   </theme>
 
+  <desktops number="4" />
+  
+  <windowRules>
+    <windowRule identifier="firefox">
+      <action name="SendToDesktop" to="2"/>
+      <action name="Maximize"/>
+    </windowRule>
+    <windowRule identifier="foot*">
+      <action name="SendToDesktop" to="1"/>
+      <action name="SetDecorations" decorations="border"/>
+    </windowRule>
+    <windowRule title="*Gnumeric">
+      <action name="SendToDesktop" to="3"/>
+      <action name="Maximize"/>
+    </windowRule>
+  </windowRules>
+
+
   <keyboard>
     <default/>
     <!-- Use a different terminal emulator -->
@@ -22,12 +40,25 @@
     <keybind key="W-Space">
       <action name="Execute" command="fuzzel"/>
     </keybind>
-    <keybind key="W-C-Left">
+    <keybind key="W-,">
       <action name="GoToDesktop" to="left"/>
     </keybind>
-    <keybind key="W-C-Right">
+    <keybind key="W-.">
       <action name="GoToDesktop" to="right"/>
     </keybind>
+    <keybind key="W-u">
+      <action name="GoToDesktop" to="1"/>
+    </keybind>
+    <keybind key="W-i">
+      <action name="GoToDesktop" to="2"/>
+    </keybind>
+    <keybind key="W-o">
+      <action name="GoToDesktop" to="3"/>
+    </keybind>
+    <keybind key="W-p">
+      <action name="GoToDesktop" to="4"/>
+    </keybind>
+
     <keybind key="XF86MonBrightnessUp">
       <action name="Execute">
         <command>sudo brightnessctl set +2%</command>
@@ -62,6 +93,9 @@
     </keybind>
     <keybind key="W-m">
       <action name="Iconify"/>
+    </keybind>
+    <keybind key="W-n">
+      <action name="ToggleMaximize" />
     </keybind>
   </keyboard>
   <mouse>
