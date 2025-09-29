@@ -1,6 +1,0 @@
-BasedOnStyle: WebKit
-ColumnLimit: 68
-IndentWidth: 4
-UseTab: Never
-BreakBeforeBraces: Allman
-AllowShortFunctionsOnASingleLine: false
