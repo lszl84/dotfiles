@@ -1,10 +1,6 @@
 EDITOR=/usr/bin/emacs
 PS1='\w\$ '
 
-CC=clang
-CXX=clang++
-CMAKE_GENERATOR=Ninja
-
 MANPATH="$HOME/.local/share/man:"
 
 HISTSIZE=10000
