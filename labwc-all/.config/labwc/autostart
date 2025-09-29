@@ -11,9 +11,6 @@ wlr-randr --output eDP-1 --scale 2.25 --adaptive-sync enabled &
 "$HOME/.local/bin/battery-notifier.sh" &
 "$HOME/.local/bin/break-reminder.sh" &
 
-# Background
-swaybg -m fill -i  /usr/share/backgrounds/cosmic/otherworldly_earth_nasa_ISS064-E-29444.jpg &
-
 # Screen lock and suspend
 swayidle -w \
 	timeout 300 'swaylock -f -c 000000' \

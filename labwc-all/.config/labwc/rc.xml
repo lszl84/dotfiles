@@ -20,6 +20,7 @@
     <windowRule identifier="foot*">
       <action name="SendToDesktop" to="1"/>
       <action name="SetDecorations" decorations="border"/>
+      <action name="Maximize"/>
     </windowRule>
     <windowRule title="*Gnumeric">
       <action name="SendToDesktop" to="3"/>
