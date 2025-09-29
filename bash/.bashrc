@@ -1,4 +1,4 @@
-EDITOR=/usr/bin/mg
+EDITOR=/usr/bin/emacs
 PS1='\w\$ '
 
 CC=clang
@@ -13,3 +13,5 @@ HISTTIMEFORMAT="%d/%m/%y %T "
 
 HISTCONTROL=ignoreboth:erasedups
 HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
+
+alias e="${EDITOR}"
