@@ -1,0 +1,22 @@
+C-M-u		select C block, go to beginning
+C-M-k		kill C block
+
+C-M-\		format region
+
+C-x h		select buffer
+
+C-u C-SPC	pop mark - so back to the previous point in buffer
+    		e.g after navigating with M-< etc
+
+M-g n		go to next error, while in any window
+M-g p		go to prev error, while in any window
+
+n   		go to next error in compilation window
+p		go to next error in compilation window
+
+C-x o		ff-find-other-file (my mapping; switches .c/.h)
+
+
+Stuff to try:
+- Ivy
+- Helm

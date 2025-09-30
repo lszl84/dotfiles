@@ -4,8 +4,11 @@
 (dolist (face (face-list))
   (set-face-attribute face nil :foreground 'unspecified :background 'unspecified))
 
-;; Disabling the autosave files to reduce filesystem clutter
-(setq auto-save-default nil)
+;; Backups and autosaves
+(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
+(setq auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-save/" t)))
+(make-directory "~/.emacs.d/backups" t)
+(make-directory "~/.emacs.d/auto-save" t)
 
 ;; Basic UI settings
 (setq inhibit-startup-screen t)
@@ -30,10 +33,9 @@
 
 ;; C/C++ formatting settings
 (add-hook 'c-mode-common-hook
-  (lambda ()
-    (setq c-basic-offset 4)
-    (setq tab-width 4)
-    (setq indent-tabs-mode nil)))
-
-
-
+	  (lambda ()
+	    (setq c-basic-offset 4)
+	    (setq tab-width 4)
+	    (setq indent-tabs-mode nil)
+	    (local-set-key (kbd "C-c o") 'ff-find-other-file)
+	    ))
