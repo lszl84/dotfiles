@@ -4,9 +4,8 @@ foot --server >/dev/null 2>&1 &
 # Notifications
 mako >/dev/null 2>&1 &
 
-# Laptop Screen Settings - Adaptive sync helps with artifacts
-# but introduces severe flickering... so not enabling.
-wlr-randr --output eDP-1 --scale 2.25 &
+# Laptop Screen Settings
+wlr-randr --output eDP-1 --scale 2.25 --adaptive-sync enabled &
 
 # Break reminders and low battery warning
 "$HOME/.local/bin/battery-notifier.sh" &
@@ -18,3 +17,5 @@ swayidle -w \
 	timeout 330 'sudo systemctl suspend' \
 	before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
 
+# Open a single terminal by default
+foot &
