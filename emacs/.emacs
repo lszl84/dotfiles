@@ -4,6 +4,9 @@
 (dolist (face (face-list))
   (set-face-attribute face nil :foreground 'unspecified :background 'unspecified))
 
+;; Increasing GC for faster Org mode startup
+(setq gc-cons-threshold (* 50 1000 1000))
+
 ;; Backups and autosaves
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
 (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-save/" t)))
