@@ -14,7 +14,21 @@ M-g p		go to prev error, while in any window
 n   		go to next error in compilation window
 p		go to next error in compilation window
 
-C-x o		ff-find-other-file (my mapping; switches .c/.h)
+C-c o		ff-find-other-file (my mapping; switches .c/.h)
+
+M-r 		move point to center, top, bottom - without scrolling
+
+M-g M-g		move to line
+
+C-d 		delete next char (super useful lol)
+M-d		delete next word
+M-BCK		delete prev word
+
+C-x C-o		delete blank lines except one
+
+M-4 2 C-f	numeric arg example: repeats C-f 42 times
+M-4 C-u 2	inserts 2222 - C-u breaks the number arg
+C-u 4 2 C-u 3	inserts number 3 42 times (C-u to break the num chain)
 
 
 Stuff to try:
