@@ -1,8 +1,20 @@
 ;; Disabling all colors and decorations
 (global-font-lock-mode -1)
 (setq use-faces nil)
+
+;; Except Modeline
+(set-face-attribute 'mode-line nil 
+                    :foreground (face-attribute 'default :background) 
+                    :background (face-attribute 'default :foreground))
+(set-face-attribute 'mode-line-inactive nil 
+                    :foreground (face-attribute 'default :background) 
+                    :background (face-attribute 'default :foreground))
+
+;; THEN clear other faces 
 (dolist (face (face-list))
-  (set-face-attribute face nil :foreground 'unspecified :background 'unspecified))
+  (unless (memq face '(mode-line mode-line-inactive))
+    (set-face-attribute face nil :foreground 'unspecified :background 'unspecified)))
+
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))

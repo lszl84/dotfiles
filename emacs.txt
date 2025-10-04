@@ -10,6 +10,8 @@ C-u C-SPC	pop mark - so back to the previous point in buffer
 
 M-g n		go to next error, while in any window
 M-g p		go to prev error, while in any window
+M-g n n n 	these commands can be repeated to jump to other errors
+
 
 n   		go to next error in compilation window
 p		go to next error in compilation window
@@ -29,6 +31,44 @@ C-x C-o		delete blank lines except one
 M-4 2 C-f	numeric arg example: repeats C-f 42 times
 M-4 C-u 2	inserts 2222 - C-u breaks the number arg
 C-u 4 2 C-u 3	inserts number 3 42 times (C-u to break the num chain)
+
+C-x z z z   	repeat the last command three times
+
+M-v   		while in minibuffer, selet the completion window
+n, p, q, z	in the completion window, move to next, prev or close/kill
+      	 	the completion list
+
+C-h S		lookup symbol in the info manuals (need to build TeXinfo for wxWidgets)
+C-h l		view lossage - list of last keystrokes and commands
+
+C-c C-q		Indent C++ function encompassing point
+C-M-h		Mark current function
+M-;		Add a comment at the end of the line
+C-u M-;		Remove comment from the end of the line
+C-c C-c		C++ mode comment region
+C-M-a		Go to the beginning of a function/class
+C-M-e		Go to the end of a function/class
+C-c C-k		Toggle comment style block/line
+
+M-x c-toggle-hugry state       Hungry deletion?
+M-x c-electric-backspace
+
+C-c C-BCK	Hungry deletion backwards (without minor modes)
+C-c C-d		Hungry delete backwards
+
+C-c C-w		Subword mode toggle (e.g. NSLocalizedString with M-f)
+M-x subword-mode
+
+C-c :		Insert C++ scope operator
+
+C-c C-z		Display current function name in the minibuffer (!!!)
+
+font-lock-maximum-decoration - minimum level is just strings and
+comments! Exactly what i need!
+
+C-M-u	  	Move to the beginning of a block
+C-M-q		Indent that block
+
 
 
 Stuff to try:
