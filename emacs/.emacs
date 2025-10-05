@@ -1,40 +1,38 @@
-;; Trying to force emacs not to go crazy with my windows
-;; when opening new buffers!
-(setq display-buffer-base-action '(display-buffer-same-window))
-
-;; Disabling all colors and decorations
-;; (global-font-lock-mode -1) ; I guess this is not necessary?
-			      ; manpages look nice with formatting
-
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
+;; Basic Monochrome
 (set-face-attribute 'default nil 
                     :foreground "#d3c6aa" 
                     :background "black")
 
 ;; Except Modeline
 (set-face-attribute 'mode-line nil 
-                    :foreground (face-attribute 'default :background) 
-                    :background (face-attribute 'default :foreground))
+                    :foreground (face-attribute
+				 'default :background) 
+                    :background (face-attribute
+				 'default :foreground))
 (set-face-attribute 'mode-line-inactive nil 
-                    :foreground (face-attribute 'default :background) 
-                    :background (face-attribute 'default :foreground))
+                    :foreground (face-attribute
+				 'default :background) 
+                    :background (face-attribute
+				 'default :foreground))
 
 ;; THEN clear other faces 
 (dolist (face (face-list))
   (unless (memq face '(mode-line mode-line-inactive default))
-    (set-face-attribute face nil :foreground 'unspecified :background 'unspecified)))
+    (set-face-attribute face nil
+			:foreground 'unspecified
+			:background 'unspecified)))
 
 ;; Font size
-(set-frame-font "Monospace-12")
+(set-frame-font "Iosevka Nerd Font Mono Light 17")
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
 
 ;; Backups and autosaves
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms `((".*" "~/.emacs.d/auto-save/" t)))
+(setq backup-directory-alist
+      `(("." . "~/.emacs.d/backups")))
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs.d/auto-save/" t)))
 (make-directory "~/.emacs.d/backups" t)
 (make-directory "~/.emacs.d/auto-save" t)
 
@@ -42,8 +40,10 @@
 (setq inhibit-startup-screen t)
 (menu-bar-mode -1)
 (column-number-mode 1)
-(setq battery-mode-line-format "🔋 %b%p%%")
+(setq battery-mode-line-format " 🔋%b%p%%")
 (display-battery-mode 1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; M-x man
 (setq Man-notify-method 'bully) 
@@ -83,7 +83,6 @@
 
 (add-hook 'gptel-post-response-functions 'gpt-go-to-end)
 
-
 ;; Simple C++ compile with auto-hiding the compilation window if no errors
 (defun my-compile-cmake ()
   "Run CMake build and auto-close compile window on success."
@@ -108,3 +107,15 @@
 	    ))
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(gptel)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
