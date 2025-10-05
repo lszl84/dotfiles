@@ -39,13 +39,6 @@
 (make-directory "~/.emacs.d/auto-save" t)
 
 ;; Basic UI settings
-;(setq inhibit-startup-screen t)
-(pixel-scroll-precision-mode 1)
-
-(setq scroll-step 1)
-(setq mouse-wheel-progressive-speed nil)
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-
 (menu-bar-mode -1)
 (column-number-mode 1)
 
@@ -73,6 +66,11 @@
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+
+;; Touchpad scrolling
+(pixel-scroll-mode 1)
+(setq pixel-scroll-precision-use-momentum t)
+(pixel-scroll-precision-mode 1)
 
 ;; M-x man
 (setq Man-notify-method 'bully) 
