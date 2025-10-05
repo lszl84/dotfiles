@@ -34,6 +34,21 @@
 
 ;; M-x man
 (setq Man-notify-method 'bully) 
+(setq Man-width 'maximum)
+(setq Man-width-max 0)   ; somehow this is important
+
+;; C-c m - to open man at point
+;; Define the function
+(defun man-dwim ()
+  "Open man page for symbol at point in current window."
+  (interactive)
+  (let ((Man-notify-method 'bully)
+	)
+    (man (current-word))))
+
+;; Then bind the key
+(global-set-key (kbd "C-c m") 'man-dwim)
+
 
 ;; Simple C++ compile with auto-hiding the compilation window if no errors
 (defun my-compile-cmake ()
