@@ -41,36 +41,46 @@
 ;; Basic UI settings
 (menu-bar-mode -1)
 (column-number-mode 1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
+;; Modeline Battery
 (setq battery-mode-line-format " 🔋%b%p%%")
 (display-battery-mode 1)
 
-;; TODO: looks like this shell command is executed when scrolling to
-;;       update the modeline, and this causes problems with scrolling,
-;;       hangs, stutters, etc, etc. How to run it smoothly, i.e. not
-;;       every time?
-;;
-;; (setq-default mode-line-format
-;;   '("%e" mode-line-front-space
-;;     mode-line-mule-info
-;;     mode-line-client
-;;     mode-line-modified
-;;     mode-line-remote
-;;     mode-line-frame-identification
-;;     mode-line-buffer-identification
-;;     " "
-;;     mode-line-position
-;;     " "
-;;     (:eval (concat " 🗄️" 
-;;                   (string-trim 
-;;                    (shell-command-to-string 
-;;                     "free -h | awk 'NR==2{print $3}'"))))
-;;     mode-line-misc-info
-;;     mode-line-end-spaces))
+;; Custom modeline with RAM usage
+;; Cache variable for memory usage
+(defvar my-memory-usage-cache "0B")
 
+;; Function to update memory usage
+(defun my-update-memory-usage ()
+  (ignore-errors
+    (setq my-memory-usage-cache
+          (string-trim
+           (shell-command-to-string 
+            "free -h | awk 'NR==2{print $3}'")))))
 
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; Start timer to update every 20 seconds
+(run-with-timer 0 20 'my-update-memory-usage)
+
+;; Initial update
+(my-update-memory-usage)
+
+;; Mode line format
+(setq-default mode-line-format
+  '("%e" mode-line-front-space
+    mode-line-mule-info
+    mode-line-client
+    mode-line-modified
+    mode-line-remote
+    mode-line-frame-identification
+    mode-line-buffer-identification
+    " "
+    mode-line-position
+    " "
+    (:eval (concat " 🗄️" my-memory-usage-cache))
+    mode-line-misc-info
+    mode-line-end-spaces))
 
 ;; Touchpad scrolling
 (pixel-scroll-mode 1)
