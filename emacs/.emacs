@@ -1,6 +1,6 @@
 ;; Disabling all colors and decorations
-(global-font-lock-mode -1)
-(setq use-faces nil)
+;; (global-font-lock-mode -1) ; I guess this is not necessary?
+			      ; manpages look nice with formatting
 
 ;; Except Modeline
 (set-face-attribute 'mode-line nil 
@@ -31,6 +31,9 @@
 (column-number-mode 1)
 (setq battery-mode-line-format "[Battery: %b%p%% (t=%t)]")
 (display-battery-mode 1)
+
+;; M-x man
+(setq Man-notify-method 'bully) 
 
 ;; Simple C++ compile with auto-hiding the compilation window if no errors
 (defun my-compile-cmake ()
