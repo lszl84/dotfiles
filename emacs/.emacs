@@ -45,23 +45,28 @@
 (setq battery-mode-line-format " 🔋%b%p%%")
 (display-battery-mode 1)
 
-(setq-default mode-line-format
-  '("%e" mode-line-front-space
-    mode-line-mule-info
-    mode-line-client
-    mode-line-modified
-    mode-line-remote
-    mode-line-frame-identification
-    mode-line-buffer-identification
-    " "
-    mode-line-position
-    " "
-    (:eval (concat " 🗄️" 
-                  (string-trim 
-                   (shell-command-to-string 
-                    "free -h | awk 'NR==2{print $3}'"))))
-    mode-line-misc-info
-    mode-line-end-spaces))
+;; TODO: looks like this shell command is executed when scrolling to
+;;       update the modeline, and this causes problems with scrolling,
+;;       hangs, stutters, etc, etc. How to run it smoothly, i.e. not
+;;       every time?
+;;
+;; (setq-default mode-line-format
+;;   '("%e" mode-line-front-space
+;;     mode-line-mule-info
+;;     mode-line-client
+;;     mode-line-modified
+;;     mode-line-remote
+;;     mode-line-frame-identification
+;;     mode-line-buffer-identification
+;;     " "
+;;     mode-line-position
+;;     " "
+;;     (:eval (concat " 🗄️" 
+;;                   (string-trim 
+;;                    (shell-command-to-string 
+;;                     "free -h | awk 'NR==2{print $3}'"))))
+;;     mode-line-misc-info
+;;     mode-line-end-spaces))
 
 
 (tool-bar-mode -1)
@@ -69,7 +74,6 @@
 
 ;; Touchpad scrolling
 (pixel-scroll-mode 1)
-(setq pixel-scroll-precision-use-momentum t)
 (pixel-scroll-precision-mode 1)
 
 ;; M-x man
