@@ -1,6 +1,3 @@
-# Terminal Server - so that the clients use less resources
-foot --server >/dev/null 2>&1 &
-
 # Notifications
 mako >/dev/null 2>&1 &
 

@@ -3,27 +3,29 @@
                     :foreground "#d3c6aa" 
                     :background "black")
 
-;; Except Modeline
-(set-face-attribute 'mode-line nil 
-                    :foreground (face-attribute
-				 'default :background) 
-                    :background (face-attribute
-				 'default :foreground))
-(set-face-attribute 'mode-line-inactive nil 
-                    :foreground (face-attribute
-				 'default :background) 
-                    :background (face-attribute
-				 'default :foreground))
+;; Comments - slightly darker
+(set-face-attribute 'font-lock-comment-face nil
+                    :foreground "#a6a08c")
 
-;; THEN clear other faces 
+;; Modeline
+(set-face-attribute 'mode-line nil 
+                    :foreground (face-attribute 'default :background) 
+                    :background (face-attribute 'default :foreground))
+(set-face-attribute 'mode-line-inactive nil 
+                    :foreground (face-attribute 'default :background) 
+                    :background (face-attribute 'default :foreground))
+
+;; Clear other faces
 (dolist (face (face-list))
-  (unless (memq face '(mode-line mode-line-inactive default))
+  (unless (memq face '(mode-line mode-line-inactive default
+                      font-lock-comment-face 
+        ))
     (set-face-attribute face nil
-			:foreground 'unspecified
-			:background 'unspecified)))
+                        :foreground 'unspecified
+                        :background 'unspecified)))
 
 ;; Font size
-(set-frame-font "Iosevka Nerd Font Mono Light 17")
+(set-frame-font "DejaVuSansM Nerd Font Mono 14")
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -37,11 +39,38 @@
 (make-directory "~/.emacs.d/auto-save" t)
 
 ;; Basic UI settings
-(setq inhibit-startup-screen t)
+;(setq inhibit-startup-screen t)
+(pixel-scroll-precision-mode 1)
+
+(setq scroll-step 1)
+(setq mouse-wheel-progressive-speed nil)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+
 (menu-bar-mode -1)
 (column-number-mode 1)
+
 (setq battery-mode-line-format " 🔋%b%p%%")
 (display-battery-mode 1)
+
+(setq-default mode-line-format
+  '("%e" mode-line-front-space
+    mode-line-mule-info
+    mode-line-client
+    mode-line-modified
+    mode-line-remote
+    mode-line-frame-identification
+    mode-line-buffer-identification
+    " "
+    mode-line-position
+    " "
+    (:eval (concat " 🗄️" 
+                  (string-trim 
+                   (shell-command-to-string 
+                    "free -h | awk 'NR==2{print $3}'"))))
+    mode-line-misc-info
+    mode-line-end-spaces))
+
+
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
@@ -61,6 +90,9 @@
 
 ;; Then bind the key
 (global-set-key (kbd "C-c m") 'man-dwim)
+
+;; Shell inside emacs
+(global-set-key (kbd "<s-return>") 'shell)
 
 ;; Deepseek
 (unless (package-installed-p 'gptel)
@@ -112,7 +144,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(gptel)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
