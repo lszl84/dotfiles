@@ -35,7 +35,7 @@
 ;; M-x man
 (setq Man-notify-method 'bully) 
 (setq Man-width 'maximum)
-(setq Man-width-max 0)   ; somehow this is important
+(setq Man-width-max 100) 
 
 ;; C-c m - to open man at point
 ;; Define the function
@@ -48,6 +48,22 @@
 
 ;; Then bind the key
 (global-set-key (kbd "C-c m") 'man-dwim)
+
+
+;; ----------------------- TODO: Deepseek
+;; gptel-include-reasoning nil
+
+(unless (package-installed-p 'gptel)
+  (package-refresh-contents)
+  (package-install 'gptel))
+
+(setq gptel-model 'deepseek-reasoner
+      gptel-backend (gptel-make-deepseek "DeepSeek"
+                      :stream t
+                      :key (with-temp-buffer
+                             (insert-file-contents "~/.deepseek-secret")
+                             (string-trim (buffer-string))))
+      gptel-include-reasoning nil)
 
 
 ;; Simple C++ compile with auto-hiding the compilation window if no errors
