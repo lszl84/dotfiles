@@ -45,7 +45,7 @@
 (scroll-bar-mode -1)
 
 ;; Modeline Battery
-(setq battery-mode-line-format " 🔋%b%p%%")
+(setq battery-mode-line-format " 🔋%b%p%% (%t)")
 (display-battery-mode 1)
 
 ;; Custom modeline with RAM usage
