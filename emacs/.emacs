@@ -1,6 +1,17 @@
+;; Trying to force emacs not to go crazy with my windows
+;; when opening new buffers!
+(setq display-buffer-base-action '(display-buffer-same-window))
+
 ;; Disabling all colors and decorations
 ;; (global-font-lock-mode -1) ; I guess this is not necessary?
 			      ; manpages look nice with formatting
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(set-face-attribute 'default nil 
+                    :foreground "#d3c6aa" 
+                    :background "black")
 
 ;; Except Modeline
 (set-face-attribute 'mode-line nil 
@@ -12,9 +23,11 @@
 
 ;; THEN clear other faces 
 (dolist (face (face-list))
-  (unless (memq face '(mode-line mode-line-inactive))
+  (unless (memq face '(mode-line mode-line-inactive default))
     (set-face-attribute face nil :foreground 'unspecified :background 'unspecified)))
 
+;; Font size
+(set-frame-font "Monospace-12")
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -29,7 +42,7 @@
 (setq inhibit-startup-screen t)
 (menu-bar-mode -1)
 (column-number-mode 1)
-(setq battery-mode-line-format "[Battery: %b%p%% (t=%t)]")
+(setq battery-mode-line-format "🔋 %b%p%%")
 (display-battery-mode 1)
 
 ;; M-x man
@@ -49,21 +62,26 @@
 ;; Then bind the key
 (global-set-key (kbd "C-c m") 'man-dwim)
 
-
-;; ----------------------- TODO: Deepseek
-;; gptel-include-reasoning nil
-
+;; Deepseek
 (unless (package-installed-p 'gptel)
   (package-refresh-contents)
   (package-install 'gptel))
 
-(setq gptel-model 'deepseek-reasoner
+;; was: 'deepseek-reasoner
+(setq gptel-model 'deepseek-chat
       gptel-backend (gptel-make-deepseek "DeepSeek"
                       :stream t
                       :key (with-temp-buffer
                              (insert-file-contents "~/.deepseek-secret")
                              (string-trim (buffer-string))))
       gptel-include-reasoning nil)
+	    
+(defun gpt-go-to-end (start end)
+  (with-current-buffer "*DeepSeek*"
+    (goto-char (point-max))
+    ))
+
+(add-hook 'gptel-post-response-functions 'gpt-go-to-end)
 
 
 ;; Simple C++ compile with auto-hiding the compilation window if no errors
