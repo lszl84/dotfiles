@@ -22,6 +22,12 @@
       <action name="SetDecorations" decorations="border"/>
       <action name="Maximize"/>
     </windowRule>
+    <windowRule identifier="emacs">
+      <action name="SendToDesktop" to="1"/>
+      <action name="SetDecorations" decorations="border"/>
+      <action name="Maximize"/>
+    </windowRule>
+
     <windowRule title="*Gnumeric">
       <action name="SendToDesktop" to="3"/>
       <action name="Maximize"/>

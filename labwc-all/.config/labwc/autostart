@@ -17,5 +17,5 @@ swayidle -w \
 	timeout 330 'sudo systemctl suspend' \
 	before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
 
-# Open a single terminal by default
-foot &
+# Open emacs
+emacs &
