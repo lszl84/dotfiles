@@ -10,5 +10,9 @@ HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
 
 # for GNU make
 export NO_COLOR=1
+export CLICOLOR=0
+
+# for apt
+export APT_NO_COLOR=1
 
 alias e="${EDITOR}"

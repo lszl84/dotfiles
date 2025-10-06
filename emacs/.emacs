@@ -25,7 +25,7 @@
                         :background 'unspecified)))
 
 ;; Font size
-(set-frame-font "DejaVuSansM Nerd Font Mono 14")
+(set-frame-font "Monospace 15")
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -139,7 +139,7 @@
           (cons msg exit-code))))
 
 ;; Bind to F5
-(global-set-key (kbd "<f5>") 'my-compile-cmake)
+(global-set-key (kbd "C-c C-r") 'my-compile-cmake)
 
 ;; C/C++ formatting settings
 (add-hook 'c-mode-common-hook
