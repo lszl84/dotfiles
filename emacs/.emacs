@@ -151,6 +151,15 @@
 	    ))
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+;; Useful macros
+(defalias 'copy-para-to-other-window
+   (kmacro "M-h M-w C-x o M-> C-y")) ; for script writing with AI
+
+;; ---------------------
+;; Emacs-generated stuff
+;; ---------------------
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
