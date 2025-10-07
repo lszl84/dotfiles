@@ -111,6 +111,9 @@
   (package-refresh-contents)
   (package-install 'gptel))
 
+;; possible workaround for UTF-8 crash on Debian
+(setq gptel-use-curl t)
+
 ;; was: 'deepseek-reasoner
 (setq gptel-model 'deepseek-chat
       gptel-backend (gptel-make-deepseek "DeepSeek"
