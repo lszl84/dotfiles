@@ -5,6 +5,9 @@ HISTSIZE=10000
 HISTFILESIZE=20000
 HISTTIMEFORMAT="%d/%m/%y %T "
 
+# useful for shotcut
+QT_SCALE_FACTOR=1.5
+
 HISTCONTROL=ignoreboth:erasedups
 HISTIGNORE="ls:ll:cd:pwd:exit:clear:history"
 

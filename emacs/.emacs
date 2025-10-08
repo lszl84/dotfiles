@@ -159,6 +159,8 @@
 (defalias 'copy-para-to-other-window
    (kmacro "M-h M-w C-x o M-> C-y")) ; for script writing with AI
 
+(global-set-key (kbd "C-c p") 'copy-para-to-other-window)
+
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
