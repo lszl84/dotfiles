@@ -1,3 +1,7 @@
+;; Fullsceen launch
+(add-to-list 'default-frame-alist
+	     '(fullscreen . fullboth))
+
 ;; Basic Monochrome
 (set-face-attribute 'default nil 
                     :foreground "#d3c6aa" 
@@ -26,6 +30,9 @@
 
 ;; Font size
 (set-frame-font "Monospace 15")
+(set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
+(set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
+
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
