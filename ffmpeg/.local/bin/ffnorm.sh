@@ -11,9 +11,9 @@ OUTPUT="${2:-processed_$1}"
 ffmpeg -hide_banner -loglevel quiet -i "$INPUT" -af \
 "arnndn=m=$HOME/dotfiles/denoise/sh.rnnn,\
 acompressor=threshold=0.05:ratio=2:attack=10:release=100,\
-volume=18dB,\
-equalizer=f=700:width_type=h:width=100:g=-3,\
-equalizer=f=15000:width_type=h:width=2000:g=3" \
+volume=21dB,\
+equalizer=f=700:width_type=h:width=150:g=-4,\
+equalizer=f=15000:width_type=h:width=2000:g=2" \
 "$OUTPUT" 
 
 echo "--- $INPUT:"
