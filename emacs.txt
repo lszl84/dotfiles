@@ -69,6 +69,19 @@ comments! Exactly what i need!
 C-M-u	  	Move to the beginning of a block
 C-M-q		Indent that block
 
+C-h C-h		Help for help
+C-h a topic	Search for commands
+C-h d topic	Search in documentation strings
+C-h r i topic	Search in the indices of emacs manual
+C-h r s topic	Search in text of the manual (what is the diff between this and documentaiton strings???)
+
+C-h p 		Display available Emacs packages
+M-x list-packages
+
+help-window-select will decide in what window show help?
+help-window-keep-selected
+
+(how to open help for org mode??)
 
 
 Stuff to try:

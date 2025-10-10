@@ -11,6 +11,10 @@
 (set-face-attribute 'font-lock-comment-face nil
                     :foreground "#a6a08c")
 
+(set-face-attribute 'region nil
+                    :background "#c6b69a"
+                    :foreground "black")
+
 ;; Modeline
 (set-face-attribute 'mode-line nil 
                     :foreground (face-attribute 'default :background) 
@@ -21,7 +25,7 @@
 
 ;; Clear other faces
 (dolist (face (face-list))
-  (unless (memq face '(mode-line mode-line-inactive default
+  (unless (memq face '(region mode-line mode-line-inactive default
                       font-lock-comment-face 
         ))
     (set-face-attribute face nil

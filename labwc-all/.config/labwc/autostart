@@ -11,7 +11,7 @@ wlr-randr --output eDP-1 --scale 2.25 --adaptive-sync enabled &
 # Screen lock and suspend
 swayidle -w \
 	timeout 300 'swaylock -f -c 000000' \
-	timeout 330 'sudo systemctl suspend' \
+	timeout 330 'systemctl suspend' \
 	before-sleep 'swaylock -f -c 000000' >/dev/null 2>&1 &
 
 # Open emacs
