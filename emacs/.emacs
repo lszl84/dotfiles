@@ -1,36 +1,3 @@
-;; Fullsceen launch
-(add-to-list 'default-frame-alist
-	     '(fullscreen . fullboth))
-
-;; Basic Monochrome
-(set-face-attribute 'default nil 
-                    :foreground "#d3c6aa" 
-                    :background "black")
-
-;; Comments - slightly darker
-(set-face-attribute 'font-lock-comment-face nil
-                    :foreground "#a6a08c")
-
-(set-face-attribute 'region nil
-                    :background "#c6b69a"
-                    :foreground "black")
-
-;; Modeline
-(set-face-attribute 'mode-line nil 
-                    :foreground (face-attribute 'default :background) 
-                    :background (face-attribute 'default :foreground))
-(set-face-attribute 'mode-line-inactive nil 
-                    :foreground (face-attribute 'default :background) 
-                    :background (face-attribute 'default :foreground))
-
-;; Clear other faces
-(dolist (face (face-list))
-  (unless (memq face '(region mode-line mode-line-inactive default
-                      font-lock-comment-face 
-        ))
-    (set-face-attribute face nil
-                        :foreground 'unspecified
-                        :background 'unspecified)))
 
 ;; Font size
 (set-frame-font "Monospace 15")
