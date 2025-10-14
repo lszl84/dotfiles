@@ -3,16 +3,15 @@
   :demand t
   :config
   ;; These are the default values.
-  (setq doric-themes-to-toggle '(doric-beach doric-fire))
+  (setq doric-themes-to-toggle '(doric-marble doric-obsidian))
   (setq doric-themes-to-rotate doric-themes-collection)
 
-  (doric-themes-select 'doric-beach))
+  (doric-themes-select 'doric-marble))
 
 ;; Font size
 (set-frame-font "Monospace 14")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
-
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
