@@ -83,7 +83,24 @@ help-window-keep-selected
 
 (how to open help for org mode??)
 
+MARK
 
-Stuff to try:
-- Ivy
-- Helm
+Yanking sets the mark at the beginning of the pasted text
+
+Changing a region copies it to X primary clipboard
+
+M-@		Mark at the next word
+C-M-@		Mark at the end of sexp
+M-h		Mark para
+C-x h		Mark buffer
+
+MARK RING
+
+C-SPC C-SPC	Sets the mark without activating it
+C-u C-SPC	Move to mark and restore from ring
+
+kill-ring-deindent-mode might be useful for copying code (it decreases
+the indent by the amount of the first line's indent. So it makes
+sense).
+
+Stuff to try: - Ivy - Helm

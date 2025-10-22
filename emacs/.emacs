@@ -9,7 +9,7 @@
   (doric-themes-select 'doric-marble))
 
 ;; Font size
-(set-frame-font "Monospace 14")
+(set-frame-font "Monospace 13")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
 
@@ -90,7 +90,12 @@
 (global-set-key (kbd "C-c m") 'man-dwim)
 
 ;; Shell inside emacs
-(global-set-key (kbd "<s-return>") 'shell)
+(global-set-key (kbd "<s-return>")
+		(lambda () (interactive)
+		  (ansi-term "/bin/bash")))
+(setq shell-file-name "/bin/bash")
+(global-set-key (kbd "s-b") 'switch-to-buffer)
+(global-set-key (kbd "s-o") 'other-window)
 
 ;; Deepseek
 (unless (package-installed-p 'gptel)
