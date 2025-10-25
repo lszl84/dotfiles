@@ -1,12 +1,9 @@
-(use-package doric-themes
+(use-package exwm
   :ensure t
-  :demand t
   :config
-  ;; These are the default values.
-  (setq doric-themes-to-toggle '(doric-marble doric-obsidian))
-  (setq doric-themes-to-rotate doric-themes-collection)
+  (exwm-wm-mode))
 
-  (doric-themes-select 'doric-marble))
+(load-theme 'wombat t)
 
 ;; Font size
 (set-frame-font "Monospace 13")
@@ -97,16 +94,30 @@
 (global-set-key (kbd "s-b") 'switch-to-buffer)
 (global-set-key (kbd "s-o") 'other-window)
 
+;; Nord terminal colors
+;; (custom-set-faces
+;;  '(ansi-color-black ((t (:foreground "#3B4252" :background "#3B4252"))))
+;;  '(ansi-color-red ((t (:foreground "#BF616A" :background "#BF616A"))))
+;;  '(ansi-color-green ((t (:foreground "#A3BE8C" :background "#A3BE8C"))))
+;;  '(ansi-color-yellow ((t (:foreground "#EBCB8B" :background "#EBCB8B"))))
+;;  '(ansi-color-blue ((t (:foreground "#81A1C1" :background "#81A1C1"))))
+;;  '(ansi-color-magenta ((t (:foreground "#B48EAD" :background "#B48EAD"))))
+;;  '(ansi-color-cyan ((t (:foreground "#88C0D0" :background "#88C0D0"))))
+;;  '(ansi-color-white ((t (:foreground "#E5E9F0" :background "#E5E9F0")))))
 
-(custom-set-faces
- '(ansi-color-black ((t (:foreground "#fafafa" :background "#fafafa"))))
- '(ansi-color-red ((t (:foreground "#dc322f" :background "#dc322f"))))
- '(ansi-color-green ((t (:foreground "#859900" :background "#859900"))))
- '(ansi-color-yellow ((t (:foreground "#b58900" :background "#b58900"))))
- '(ansi-color-blue ((t (:foreground "#268bd2" :background "#268bd2"))))
- '(ansi-color-magenta ((t (:foreground "#d33682" :background "#d33682"))))
- '(ansi-color-cyan ((t (:foreground "#2aa198" :background "#2aa198"))))
- '(ansi-color-white ((t (:foreground "#073642" :background "#073642")))))
+;; Light background colors
+;; (custom-set-faces
+;;  '(ansi-color-black ((t (:foreground "#fafafa" :background "#fafafa"))))
+;;  '(ansi-color-red ((t (:foreground "#dc322f" :background "#dc322f"))))
+;;  '(ansi-color-green ((t (:foreground "#859900" :background "#859900"))))
+;;  '(ansi-color-yellow ((t (:foreground "#b58900" :background "#b58900"))))
+;;  '(ansi-color-blue ((t (:foreground "#268bd2" :background "#268bd2"))))
+;;  '(ansi-color-magenta ((t (:foreground "#d33682" :background "#d33682"))))
+;;  '(ansi-color-cyan ((t (:foreground "#2aa198" :background "#2aa198"))))
+;;  '(ansi-color-white ((t (:foreground "#073642" :background "#073642")
+;;			))))
+
+
 ;; Deepseek
 (unless (package-installed-p 'gptel)
   (package-refresh-contents)
@@ -131,16 +142,12 @@
 
 (add-hook 'gptel-post-response-functions 'gpt-go-to-end)
 
-;; Simple C++ compile with auto-hiding the compilation window if no errors
 (defun my-compile-cmake ()
-  "Run CMake build and auto-close compile window on success."
+  "Run CMake build and replace compilation buffer with app output on success."
   (interactive)
   (compile "cmake --build build -j && ./build/main")
-  (setq compilation-exit-message-function
-        (lambda (process-status exit-code msg)
-          (when (and (eq process-status 'exit) (zerop exit-code))
-            (delete-window (get-buffer-window "*compilation*")))
-          (cons msg exit-code))))
+
+)
 
 ;; Bind to F5
 (global-set-key (kbd "C-c C-r") 'my-compile-cmake)
@@ -171,7 +178,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(doric-themes gptel)))
+ '(package-selected-packages '(gptel zenburn-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
