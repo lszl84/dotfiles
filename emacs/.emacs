@@ -94,30 +94,6 @@
 (global-set-key (kbd "s-b") 'switch-to-buffer)
 (global-set-key (kbd "s-o") 'other-window)
 
-;; Nord terminal colors
-;; (custom-set-faces
-;;  '(ansi-color-black ((t (:foreground "#3B4252" :background "#3B4252"))))
-;;  '(ansi-color-red ((t (:foreground "#BF616A" :background "#BF616A"))))
-;;  '(ansi-color-green ((t (:foreground "#A3BE8C" :background "#A3BE8C"))))
-;;  '(ansi-color-yellow ((t (:foreground "#EBCB8B" :background "#EBCB8B"))))
-;;  '(ansi-color-blue ((t (:foreground "#81A1C1" :background "#81A1C1"))))
-;;  '(ansi-color-magenta ((t (:foreground "#B48EAD" :background "#B48EAD"))))
-;;  '(ansi-color-cyan ((t (:foreground "#88C0D0" :background "#88C0D0"))))
-;;  '(ansi-color-white ((t (:foreground "#E5E9F0" :background "#E5E9F0")))))
-
-;; Light background colors
-;; (custom-set-faces
-;;  '(ansi-color-black ((t (:foreground "#fafafa" :background "#fafafa"))))
-;;  '(ansi-color-red ((t (:foreground "#dc322f" :background "#dc322f"))))
-;;  '(ansi-color-green ((t (:foreground "#859900" :background "#859900"))))
-;;  '(ansi-color-yellow ((t (:foreground "#b58900" :background "#b58900"))))
-;;  '(ansi-color-blue ((t (:foreground "#268bd2" :background "#268bd2"))))
-;;  '(ansi-color-magenta ((t (:foreground "#d33682" :background "#d33682"))))
-;;  '(ansi-color-cyan ((t (:foreground "#2aa198" :background "#2aa198"))))
-;;  '(ansi-color-white ((t (:foreground "#073642" :background "#073642")
-;;			))))
-
-
 ;; Deepseek
 (unless (package-installed-p 'gptel)
   (package-refresh-contents)
