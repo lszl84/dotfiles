@@ -1,9 +1,28 @@
+;; Prevent white flash on load
+(setq frame-background-mode 'dark)
+
+;; Basic UI settings
+(menu-bar-mode -1)
+(column-number-mode 1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; doric-themes
+(unless (package-installed-p 'doric-themes)
+  (package-refresh-contents)
+  (package-install 'doric-themes))
+
+(use-package doric-themes
+  :ensure t
+  :init
+  :config
+  (doric-themes-select 'doric-fire))
+
+;; EXWM
 (use-package exwm
   :ensure t
   :config
   (exwm-wm-mode))
-
-(load-theme 'wombat t)
 
 ;; Font size
 (set-frame-font "Monospace 13")
@@ -20,12 +39,6 @@
       `((".*" "~/.emacs.d/auto-save/" t)))
 (make-directory "~/.emacs.d/backups" t)
 (make-directory "~/.emacs.d/auto-save" t)
-
-;; Basic UI settings
-(menu-bar-mode -1)
-(column-number-mode 1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 
 ;; Modeline Battery
 (setq battery-mode-line-format " 🔋%b%p%% (%t)")
@@ -134,6 +147,7 @@
 	    (setq c-basic-offset 4)
 	    (setq tab-width 4)
 	    (setq indent-tabs-mode nil)
+	    (setq font-lock-maximum-decoration 1)
 	    (local-set-key (kbd "C-c o") 'ff-find-other-file)
 	    ))
 
@@ -153,8 +167,8 @@
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(gptel zenburn-theme)))
+ ;; If there is more than one, they won't work right
+ '(package-selected-packages '(gptel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
