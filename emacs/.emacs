@@ -16,6 +16,7 @@
   :ensure t
   :init
   :config
+  (setq doric-themes-to-toggle '(doric-fire doric-obsidian))
   (doric-themes-select 'doric-fire))
 
 ;; EXWM
@@ -23,6 +24,9 @@
   :ensure t
   :config
   (exwm-wm-mode))
+
+(add-to-list 'exwm-manage-configurations
+             '(".*main.*" display-buffer-same-window))
 
 ;; Font size
 (set-frame-font "Monospace 14")
@@ -132,12 +136,46 @@
 
 (add-hook 'gptel-post-response-functions 'gpt-go-to-end)
 
-(defun my-compile-cmake ()
-  "Run CMake build and replace compilation buffer with app output on success."
-  (interactive)
-  (compile "cmake --build build -j && ./build/main")
 
-)
+;; (defun my-compile-cmake ()
+;;   "Run CMake build and open app in top-right window."
+;;   (interactive)
+;;   ;; Ensure top-right window exists and focus it temporarily
+;;   (let ((target-window (or (get-buffer-window "*compilation*")
+;;                           (progn
+;;                             (delete-other-windows)
+;;                             (split-window-horizontally)
+;;                             (other-window 1)
+;;                             (split-window-vertically)
+;;                             (selected-window)
+
+;; 			    ))))
+;;     (select-window target-window)
+;;     (compile "cmake --build build -j && ./build/main")
+;;     ;; Return focus to where you were
+;;     (other-window -1)))
+
+
+
+;; this kinda works if we already have a split
+;; and the default-directory of the top right is correct
+(defun my-compile-cmake ()
+  "Run CMake build in right window."
+  (interactive)
+  (let ((compilation-always-kill t))
+  ;; Create right window if it doesn't exist
+  ;; (unless (and (one-window-p) (window-parent))
+  ;;   (delete-other-windows))
+  ;; (when (one-window-p)
+    ;;   (split-window-horizontally))
+  
+  ;; Run in right window
+  (let ((current (selected-window)))
+    (select-window (next-window))
+    (compile "cmake --build build -j && ./build/main")
+    ;(select-window current)
+
+    )))  ; Return to left window
 
 ;; Bind to F5
 (global-set-key (kbd "C-c C-r") 'my-compile-cmake)
@@ -174,3 +212,15 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
