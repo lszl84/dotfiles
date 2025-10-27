@@ -7,18 +7,11 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-;; doric-themes
-(unless (package-installed-p 'doric-themes)
-  (package-refresh-contents)
-  (package-install 'doric-themes))
-
-(use-package doric-themes
-  :ensure t
-  :init
-  :config
-  (setq doric-themes-to-toggle '(doric-fire doric-obsidian))
-  (doric-themes-select 'doric-fire))
-
+(load-theme 'wombat t)
+(set-face-attribute 'default nil 
+                    :foreground "#d3c6aa")
+(custom-set-faces
+'(ansi-color-white ((t (:foreground "#d3c6aa" :background "#d3c6aa")))))
 ;; EXWM
 (use-package exwm
   :ensure t
@@ -220,6 +213,7 @@
 ;; Org Mode
 (use-package org
   :config
+  (set-face-attribute 'org-ellipsis nil :underline nil)
   (setq org-ellipsis  " ▼"
 	org-hide-emphasis-markers t)
   (add-hook 'org-mode-hook (lambda ()
@@ -231,15 +225,3 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
