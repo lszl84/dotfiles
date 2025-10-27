@@ -29,7 +29,7 @@
              '(".*main.*" display-buffer-same-window))
 
 ;; Font size
-(set-frame-font "Monospace 14")
+(set-face-attribute 'default nil :height 140)
 (set-face-attribute 'variable-pitch nil :height 140)
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
@@ -109,8 +109,9 @@
 		(lambda () (interactive)
 		  (ansi-term "/bin/bash")))
 (setq shell-file-name "/bin/bash")
-(global-set-key (kbd "s-b") 'switch-to-buffer)
-(global-set-key (kbd "s-o") 'other-window)
+(push ?\s-o exwm-input-prefix-keys)
+(global-set-key (kbd "s-o") 'other-frame)
+
 
 ;; Deepseek
 (unless (package-installed-p 'gptel)
@@ -175,6 +176,9 @@
     (compile "cmake --build build -j && ./build/main")
     ;(select-window current)
 
+    ;; TODO: it would be cool to return to the cpp window BUT
+    ;; only after EXWM opens up the window!!
+    
     )))  ; Return to left window
 
 ;; Bind to F5
