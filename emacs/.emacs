@@ -23,10 +23,20 @@
 (use-package exwm
   :ensure t
   :config
+  (add-to-list 'exwm-manage-configurations
+             '(".*main.*" display-buffer-same-window))
+  (setq exwm-workspace-number 2)
+  (setq exwm-input-global-keys
+	`(
+          ([?\s-o] .
+	   (lambda ()
+	     (interactive)
+	     (exwm-workspace-switch
+		      (mod (1+ exwm-workspace-current-index)
+			   (exwm-workspace--count)))))
+	  ))
   (exwm-wm-mode))
 
-(add-to-list 'exwm-manage-configurations
-             '(".*main.*" display-buffer-same-window))
 
 ;; Font size
 (set-face-attribute 'default nil :height 140)
@@ -74,7 +84,7 @@
     mode-line-client
     mode-line-modified
     mode-line-remote
-    mode-line-frame-identification
+    (:eval (format " 💻%d " exwm-workspace-current-index))
     mode-line-buffer-identification
     " "
     mode-line-position
@@ -109,8 +119,6 @@
 		(lambda () (interactive)
 		  (ansi-term "/bin/bash")))
 (setq shell-file-name "/bin/bash")
-(push ?\s-o exwm-input-prefix-keys)
-(global-set-key (kbd "s-o") 'other-frame)
 
 
 ;; Deepseek
