@@ -8,10 +8,15 @@
 (scroll-bar-mode -1)
 
 (load-theme 'wombat t)
-(set-face-attribute 'default nil 
-                    :foreground "#d3c6aa")
-(custom-set-faces
-'(ansi-color-white ((t (:foreground "#d3c6aa" :background "#d3c6aa")))))
+(defconst my-foreground-color "#d3c6aa")
+
+(set-face-attribute 'default nil :foreground my-foreground-color)
+(require 'ansi-color)
+(set-face-attribute 'ansi-color-white nil 
+                    :foreground my-foreground-color
+                    :background my-foreground-color)
+
+
 ;; EXWM
 (use-package exwm
   :ensure t
@@ -38,8 +43,8 @@
 
 
 ;; Font size
-(set-face-attribute 'default nil :height 140)
-(set-face-attribute 'variable-pitch nil :height 140)
+(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'variable-pitch nil :height 130)
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
 
