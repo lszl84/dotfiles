@@ -23,6 +23,12 @@
 (use-package exwm
   :ensure t
   :config
+  (add-hook 'exwm-workspace-switch-hook
+          (lambda ()
+            (dolist (buffer (buffer-list))
+              (with-current-buffer buffer
+                  (force-mode-line-update)))))
+
   (add-to-list 'exwm-manage-configurations
              '(".*main.*" display-buffer-same-window))
   (setq exwm-workspace-number 2)
