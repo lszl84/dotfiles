@@ -15,7 +15,8 @@
 (set-face-attribute 'ansi-color-white nil 
                     :foreground my-foreground-color
                     :background my-foreground-color)
-
+(set-face-foreground 'font-lock-string-face 
+                     (face-attribute 'ansi-color-green :foreground))
 
 ;; EXWM
 (use-package exwm
