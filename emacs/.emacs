@@ -84,11 +84,12 @@
     mode-line-client
     mode-line-modified
     mode-line-remote
-    (:eval (format " 💻%d " exwm-workspace-current-index))
+    " "
     mode-line-buffer-identification
     " "
     mode-line-position
     " "
+    (:eval (format " 💻%d" exwm-workspace-current-index))
     (:eval (concat " 🗄️" my-memory-usage-cache))
     mode-line-misc-info
     mode-line-end-spaces))
