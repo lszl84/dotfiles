@@ -104,3 +104,41 @@ the indent by the amount of the first line's indent. So it makes
 sense).
 
 Stuff to try: - Ivy - Helm
+
+Registers to switch between files and positions
+
+C-x r SPC R		record the position of point+buf in R
+C-x r j R		jump to position+buf in R
+
+C-x r w R		save frame's windows in R including buffers! This is AMAZING.
+C-x r j R		restore
+
+Bookmarks
+
+They persist between sessions (unlike registers).
+
+C-x r m RET  	     set the bookmark for the visited file at point (named same as file)
+C-x r b		     jump to bookmark from file
+
+Scrolling
+
+C-u C-l		recenter
+C-M-l		reposition window so that useful text is visible (might be nice for C code)
+
+C-x > 		scroll right, which is actually showing the left side lol
+
+Narrowing of zen mode
+
+Might be useful for presenting a single function in code or something
+
+C-x n n	 	narrow to region
+C-x n d		narrow to defun
+
+C-x n w		widen to full buffer
+
+Follow mode
+
+Viewing a file in two panes for more context
+
+M-x follow-mode
+
