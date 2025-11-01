@@ -1,22 +1,14 @@
-;; Prevent white flash on load
-(setq frame-background-mode 'dark)
-
 ;; Basic UI settings
 (menu-bar-mode -1)
 (column-number-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(load-theme 'wombat t)
-(defconst my-foreground-color "#d3c6aa")
+(unless (package-installed-p 'nano-theme)
+  (package-refresh-contents)
+  (package-install 'nano-theme))
 
-(set-face-attribute 'default nil :foreground my-foreground-color)
-(require 'ansi-color)
-(set-face-attribute 'ansi-color-white nil 
-                    :foreground my-foreground-color
-                    :background my-foreground-color)
-(set-face-foreground 'font-lock-string-face 
-                     (face-attribute 'ansi-color-green :foreground))
+(load-theme 'nano-light t)
 
 ;; EXWM
 (use-package exwm
@@ -201,10 +193,10 @@
 ;; C/C++ formatting settings
 (add-hook 'c-mode-common-hook
 	  (lambda ()
-	    (setq c-basic-offset 4)
+                    	    (setq c-basic-offset 4)
 	    (setq tab-width 4)
 	    (setq indent-tabs-mode nil)
-	    (setq font-lock-maximum-decoration 1)
+	    ;(setq font-lock-maximum-decoration 1)
 	    (local-set-key (kbd "C-c o") 'ff-find-other-file)
 	    ))
 
@@ -231,3 +223,20 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("e7820b899036ae7e966dcaaec29fd6b87aef253748b7de09e74fdc54407a7a02"
+     "de8f2d8b64627535871495d6fe65b7d0070c4a1eb51550ce258cd240ff9394b0"
+     "1781e8bccbd8869472c09b744899ff4174d23e4f7517b8a6c721100288311fa5"
+     default))
+ '(package-selected-packages '(exwm gptel nano-theme)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
