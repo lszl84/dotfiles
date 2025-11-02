@@ -4,11 +4,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(unless (package-installed-p 'nano-theme)
-  (package-refresh-contents)
-  (package-install 'nano-theme))
-
-(load-theme 'nano-light t)
+(load-theme 'wombat t)
 
 ;; EXWM
 (use-package exwm
@@ -36,8 +32,10 @@
 
 
 ;; Font size
-(set-face-attribute 'default nil :height 130)
-(set-face-attribute 'variable-pitch nil :height 130)
+(set-face-attribute 'default nil
+		    :font "-xos4-terminus-medium-r-normal--20-200-72-72-c-100-iso10646-1")
+(set-face-attribute 'variable-pitch nil
+		    :font "-xos4-terminus-medium-r-normal--20-200-72-72-c-100-iso10646-1")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
 
