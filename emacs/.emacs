@@ -1,14 +1,18 @@
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
 ;; Basic UI settings
 (menu-bar-mode -1)
 (column-number-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(unless (package-installed-p 'doric-themes)
+(unless (package-installed-p 'nord-theme)
   (package-refresh-contents)
-  (package-install 'doric-themes))
+  (package-install 'nord-theme))
 
-(load-theme 'doric-dark t)
+(load-theme 'nord t)
  
 ;; EXWM
 (use-package exwm
@@ -255,3 +259,15 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(doric-themes exwm gptel nord-theme)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(term-color-black ((t (:background "#2e3440" :foreground "#2e3440")))))
