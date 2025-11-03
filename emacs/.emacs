@@ -1,19 +1,44 @@
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
+
+;; Refresh package list if needed
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Install nord-theme if not installed
+(unless (package-installed-p 'nord-theme)
+  (package-install 'nord-theme))
+
+;; Load nord theme
+(load-theme 'nord t)
+
+(defvar my-background-color "#000011")
+
+(set-face-attribute 'fringe nil :background my-background-color)
+(set-face-attribute 'default nil :background my-background-color)
+
+(require 'ansi-color)
+(set-face-attribute 'ansi-color-black nil 
+                    :foreground my-background-color
+                    :background my-background-color)
+
 ;; Basic UI settings
 (menu-bar-mode -1)
 (column-number-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(load-theme 'wombat t)
+;;(load-theme 'wombat t)
 
-(set-face-attribute 'font-lock-string-face nil :foreground "#ccada3")
-(defconst my-foreground-color "#f2eada")
+;; (set-face-attribute 'font-lock-string-face nil :foreground "#ccada3")
+;; (defconst my-foreground-color "#f2eada")
 
-(set-face-attribute 'default nil :foreground my-foreground-color)
-(require 'ansi-color)
-(set-face-attribute 'ansi-color-white nil 
-                    :foreground my-foreground-color
-                    :background my-foreground-color)
+;; (set-face-attribute 'default nil :foreground my-foreground-color)
+;; (require 'ansi-color)
+;; (set-face-attribute 'ansi-color-white nil 
+;;                     :foreground my-foreground-color
+;;                     :background my-foreground-color)
 
 ;; EXWM
 (use-package exwm
