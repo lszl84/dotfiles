@@ -1,40 +1,15 @@
-(package-initialize)
-
-;; Install nord-theme if not installed
-(unless (package-installed-p 'nano-theme)
-  (package-refresh-contents)
-  (package-install 'nano-theme))
-
-;; Load nord theme
-(load-theme 'nano-dark t)
-
-(defvar my-background-color "#000011")
-
-(set-face-attribute 'fringe nil :background my-background-color)
-(set-face-attribute 'default nil :background my-background-color)
-
-(require 'ansi-color)
-(set-face-attribute 'ansi-color-black nil 
-                    :foreground my-background-color
-                    :background my-background-color)
-
 ;; Basic UI settings
 (menu-bar-mode -1)
 (column-number-mode 1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-;;(load-theme 'wombat t)
+(unless (package-installed-p 'doric-themes)
+  (package-refresh-contents)
+  (package-install 'doric-themes))
 
-;; (set-face-attribute 'font-lock-string-face nil :foreground "#ccada3")
-;; (defconst my-foreground-color "#f2eada")
-
-;; (set-face-attribute 'default nil :foreground my-foreground-color)
-;; (require 'ansi-color)
-;; (set-face-attribute 'ansi-color-white nil 
-;;                     :foreground my-foreground-color
-;;                     :background my-foreground-color)
-
+(load-theme 'doric-dark t)
+ 
 ;; EXWM
 (use-package exwm
   :ensure t
@@ -250,7 +225,7 @@
                     	    (setq c-basic-offset 4)
 	    (setq tab-width 4)
 	    (setq indent-tabs-mode nil)
-	    ;(setq font-lock-maximum-decoration 1)
+;	    (setq font-lock-maximum-decoration 1)
 	    (local-set-key (kbd "C-c o") 'ff-find-other-file)
 	    ))
 
@@ -280,15 +255,3 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
