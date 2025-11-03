@@ -1,17 +1,12 @@
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
-;; Refresh package list if needed
-(unless package-archive-contents
-  (package-refresh-contents))
-
 ;; Install nord-theme if not installed
-(unless (package-installed-p 'nord-theme)
-  (package-install 'nord-theme))
+(unless (package-installed-p 'nano-theme)
+  (package-refresh-contents)
+  (package-install 'nano-theme))
 
 ;; Load nord theme
-(load-theme 'nord t)
+(load-theme 'nano-dark t)
 
 (defvar my-background-color "#000011")
 
@@ -285,3 +280,15 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
