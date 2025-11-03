@@ -247,7 +247,8 @@
   :config
   (set-face-attribute 'org-ellipsis nil :underline nil)
   (setq org-ellipsis  " ▼"
-	org-hide-emphasis-markers t)
+	org-hide-emphasis-markers t
+	org-clock-mode-line-total 'today)
   (add-hook 'org-mode-hook (lambda ()
 			     (org-indent-mode)
 			     (variable-pitch-mode -1)
