@@ -142,3 +142,19 @@ Viewing a file in two panes for more context
 
 M-x follow-mode
 
+M-x hi-lock mode	to highlight searches, and then:
+M-s h r     		to highlight a regex
+M-s h u			to unhighlight a regex
+M-s h .			highlight symbol under a cursor
+
+
+Focus mode
+
+A simple solution:
+
+C-u N C-x $		hide lines indented by at least N columns
+C-x $ 	  		reset hidden columns
+
+M-x selective-display-ellipsis	     if set to nil, then do not display
+    				     three dots for hidden lines
+				     
