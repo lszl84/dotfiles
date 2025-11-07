@@ -1,3 +1,4 @@
+
 #+TITLE: My ArchLinux/Emacs Setup
 
 * Installation
@@ -46,16 +47,17 @@ sparse_keymap               12288   2  intel_hid,tuxedo_keyboard
 led_class_multicolor        16384   1  tuxedo_keyboard
 #+END_SRC 
 
-** Emacs, EXWM, picom
+** Emacs, EXWM, picom, screen lockers
 
 Install B&W Emoji Font form AUR:
 
+#+BEGIN_SRC sh
 yay -S ttf-noto-emoji-monochrome
-
-Install Emacs, picom and enable configs from dotfiles:
+#+END_SRC
+Install Emacs, picom, screen lockers and enable configs from dotfiles:
 
 #+BEGIN_SRC sh
-sudo pacman -S picom emacs
+sudo pacman -S picom emacs xss-lock xsecurelock
 git clone https://github.com/lszl84/dotfiles
 rm ~/.bash*
 cd dotfiles
@@ -64,9 +66,17 @@ stow bash x11 emacs picom
 
 ** Flathub
 
+#+BEGIN_SRC sh
 sudo pacman -Syu flatpak
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-
 flatpak install flathub org.mozilla.firefox
 flatpak run org.mozilla.firefox
+#+END_SRC
+
+** OpenSSH for Github keys
+
+#+BEGIN_SRC sh
+sudo pacman -S openssh
+ssh-keygen
+#+END_SRC

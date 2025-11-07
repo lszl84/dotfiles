@@ -41,38 +41,13 @@
 
 ;; Font size
 (set-face-attribute 'default nil
-		    :font "-xos4-terminus-medium-r-normal--20-220-72-72-c-110-iso10646-1")
+		    :font "Terminus-14")
 (set-face-attribute 'variable-pitch nil
-		    :font "-xos4-terminus-medium-r-normal--20-220-72-72-c-110-iso10646-1")
+		    :font "Terminus-14")
 (set-face-attribute 'fixed-pitch-serif nil
-		    :font "-xos4-terminus-bold-r-normal--20-220-72-72-c-110-iso10646-1")
+		    :font "Terminus-14")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
-
-(defvar my-terminus-fonts
-  '("-xos4-terminus-medium-r-normal--20-200-72-72-c-100-iso10646-1"
-    "-xos4-terminus-medium-r-normal--22-220-72-72-c-110-iso10646-1" 
-    "-xos4-terminus-medium-r-normal--24-240-72-72-c-120-iso10646-1"
-    "-xos4-terminus-medium-r-normal--28-280-72-72-c-140-iso10646-1"
-    "-xos4-terminus-medium-r-normal--32-320-72-72-c-160-iso10646-1")
-  "List of Terminus fonts to cycle through.")
-
-(defvar my-terminus-font-index 0
-  "Current index in the Terminus fonts list.")
-
-(defun my-cycle-terminus-font ()
-  "Cycle through predefined Terminus fonts."
-  (interactive)
-  (setq my-terminus-font-index 
-        (mod (1+ my-terminus-font-index) (length my-terminus-fonts)))
-  (let ((font (nth my-terminus-font-index my-terminus-fonts)))
-    (set-face-attribute 'default nil :font font)
-    (set-face-attribute 'variable-pitch nil :font font)
-    (message "Terminus font: %s" font)))
-
-;; Bind to a key, e.g. C-c f
-(global-set-key (kbd "C-c f") 'my-cycle-terminus-font)
-
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
