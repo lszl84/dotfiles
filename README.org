@@ -98,3 +98,8 @@ Edit /boot/loader/entries/....conf. Add quiet loglevel=3 to options.
 
 sudo pacman -S brightnessctl
 
+** Checkupdates
+
+sudo pacman -S pacman-contrib
+
+
