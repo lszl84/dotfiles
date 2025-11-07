@@ -57,21 +57,11 @@ yay -S ttf-noto-emoji-monochrome
 Install Emacs, picom, screen lockers and enable configs from dotfiles:
 
 #+BEGIN_SRC sh
-sudo pacman -S picom emacs xss-lock xsecurelock
+sudo pacman -S picom emacs xss-lock xsecurelock xorg-xset
 git clone https://github.com/lszl84/dotfiles
 rm ~/.bash*
 cd dotfiles
 stow bash x11 emacs picom
-#+END_SRC
-
-** Flathub
-
-#+BEGIN_SRC sh
-sudo pacman -Syu flatpak
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-flatpak install flathub org.mozilla.firefox
-flatpak run org.mozilla.firefox
 #+END_SRC
 
 ** OpenSSH for Github keys
@@ -79,4 +69,23 @@ flatpak run org.mozilla.firefox
 #+BEGIN_SRC sh
 sudo pacman -S openssh
 ssh-keygen
+#+END_SRC
+
+** Firefox
+
+#+BEGIN_SRC sh
+sudo pacman -S firefox
+#+END_SRC
+
+** Autologin
+
+#+BEGIN_SRC sh
+sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf << 'EOF'
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin yourusername --noclear %I $TERM
+EOF
+sudo systemctl enable getty@tty1.service
+sudo systemctl daemon-reload
 #+END_SRC

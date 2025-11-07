@@ -1,7 +1,11 @@
 #!/bin/bash
 
+xset +dpms
+xset s activate
+(sleep 2 && xset s reset) &
+
 export XCURSOR_THEME=Adwaita
-export XSECURELOCK_FONT="-xos4-terminus-medium-r-normal--20-200-72-72-c-100-iso10646-1"
+export XSECURELOCK_FONT="Terminus-14"
 
 xrdb -merge ~/.Xresources
 
