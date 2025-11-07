@@ -41,11 +41,11 @@
 
 ;; Font size
 (set-face-attribute 'default nil
-		    :font "-xos4-terminus-medium-r-normal--20-200-72-72-c-100-iso10646-1")
+		    :font "-xos4-terminus-medium-r-normal--20-220-72-72-c-110-iso10646-1")
 (set-face-attribute 'variable-pitch nil
-		    :font "-xos4-terminus-medium-r-normal--20-200-72-72-c-100-iso10646-1")
+		    :font "-xos4-terminus-medium-r-normal--20-220-72-72-c-110-iso10646-1")
 (set-face-attribute 'fixed-pitch-serif nil
-		    :font "-xos4-terminus-bold-r-normal--20-200-72-72-c-100-iso10646-1")
+		    :font "-xos4-terminus-bold-r-normal--20-220-72-72-c-110-iso10646-1")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
 
