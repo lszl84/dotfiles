@@ -89,3 +89,12 @@ EOF
 sudo systemctl enable getty@tty1.service
 sudo systemctl daemon-reload
 #+END_SRC
+
+** Quiet Boot
+
+Edit /boot/loader/entries/....conf. Add quiet loglevel=3 to options.
+
+** Brightnessctl
+
+sudo pacman -S brightnessctl
+
