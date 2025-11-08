@@ -158,3 +158,6 @@ C-x $ 	  		reset hidden columns
 M-x selective-display-ellipsis	     if set to nil, then do not display
     				     three dots for hidden lines
 				     
+Line highlight:
+
+M-x hl-line-mode

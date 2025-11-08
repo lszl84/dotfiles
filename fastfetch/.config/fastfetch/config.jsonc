@@ -4,7 +4,7 @@
     "type" : "small"
   },
   "display" : {
-    "pipe": true
+    "pipe": false
   },
   "modules": [
     "title",

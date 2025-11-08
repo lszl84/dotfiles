@@ -102,4 +102,25 @@ sudo pacman -S brightnessctl
 
 sudo pacman -S pacman-contrib
 
+** MPV
 
+sudo pacman -S mpv yt-dlp
+
+** XDG stuff
+
+sudo pacman -S xdg-utils
+
+** CMake
+
+sudo pacman -S cmake ninja
+
+** Printing
+
+sudo pacman -S cups cups-pdf
+yay -S brother-hl1210w
+
+add via M-x eww https://localhost:631
+
+make default:
+
+sudo lpadmin -d Brother_HL-1210W_series
