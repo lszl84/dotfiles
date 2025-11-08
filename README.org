@@ -124,3 +124,8 @@ add via M-x eww https://localhost:631
 make default:
 
 sudo lpadmin -d Brother_HL-1210W_series
+
+** Audio/Brightness keys
+
+sudo pacman -S xbindkeys brightnessctl
+

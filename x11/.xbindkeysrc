@@ -1,0 +1,20 @@
+# Volume up (XF86AudioRaiseVolume)
+"pactl set-sink-volume @DEFAULT_SINK@ +5%"
+    XF86AudioRaiseVolume
+
+# Volume down (XF86AudioLowerVolume)  
+"pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    XF86AudioLowerVolume
+
+# Volume mute (XF86AudioMute)
+"pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    XF86AudioMute
+
+# Brightness up (XF86MonBrightnessUp)
+"brightnessctl set +5%"
+    XF86MonBrightnessUp
+
+# Brightness down (XF86MonBrightnessDown)
+"brightnessctl set 5%-"
+    XF86MonBrightnessDown
+    
