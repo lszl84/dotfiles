@@ -129,3 +129,18 @@ sudo lpadmin -d Brother_HL-1210W_series
 
 sudo pacman -S xbindkeys brightnessctl
 
+** Playing Spotify
+
+Spotifyd has bugs since summer... Using librespot directly instead
+
+sudo yay -S librespot
+
+Requires the user service located in my dotfiles/systemd
+
+After stow:
+
+systemctl --user daemon-reload
+systemctl --user enable librespot
+systemctl --user start librespot
+
+Well... this also fails. Requires more investigation

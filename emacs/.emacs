@@ -64,24 +64,6 @@
 (setq battery-mode-line-format " 🔋%b%p%% (%t)")
 (display-battery-mode 1)
 
-;; Custom modeline with RAM usage
-;; Cache variable for memory usage
-(defvar my-memory-usage-cache "0B")
-
-;; Function to update memory usage
-(defun my-update-memory-usage ()
-  (ignore-errors
-    (setq my-memory-usage-cache
-          (string-trim
-           (shell-command-to-string 
-            "free -h | awk 'NR==2{print $3}'")))))
-
-;; Start timer to update every 20 seconds
-(run-with-timer 0 20 'my-update-memory-usage)
-
-;; Initial update
-(my-update-memory-usage)
-
 ;; Mode line format
 (setq-default mode-line-format
   '("%e" mode-line-front-space
@@ -95,7 +77,7 @@
     mode-line-position
     " "
     (:eval (format " 💻%d" exwm-workspace-current-index))
-    (:eval (concat " 🗄️" my-memory-usage-cache))
+
     mode-line-misc-info
     mode-line-end-spaces))
 
