@@ -12,5 +12,6 @@ xbindkeys &
 xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
 
 picom --backend glx --vsync &
-exec dbus-launch --exit-with-session emacs -mm
+feh --bg-fill ~/Pictures/Wallpapers/pexels-nathanjhilton-19271887.jpg &
 
+exec dbus-launch --exit-with-session emacs -mm

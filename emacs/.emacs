@@ -12,6 +12,7 @@
   (package-refresh-contents)
   (package-install 'nord-theme))
 
+
 (load-theme 'nord t)
  
 ;; EXWM
@@ -26,6 +27,8 @@
 
   (add-to-list 'exwm-manage-configurations
              '(".*main.*" display-buffer-same-window))
+  (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+  (add-to-list 'default-frame-alist '(alpha . (95 . 95)))
   (setq exwm-workspace-number 2)
   (setq exwm-input-global-keys
 	`(
@@ -222,6 +225,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
+ '(custom-safe-themes
+   '("5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
+     default))
  '(package-selected-packages '(doric-themes exwm gptel nord-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
