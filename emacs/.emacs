@@ -12,9 +12,41 @@
   (package-refresh-contents)
   (package-install 'nord-theme))
 
+(unless (package-installed-p 'doom-modeline)
+  (package-refresh-contents)
+  (package-install 'doom-modeline))
 
+(unless (package-installed-p 'nerd-icons)
+  (package-refresh-contents)
+  (package-install 'nerd-icons))
+
+;; Theme
 (load-theme 'nord t)
- 
+
+;; Nerd Icons needed for Mode line
+(use-package nerd-icons
+  :ensure t
+  :if (display-graphic-p)
+  :config
+  (unless (find-font (font-spec :name "Symbols Nerd Font Mono"))
+    (nerd-icons-install-fonts 'yes)))
+
+;; Fonts
+(set-face-attribute 'default nil :font "Terminus-14")
+(set-face-attribute 'variable-pitch nil :font "Terminus-14")
+(set-face-attribute 'fixed-pitch-serif nil :font "Terminus-14")
+(set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
+(set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
+
+;; Mode line
+(use-package doom-modeline
+  :ensure t
+  :init 
+  (display-battery-mode 1)
+  (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 35))
+
 ;; EXWM
 (use-package exwm
   :ensure t
@@ -27,8 +59,8 @@
 
   (add-to-list 'exwm-manage-configurations
              '(".*main.*" display-buffer-same-window))
-  (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
-  (add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+  (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
   (setq exwm-workspace-number 2)
   (setq exwm-input-global-keys
 	`(
@@ -41,17 +73,6 @@
 	  ))
   (exwm-wm-mode))
 
-
-;; Font size
-(set-face-attribute 'default nil
-		    :font "Terminus-14")
-(set-face-attribute 'variable-pitch nil
-		    :font "Terminus-14")
-(set-face-attribute 'fixed-pitch-serif nil
-		    :font "Terminus-14")
-(set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
-(set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
-
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -63,54 +84,15 @@
 (make-directory "~/.emacs.d/backups" t)
 (make-directory "~/.emacs.d/auto-save" t)
 
-;; Modeline Battery
-(setq battery-mode-line-format " 🔋%b%p%% (%t)")
-(display-battery-mode 1)
-
-;; Mode line format
-(setq-default mode-line-format
-  '("%e" mode-line-front-space
-    mode-line-mule-info
-    mode-line-client
-    mode-line-modified
-    mode-line-remote
-    " "
-    mode-line-buffer-identification
-    " "
-    mode-line-position
-    " "
-    (:eval (format " 💻%d" exwm-workspace-current-index))
-
-    mode-line-misc-info
-    mode-line-end-spaces))
-
 ;; Touchpad scrolling
 (pixel-scroll-mode 1)
 (pixel-scroll-precision-mode 1)
-
-;; M-x man
-(setq Man-notify-method 'bully) 
-(setq Man-width 'maximum)
-(setq Man-width-max 100) 
-
-;; C-c m - to open man at point
-;; Define the function
-(defun man-dwim ()
-  "Open man page for symbol at point in current window."
-  (interactive)
-  (let ((Man-notify-method 'bully)
-	)
-    (man (current-word))))
-
-;; Then bind the key
-(global-set-key (kbd "C-c m") 'man-dwim)
 
 ;; Shell inside emacs
 (global-set-key (kbd "<s-return>")
 		(lambda () (interactive)
 		  (ansi-term "/bin/bash")))
 (setq shell-file-name "/bin/bash")
-
 
 ;; Deepseek
 (unless (package-installed-p 'gptel)
@@ -226,9 +208,10 @@
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
  '(custom-safe-themes
-   '("5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
+   '("de8f2d8b64627535871495d6fe65b7d0070c4a1eb51550ce258cd240ff9394b0"
+     "5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
      default))
- '(package-selected-packages '(doric-themes exwm gptel nord-theme)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

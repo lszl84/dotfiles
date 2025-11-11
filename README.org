@@ -144,3 +144,8 @@ systemctl --user enable librespot
 systemctl --user start librespot
 
 Well... this also fails. Requires more investigation
+
+** Mint wallpapers
+
+sudo pacman -S feh
+sudo yay -S mint-backgrounds-wallpapers
