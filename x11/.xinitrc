@@ -2,7 +2,7 @@
 
 xset +dpms
 xset s activate
-(sleep 2 && xset s reset) &
+(sleep 1 && xset s reset) &
 
 export XCURSOR_THEME=Adwaita
 export XSECURELOCK_FONT="Terminus-14"
@@ -12,6 +12,6 @@ xbindkeys &
 xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
 
 picom --backend glx --vsync &
-feh --bg-fill ~/Pictures/Wallpapers/pexels-nathanjhilton-19271887.jpg &
+(sleep 2 && feh --bg-fill ~/Pictures/Wallpapers/pexels-nathanjhilton-19271887.jpg) &
 
 exec dbus-launch --exit-with-session emacs -mm
