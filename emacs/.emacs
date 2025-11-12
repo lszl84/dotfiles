@@ -195,7 +195,13 @@
 			     (variable-pitch-mode -1)
 			     (auto-fill-mode 1))))
   
-
+(defun ffplay-media-url ()
+  "Open media URL at point with ffplay"
+  (interactive)
+  (let ((url (get-text-property (point) 'help-echo)))
+    (when url
+      (async-shell-command 
+       (format "ffplay -autoexit '%s'" url)))))
 
 
 ;; ---------------------
