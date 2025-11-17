@@ -1,4 +1,7 @@
-Xft.dpi: 110
+! For recording, 165 dpi looks okay and can fit the GL window
+! For real life, sth like 110 is fine? or even native?
+Xft.dpi: 115
+!Xft.dpi: 165
 Xft.antialias: 1
 Xft.hinting: 1
 Xft.rgba: rgb

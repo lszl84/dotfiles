@@ -31,10 +31,10 @@
   (unless (find-font (font-spec :name "Symbols Nerd Font Mono"))
     (nerd-icons-install-fonts 'yes)))
 
-;; Fonts
-(set-face-attribute 'default nil :font "Terminus-14")
-(set-face-attribute 'variable-pitch nil :font "Terminus-14")
-(set-face-attribute 'fixed-pitch-serif nil :font "Terminus-14")
+;; Fontse
+(set-face-attribute 'default nil :font "Adwaita Mono")
+(set-face-attribute 'variable-pitch nil :font "Adwaita Mono")
+(set-face-attribute 'fixed-pitch-serif nil :font "Adwaita Mono")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
 
@@ -61,14 +61,20 @@
              '(".*main.*" display-buffer-same-window))
   (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
   (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
-  (setq exwm-workspace-number 2)
+  (setq exwm-workspace-number 4)
   (setq exwm-input-global-keys
 	`(
-          ([?\s-o] .
+          ([?\s-k] .
 	   (lambda ()
 	     (interactive)
 	     (exwm-workspace-switch
 		      (mod (1+ exwm-workspace-current-index)
+			   (exwm-workspace--count)))))
+	  ([?\s-j] .
+	   (lambda ()
+	     (interactive)
+	     (exwm-workspace-switch
+		      (mod (1- exwm-workspace-current-index)
 			   (exwm-workspace--count)))))
 	  ))
   (exwm-wm-mode))
@@ -189,7 +195,8 @@
   (set-face-attribute 'org-ellipsis nil :underline nil)
   (setq org-ellipsis  " ▼"
 	org-hide-emphasis-markers t
-	org-clock-mode-line-total 'today)
+	org-clock-mode-line-total 'today
+        org-duration-format (quote h:mm))
   (add-hook 'org-mode-hook (lambda ()
 			     (org-indent-mode)
 			     (variable-pitch-mode -1)
@@ -213,6 +220,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
+ '(calendar-week-start-day 1)
  '(custom-safe-themes
    '("de8f2d8b64627535871495d6fe65b7d0070c4a1eb51550ce258cd240ff9394b0"
      "5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
