@@ -59,8 +59,8 @@
 
   (add-to-list 'exwm-manage-configurations
              '(".*main.*" display-buffer-same-window))
-  (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-  (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+  (set-frame-parameter (selected-frame) 'alpha '(93 . 93))
+  (add-to-list 'default-frame-alist '(alpha . (93 . 93)))
   (setq exwm-workspace-number 4)
   (setq exwm-input-global-keys
 	`(
@@ -78,6 +78,17 @@
 			   (exwm-workspace--count)))))
 	  ))
   (exwm-wm-mode))
+
+(defun cycle-frame-alpha ()
+  "Cycle frame alpha between 85, 90, 93, and 100."
+  (interactive)
+  (let* ((current (car (frame-parameter nil 'alpha)))
+         (alphas '(85 90 93 100))
+         (next (or (cadr (member current alphas)) (car alphas))))
+    (set-frame-parameter nil 'alpha `(,next . ,next))
+    (message "Frame alpha: %d" next)))
+
+(global-set-key (kbd "s-/") 'cycle-frame-alpha)
 
 ;; Increasing GC for faster Org mode startup
 (setq gc-cons-threshold (* 50 1000 1000))
