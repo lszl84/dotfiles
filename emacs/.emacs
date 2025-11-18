@@ -59,8 +59,8 @@
 
   (add-to-list 'exwm-manage-configurations
              '(".*main.*" display-buffer-same-window))
-  (set-frame-parameter (selected-frame) 'alpha '(93 . 93))
-  (add-to-list 'default-frame-alist '(alpha . (93 . 93)))
+  (set-frame-parameter (selected-frame) 'alpha '(85 . 85))
+  (add-to-list 'default-frame-alist '(alpha . (85 . 85)))
   (setq exwm-workspace-number 4)
   (setq exwm-input-global-keys
 	`(
