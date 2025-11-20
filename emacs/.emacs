@@ -12,6 +12,10 @@
   (package-refresh-contents)
   (package-install 'nord-theme))
 
+(unless (package-installed-p 'doric-themes)
+  (package-refresh-contents)
+  (package-install 'doric-themes))
+
 (unless (package-installed-p 'doom-modeline)
   (package-refresh-contents)
   (package-install 'doom-modeline))
@@ -20,8 +24,23 @@
   (package-refresh-contents)
   (package-install 'nerd-icons))
 
-;; Theme
-(load-theme 'nord t)
+(use-package doric-themes
+  :ensure t
+  :demand t
+  :config
+  ;; These are the default values.
+  (setq doric-themes-to-toggle '(doric-dark doric-fire))
+  (setq doric-themes-to-rotate '(doric-dark doric-fire doric-obsidian
+					    doric-valley doric-water))
+
+  (doric-themes-select 'doric-dark)
+
+  :bind
+  (("s-<end>" . doric-themes-rotate)))
+
+
+  ;; Theme
+;;(load-theme 'nord t)
 
 ;; Nerd Icons needed for Mode line
 (use-package nerd-icons
@@ -59,8 +78,8 @@
 
   (add-to-list 'exwm-manage-configurations
              '(".*main.*" display-buffer-same-window))
-  (set-frame-parameter (selected-frame) 'alpha '(85 . 85))
-  (add-to-list 'default-frame-alist '(alpha . (85 . 85)))
+  (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
   (setq exwm-workspace-number 4)
   (setq exwm-input-global-keys
 	`(
@@ -80,13 +99,13 @@
   (exwm-wm-mode))
 
 (defun cycle-frame-alpha ()
-  "Cycle frame alpha between 85, 90, 93, and 100."
   (interactive)
   (let* ((current (car (frame-parameter nil 'alpha)))
-         (alphas '(85 90 93 100))
+         (alphas '(50 75 90 100))
          (next (or (cadr (member current alphas)) (car alphas))))
-    (set-frame-parameter nil 'alpha `(,next . ,next))
-    (message "Frame alpha: %d" next)))
+    (dolist (frame (frame-list))
+      (set-frame-parameter frame 'alpha `(,next . ,next)))
+    (message "Frames alpha: %d" next)))
 
 (global-set-key (kbd "s-/") 'cycle-frame-alpha)
 
@@ -236,7 +255,9 @@
    '("de8f2d8b64627535871495d6fe65b7d0070c4a1eb51550ce258cd240ff9394b0"
      "5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
      default))
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(all-the-icons doom-modeline doric-themes exwm gptel nano-theme
+		   nord-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
