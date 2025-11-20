@@ -14,6 +14,8 @@ autosuspend() {
     done
 }
 
+autorandr --change
+
 xset +dpms
 xset s activate
 (sleep 1 && xset s reset) &
