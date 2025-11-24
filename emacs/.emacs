@@ -29,11 +29,11 @@
   :demand t
   :config
   ;; These are the default values.
-  (setq doric-themes-to-toggle '(doric-dark doric-fire))
+  (setq doric-themes-to-toggle '(doric-dark doric-valley))
   (setq doric-themes-to-rotate '(doric-dark doric-fire doric-obsidian
-					    doric-valley doric-water))
+					    doric-valley doric-water doric-plum doric-pine doric-mermaid))
 
-  (doric-themes-select 'doric-dark)
+  (doric-themes-select 'doric-valley)
 
   :bind
   (("s-<end>" . doric-themes-rotate)))
@@ -64,7 +64,7 @@
   (display-battery-mode 1)
   (doom-modeline-mode 1)
   :config
-  (setq doom-modeline-height 35))
+  (setq doom-modeline-height 28))
 
 ;; EXWM
 (use-package exwm
@@ -244,23 +244,3 @@
 ;; ---------------------
 ;; Emacs-generated stuff
 ;; ---------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auth-source-save-behavior nil)
- '(calendar-week-start-day 1)
- '(custom-safe-themes
-   '("de8f2d8b64627535871495d6fe65b7d0070c4a1eb51550ce258cd240ff9394b0"
-     "5a4cdc4365122d1a17a7ad93b6e3370ffe95db87ed17a38a94713f6ffe0d8ceb"
-     default))
- '(package-selected-packages
-   '(all-the-icons doom-modeline doric-themes exwm gptel nano-theme
-		   nord-theme)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(term-color-black ((t (:background "#000000" :foreground "#2e3440")))))

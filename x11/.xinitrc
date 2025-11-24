@@ -28,7 +28,7 @@ xbindkeys &
 xss-lock -- xsecurelock &
 
 picom --backend glx --vsync &
-(sleep 2 && feh --bg-fill $HOME/Pictures/Wallpapers/pexels-nathanjhilton-19271887.jpg) &
+(sleep 2 && feh --bg-fill $HOME/Pictures/Wallpapers/bruegel.jpg) &
 
 autosuspend &
 
