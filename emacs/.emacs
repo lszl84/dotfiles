@@ -58,7 +58,7 @@
 
 ;; Fontse
 (set-face-attribute 'default nil :font "Adwaita Mono")
-(set-face-attribute 'variable-pitch nil :font "Adwaita Mono")
+(set-face-attribute 'variable-pitch nil :font "Adwaita Sans")
 (set-face-attribute 'fixed-pitch-serif nil :font "Adwaita Mono")
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
