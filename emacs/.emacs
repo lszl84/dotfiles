@@ -8,21 +8,23 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(unless (package-installed-p 'nord-theme)
-  (package-refresh-contents)
-  (package-install 'nord-theme))
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+;; (unless (package-installed-p 'nord-theme)
+;;   (package-refresh-contents)
+;;   (package-install 'nord-theme))
 
 (unless (package-installed-p 'doric-themes)
   (package-refresh-contents)
   (package-install 'doric-themes))
 
-(unless (package-installed-p 'doom-modeline)
-  (package-refresh-contents)
-  (package-install 'doom-modeline))
+;; (unless (package-installed-p 'doom-modeline)
+;;   (package-refresh-contents)
+;;   (package-install 'doom-modeline))
 
-(unless (package-installed-p 'nerd-icons)
-  (package-refresh-contents)
-  (package-install 'nerd-icons))
+;; (unless (package-installed-p 'nerd-icons)
+;;   (package-refresh-contents)
+;;   (package-install 'nerd-icons))
 
 (use-package doric-themes
   :ensure t
@@ -33,22 +35,26 @@
   (setq doric-themes-to-rotate '(doric-dark doric-fire doric-obsidian
 					    doric-valley doric-water doric-plum doric-pine doric-mermaid))
 
-  (doric-themes-select 'doric-valley)
+  (doric-themes-select 'doric-mermaid)
 
   :bind
   (("s-<end>" . doric-themes-rotate)))
 
+;; Mint-L settings
+(set-face-background 'default "#2f2f2f")
+(set-face-background 'fringe "#2f2f2f")
+(setq-default mode-line-format nil)
 
   ;; Theme
 ;;(load-theme 'nord t)
 
 ;; Nerd Icons needed for Mode line
-(use-package nerd-icons
-  :ensure t
-  :if (display-graphic-p)
-  :config
-  (unless (find-font (font-spec :name "Symbols Nerd Font Mono"))
-    (nerd-icons-install-fonts 'yes)))
+;; (use-package nerd-icons
+;;   :ensure t
+;;   :if (display-graphic-p)
+;;   :config
+;;   (unless (find-font (font-spec :name "Symbols Nerd Font Mono"))
+;;     (nerd-icons-install-fonts 'yes)))
 
 ;; Fontse
 (set-face-attribute 'default nil :font "Adwaita Mono")
@@ -57,77 +63,77 @@
 (set-fontset-font t 'symbol (font-spec :family "Noto Emoji") nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend)
 
-;; Mode line
-(use-package doom-modeline
-  :ensure t
-  :init 
-  (display-battery-mode 1)
-  (doom-modeline-mode 1)
-  :config
-  (setq doom-modeline-height 28))
+;; ;; Mode line
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :init 
+;;   (display-battery-mode 1)
+;;   (doom-modeline-mode 1)
+;;   :config
+;;   (setq doom-modeline-height 28))
 
-;; EXWM
-(use-package exwm
-  :ensure t
-  :config
-  (add-hook 'exwm-workspace-switch-hook
-          (lambda ()
-            (dolist (buffer (buffer-list))
-              (with-current-buffer buffer
-                  (force-mode-line-update)))))
+;; ;; EXWM
+;; (use-package exwm
+;;   :ensure t
+;;   :config
+;;   (add-hook 'exwm-workspace-switch-hook
+;;           (lambda ()
+;;             (dolist (buffer (buffer-list))
+;;               (with-current-buffer buffer
+;;                   (force-mode-line-update)))))
 
-  (add-to-list 'exwm-manage-configurations
-             '(".*main.*" display-buffer-same-window))
-  (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-  (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
-  (setq exwm-workspace-number 4)
-  (setq exwm-input-global-keys
-	`(
-          ([?\s-k] .
-	   (lambda ()
-	     (interactive)
-	     (exwm-workspace-switch
-		      (mod (1+ exwm-workspace-current-index)
-			   (exwm-workspace--count)))))
-	  ([?\s-j] .
-	   (lambda ()
-	     (interactive)
-	     (exwm-workspace-switch
-		      (mod (1- exwm-workspace-current-index)
-			   (exwm-workspace--count)))))
-	  ))
-  (exwm-wm-mode))
+;;   (add-to-list 'exwm-manage-configurations
+;;              '(".*main.*" display-buffer-same-window))
+;;   (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+;;   (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+;;   (setq exwm-workspace-number 4)
+;;   (setq exwm-input-global-keys
+;; 	`(
+;;           ([?\s-k] .
+;; 	   (lambda ()
+;; 	     (interactive)
+;; 	     (exwm-workspace-switch
+;; 		      (mod (1+ exwm-workspace-current-index)
+;; 			   (exwm-workspace--count)))))
+;; 	  ([?\s-j] .
+;; 	   (lambda ()
+;; 	     (interactive)
+;; 	     (exwm-workspace-switch
+;; 		      (mod (1- exwm-workspace-current-index)
+;; 			   (exwm-workspace--count)))))
+;; 	  ))
+;;   (exwm-wm-mode))
 
-(defun cycle-frame-alpha ()
-  (interactive)
-  (let* ((current (car (frame-parameter nil 'alpha)))
-         (alphas '(50 75 90 100))
-         (next (or (cadr (member current alphas)) (car alphas))))
-    (dolist (frame (frame-list))
-      (set-frame-parameter frame 'alpha `(,next . ,next)))
-    (message "Frames alpha: %d" next)))
+;; (defun cycle-frame-alpha ()
+;;   (interactive)
+;;   (let* ((current (car (frame-parameter nil 'alpha)))
+;;          (alphas '(50 75 90 100))
+;;          (next (or (cadr (member current alphas)) (car alphas))))
+;;     (dolist (frame (frame-list))
+;;       (set-frame-parameter frame 'alpha `(,next . ,next)))
+;;     (message "Frames alpha: %d" next)))
 
-(global-set-key (kbd "s-/") 'cycle-frame-alpha)
+;; (global-set-key (kbd "s-/") 'cycle-frame-alpha)
 
-;; Increasing GC for faster Org mode startup
-(setq gc-cons-threshold (* 50 1000 1000))
+;; ;; Increasing GC for faster Org mode startup
+;; (setq gc-cons-threshold (* 50 1000 1000))
 
-;; Backups and autosaves
-(setq backup-directory-alist
-      `(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms
-      `((".*" "~/.emacs.d/auto-save/" t)))
-(make-directory "~/.emacs.d/backups" t)
-(make-directory "~/.emacs.d/auto-save" t)
+;; ;; Backups and autosaves
+;; (setq backup-directory-alist
+;;       `(("." . "~/.emacs.d/backups")))
+;; (setq auto-save-file-name-transforms
+;;       `((".*" "~/.emacs.d/auto-save/" t)))
+;; (make-directory "~/.emacs.d/backups" t)
+;; (make-directory "~/.emacs.d/auto-save" t)
 
 ;; Touchpad scrolling
 (pixel-scroll-mode 1)
 (pixel-scroll-precision-mode 1)
 
-;; Shell inside emacs
-(global-set-key (kbd "<s-return>")
-		(lambda () (interactive)
-		  (ansi-term "/bin/bash")))
+;; ;; Shell inside emacs
+;; (global-set-key (kbd "<s-return>")
+;; 		(lambda () (interactive)
+;; 		  (ansi-term "/bin/bash")))
 (setq shell-file-name "/bin/bash")
 
 ;; Deepseek
