@@ -1,0 +1,7 @@
+
+Convert video clips to gifs for Twitter, GitHub README, etc:
+
+
+ffmpeg -ss 00:00:10 -t 4 -i video.mp4 -vf
+"fps=12,scale=400:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
+high_quality.gif
