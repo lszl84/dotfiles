@@ -1,5 +1,4 @@
-
-#+TITLE: My ArchLinux/Emacs Setup
+#+TITLE: My ArchLinux/Cinnamon/Emacs Setup
 
 * Installation
 
@@ -9,17 +8,10 @@ Simply use the archinstall script from the default Arch Linux ISO. Use:
 
 * Configuration
 
-** Font 
+** Basic Packages
 
 #+BEGIN_SRC sh
-sudo pacman -S terminus-font
-echo 'FONT=ter-122n' | sudo tee -a /etc/vconsole.conf
-#+END_SRC
-
-** Basic console tools
-
-#+BEGIN_SRC sh
-sudo pacman -S fastfetch man git stow base-devel
+sudo pacman -S git stow emacs cinnamon xterm firefox feh openssh
 #+END_SRC
 
 ** Yay
@@ -30,73 +22,15 @@ cd yay
 makepkg -si
 #+END_SRC
 
-** Tuxedo Drivers (only for Tuxedo Computers!)
+** Mint themes
 
 #+BEGIN_SRC sh
-yay -S tuxedo-control-center-bin tuxedo-drivers-dkms linux-zen-headers
-#+END_SRC
-
-Restart the computer and ensure the modules are loaded
-
-#+BEGIN_SRC sh
-lsmod | grep tuxedo
-tuxedo_io                   24576   0  
-tuxedo_keyboard             110592  2  clevo_acpi,tuxedo_io
-tuxedo_compatibility_check  12288   1  tuxedo_keyboard
-sparse_keymap               12288   2  intel_hid,tuxedo_keyboard
-led_class_multicolor        16384   1  tuxedo_keyboard
-#+END_SRC 
-
-** Emacs, EXWM, picom, screen lockers
-
-Install B&W Emoji Font form AUR:
-
-#+BEGIN_SRC sh
-yay -S ttf-noto-emoji-monochrome
-#+END_SRC
-Install Emacs, picom, screen lockers and enable configs from dotfiles:
-
-#+BEGIN_SRC sh
-sudo pacman -S picom emacs xss-lock xsecurelock xorg-xset
-git clone https://github.com/lszl84/dotfiles
-rm ~/.bash*
-cd dotfiles
-stow bash x11 emacs picom
-#+END_SRC
-
-** OpenSSH for Github keys
-
-#+BEGIN_SRC sh
-sudo pacman -S openssh
-ssh-keygen
-#+END_SRC
-
-** Firefox
-
-#+BEGIN_SRC sh
-sudo pacman -S firefox
-#+END_SRC
-
-** Autologin
-
-#+BEGIN_SRC sh
-sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
-sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf << 'EOF'
-[Service]
-ExecStart=
-ExecStart=-/usr/bin/agetty --autologin yourusername --noclear %I $TERM
-EOF
-sudo systemctl enable getty@tty1.service
-sudo systemctl daemon-reload
+yay -S mint-l-theme mint-l-icons bibata-cursor-theme
 #+END_SRC
 
 ** Quiet Boot
 
 Edit /boot/loader/entries/....conf. Add quiet loglevel=3 to options.
-
-** Brightnessctl
-
-sudo pacman -S brightnessctl
 
 ** Checkupdates
 
@@ -125,27 +59,6 @@ make default:
 
 sudo lpadmin -d Brother_HL-1210W_series
 
-** Audio/Brightness keys
+** Adwaita wallpapers
 
-sudo pacman -S xbindkeys brightnessctl
-
-** Playing Spotify
-
-Spotifyd has bugs since summer... Using librespot directly instead
-
-sudo yay -S librespot
-
-Requires the user service located in my dotfiles/systemd
-
-After stow:
-
-systemctl --user daemon-reload
-systemctl --user enable librespot
-systemctl --user start librespot
-
-Well... this also fails. Requires more investigation
-
-** Mint wallpapers
-
-sudo pacman -S feh
-sudo yay -S mint-backgrounds-wallpapers
+sudo pacman -S gnome-backgrounds
