@@ -2,5 +2,9 @@
 
 xrdb -merge ~/.Xresources
 
-exec dbus-launch --exit-with-session /usr/bin/cinnamon-session
+export XCURSOR_SIZE=32
+
+emacs --daemon
+
+exec dbus-launch --exit-with-session startxfce4
 
