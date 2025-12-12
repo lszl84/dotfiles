@@ -5,22 +5,24 @@
   <property name="Notify" type="int" value="1"/>
   <property name="AutoEnableProfiles" type="int" value="3"/>
   <property name="Default" type="empty">
-    <property name="DP-1" type="string" value="BNQ BenQ RD280U E3S0018601Q (DP-1)">
-      <property name="EDID" type="string" value="364c158d4ab9944cb6d02c29ac19848b3107ef0d"/>
+    <property name="eDP-1" type="string" value="Laptop">
+      <property name="Active" type="bool" value="false"/>
+      <property name="EDID" type="string" value="e094370ae7e19d9f9aab04700d56e5cd9272bf04"/>
+    </property>
+    <property name="DP-1" type="string" value="BenQ 28&quot;">
       <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="94ba887fda62c36d710a0d22166509fcf5701702"/>
       <property name="Resolution" type="string" value="3840x2560"/>
-      <property name="RefreshRate" type="double" value="59.984000000000002"/>
+      <property name="RefreshRate" type="double" value="59.983858716293199"/>
+      <property name="ModeFlags" type="uint64" value="9"/>
       <property name="Rotation" type="int" value="0"/>
       <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="false"/>
       <property name="Scale" type="double" value="1"/>
       <property name="Position" type="empty">
         <property name="X" type="int" value="0"/>
         <property name="Y" type="int" value="0"/>
       </property>
-    </property>
-    <property name="eDP-1" type="string" value="Laptop">
-      <property name="EDID" type="string" value="5df676b9d73117ebe6c11e78c8103ce44a3edabc"/>
-      <property name="Active" type="bool" value="false"/>
     </property>
   </property>
 </channel>
