@@ -8,5 +8,6 @@
     <property name="show-tray-icon" type="bool" value="false"/>
     <property name="inactivity-on-ac" type="uint" value="10"/>
     <property name="inactivity-on-battery" type="uint" value="10"/>
+    <property name="show-presentation-indicator" type="bool" value="false"/>
   </property>
 </channel>
