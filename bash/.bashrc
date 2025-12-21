@@ -11,3 +11,4 @@ export PS1='\W\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
 
+fastfetch
