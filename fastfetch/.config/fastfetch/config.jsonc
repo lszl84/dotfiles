@@ -15,10 +15,6 @@
     "packages",
     "shell",
     "de",
-    "wm",
-    "wmtheme",
-    "theme",
-    "icons",
     "cpu",
     "gpu",
     "memory",
@@ -26,7 +22,6 @@
     "disk",
     "localip",
     "battery",
-    "poweradapter",
-    "locale"
+    "poweradapter"
   ]
 }

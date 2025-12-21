@@ -7,7 +7,7 @@
 	
   <!-- Colors -->
   <color name="normal"     value="#DCDCCC" />
-  <color name="background" value="#222226" />
+  <color name="background" value="#212121" />
   <color name="comment"    value="#7F9F7F" />
   <color name="constant"   value="#DCA3A3" />
   <color name="cursor"     value="#8FAF9F" />
@@ -37,7 +37,7 @@
   <style name="selection"                                          background="cursor" />
   <style name="cursor"                      foreground="cursor"  />
   <style name="current-line"                                       background="#505050" />
-  <style name="line-numbers"                foreground="#9FAFAF"   background="#262626" />
+  <style name="line-numbers"                foreground="#9FAFAF"   background="#212121" />
   <style name="draw-spaces"                 foreground="#808080" />
 
   <!-- Brace Matching -->
