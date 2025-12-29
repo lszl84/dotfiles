@@ -9,6 +9,8 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 export PS1='\W\$ '
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/Apps/vscodium:$PATH"
 
-fastfetch
+
+# opencode
+export PATH=/home/luke/.opencode/bin:$PATH
