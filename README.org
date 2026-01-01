@@ -1,0 +1,69 @@
+#+TITLE: Dotfiles
+#+DESCRIPTION: Configuration files for Arch Linux
+
+* Overview
+
+Personal dotfiles for an Arch Linux setup with XFCE.
+
+* Contents
+
+** bash
+
+Shell configuration for Bash:
+- Colored output for ~ls~ and ~grep~
+- Minimal prompt showing current directory
+- PATH additions for ~.local/bin~, VSCodium, and opencode
+
+** emacs-easy
+
+A clean Emacs setup optimized for usability:
+- CUA keybindings (Ctrl+C/X/V/Z work as expected)
+- Modus Vivendi dark theme with custom ~#212121~ background
+- Minimal UI (no menu bar, toolbar, scrollbars, or mode line)
+- Emacs server for fast ~emacsclient~ usage
+- Better defaults: UTF-8, auto-revert, save-place, recent files
+
+** fastfetch
+
+System information display with a compact logo showing:
+- OS, kernel, uptime, packages
+- Shell, desktop environment
+- CPU, GPU, memory, swap, disk
+- Local IP, battery status
+
+** ffmpeg
+
+Handy snippets for video conversion (e.g., high-quality GIF encoding).
+
+** gdb
+
+GDB debugger config enabling ~debuginfod~ for automatic debug symbol downloads.
+
+** gtksourceview
+
+Zenburn color scheme for GTK-based text editors (gedit, Mousepad, GNOME Builder) supporting both gtksourceview-3.0 and gtksourceview-4.
+
+** picom
+
+X11 compositor settings:
+- GLX backend with vsync
+- Dual-kawase blur (strength 7)
+- 90% transparency for Xfce4-terminal, Mousepad, and Emacs
+- Blur applied only to those same apps
+
+** themes
+
+GTK themes for a consistent desktop look:
+- *Slot-Dark-GTK* — dark theme with GTK 2/3/4 support
+- *Win12X-Fantasy-Compact* — compact theme with Cinnamon, GNOME Shell, and GTK 2/3 support
+
+* Installation
+
+Symlink or copy the contents of each directory to your home folder:
+
+#+begin_src bash
+stow bash
+stow emacs-easy
+stow fastfetch
+# etc.
+#+end_src
