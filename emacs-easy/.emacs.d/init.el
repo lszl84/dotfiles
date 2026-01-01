@@ -110,6 +110,41 @@
 (add-hook 'after-make-frame-functions #'my/frame-setup)
 
 ;; =============================================================================
+;; Package Management
+;; =============================================================================
+
+;; Initialize package sources
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
+
+;; use-package is built into Emacs 29+
+;; For older versions, install it
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+;; =============================================================================
+;; Org Mode
+;; =============================================================================
+
+(use-package org
+  :ensure nil  ; org is built-in
+  :config
+  (set-face-attribute 'org-ellipsis nil :underline nil)
+  (setq org-ellipsis " ▼"
+        org-hide-emphasis-markers t
+        org-clock-mode-line-total 'today
+        org-duration-format (quote h:mm))
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-indent-mode)
+                             (variable-pitch-mode -1)
+                             (auto-fill-mode 1))))
+
+;; =============================================================================
 ;; Better Defaults
 ;; =============================================================================
 
