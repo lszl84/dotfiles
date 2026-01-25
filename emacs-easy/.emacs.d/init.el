@@ -64,8 +64,8 @@
 (load-theme 'modus-vivendi t)
 
 ;; Override background and fringe colors
-(set-face-background 'default "#212121")
-(set-face-background 'fringe "#212121")
+;; (set-face-background 'default "#212121")
+;; (set-face-background 'fringe "#212121")
 
 ;; =============================================================================
 ;; CUA Mode (Common User Access)
@@ -102,8 +102,10 @@
   (with-selected-frame (or frame (selected-frame))
     (when (display-graphic-p)
       (scroll-bar-mode -1)
-      (set-face-background 'default "#212121")
-      (set-face-background 'fringe "#212121"))))
+      ;; (set-face-background 'default "#212121")
+      ;; (set-face-background 'fringe "#212121")
+
+      )))
 
 ;; Apply to current and future frames
 (my/frame-setup)

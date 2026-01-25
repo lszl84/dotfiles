@@ -12,8 +12,8 @@
 (push '(vertical-scroll-bars) default-frame-alist) ; No scroll bars
 
 ;; Set dark background early to prevent white flash
-(push '(background-color . "#212121") default-frame-alist)
-(push '(foreground-color . "#ffffff") default-frame-alist)
+;; (push '(background-color . "#212121") default-frame-alist)
+;; (push '(foreground-color . "#ffffff") default-frame-alist)
 
 ;; Prevent package.el from auto-loading packages at startup
 ;; (if you plan to use use-package with straight.el or similar)
