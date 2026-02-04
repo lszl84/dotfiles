@@ -64,8 +64,8 @@
 (load-theme 'modus-vivendi t)
 
 ;; Override background and fringe colors
-;; (set-face-background 'default "#212121")
-;; (set-face-background 'fringe "#212121")
+(set-face-background 'default "#222226")
+(set-face-background 'fringe "#222226")
 
 ;; =============================================================================
 ;; CUA Mode (Common User Access)
