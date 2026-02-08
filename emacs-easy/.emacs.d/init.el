@@ -67,6 +67,9 @@
 (set-face-background 'default "#222226")
 (set-face-background 'fringe "#222226")
 
+;; Don't highlight trailing whitespace
+(setq-default show-trailing-whitespace nil)
+
 ;; =============================================================================
 ;; CUA Mode (Common User Access)
 ;; =============================================================================
@@ -190,8 +193,8 @@
 ;; y/n instead of yes/no
 (setq use-short-answers t)
 
-;; Show trailing whitespace
-(setq-default show-trailing-whitespace t)
+;; Don't show trailing whitespace (avoid theme-specific colored backgrounds)
+(setq-default show-trailing-whitespace nil)
 
 ;; Use spaces instead of tabs
 (setq-default indent-tabs-mode nil)
