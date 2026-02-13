@@ -28,12 +28,14 @@ make PREFIX="$PREFIX" install
 # --- st ---
 echo "==> Building st $ST_VERSION"
 cd "$BUILD_DIR"
-if [[ ! -d "st-$ST_VERSION" ]]; then
+if [[ ! -f "st-$ST_VERSION.tar.gz" ]]; then
     curl -LO "https://dl.suckless.org/st/st-$ST_VERSION.tar.gz"
-    tar xzf "st-$ST_VERSION.tar.gz"
 fi
+rm -rf "st-$ST_VERSION"
+tar xzf "st-$ST_VERSION.tar.gz"
 cd "st-$ST_VERSION"
 cp "$CONFIG_DIR/st-config.h" config.h
+python3 "$CONFIG_DIR/st-anysize-patch.py"
 make clean
 make PREFIX="$PREFIX"
 make PREFIX="$PREFIX" install
