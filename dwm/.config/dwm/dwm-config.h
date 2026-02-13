@@ -3,7 +3,7 @@
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows (2x for HiDPI) */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappx     = 14;       /* gap pixel between windows (7 logical @ HiDPI) */
+static const unsigned int gappx     = 12;       /* gap pixel between windows (6 logical @ HiDPI) */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=10" };
@@ -12,11 +12,12 @@ static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#000000";
+static const char col_cyan[]        = "#333333";
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_gray3 },
+	/*                 fg         bg         border   */
+	[SchemeNorm]   = { col_gray3, col_gray1, col_gray2 },
+	[SchemeSel]    = { col_gray4, col_cyan,  col_gray3 },
+	[SchemeTitle]  = { col_gray4, col_gray1, col_gray2 },
 };
 
 /* tagging */
@@ -91,10 +92,10 @@ static const char *roficmd[]  = { "rofi", "-show", "drun", NULL };
 /* lock screen (triggers xss-lock → dwm-lock) */
 static const char *lockcmd[] = { "loginctl", "lock-session", NULL };
 
-/* volume commands (PipeWire / WirePlumber) */
-static const char *vol_up[]   = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
-static const char *vol_down[] = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
-static const char *vol_mute[] = { "wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
+/* volume commands (PipeWire / WirePlumber)
+ * --limit 1.0 prevents over-amplification; pkill signals dwm-status for instant update */
+#define VOL_CMD(action) SHCMD("wpctl " action " && pkill -USR1 dwm-status")
+
 
 /* brightness commands */
 static const char *bright_up[]   = { "brightnessctl", "set", "+10%", NULL };
@@ -138,9 +139,9 @@ static const Key keys[] = {
 	{ ControlMask|Mod1Mask,         XK_Right,                  shiftview,      {.i = +1 } },
 
 	/* media keys */
-	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          {.v = vol_up } },
-	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          {.v = vol_down } },
-	{ 0,                            XF86XK_AudioMute,          spawn,          {.v = vol_mute } },
+	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          VOL_CMD("set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+") },
+	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          VOL_CMD("set-volume @DEFAULT_AUDIO_SINK@ 5%-") },
+	{ 0,                            XF86XK_AudioMute,          spawn,          VOL_CMD("set-mute @DEFAULT_AUDIO_SINK@ toggle") },
 	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          {.v = bright_up } },
 	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          {.v = bright_down } },
 
@@ -148,7 +149,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
 	TAGKEYS(                        XK_4,                      3)
-	{ MODKEY|ShiftMask,             XK_q,                      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_BackSpace,              quit,           {0} },
 };
 
 /* button definitions */

@@ -1,14 +1,56 @@
 #!/bin/bash
 # dwm-status — Status bar for dwm using xsetroot -name
-# Format: [N updates | ]bat XX% (Xh Xm left) | up Xd | HH:MM
+# Format: [N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM
+# Sends USR1 to this process to trigger an immediate refresh (used by volume keys).
+
+last_vol=""
+apt_cache=""
+apt_counter=0
+
+# USR1 interrupts 'wait' below, causing an immediate refresh
+trap 'true' USR1
 
 while true; do
     status=""
 
-    # APT updates (hidden if 0)
-    updates=$(apt list --upgradable 2>/dev/null | grep -c upgradable)
-    if [[ "$updates" -gt 0 ]]; then
-        status+="$updates updates | "
+    # APT updates (check every ~5 minutes, cached otherwise)
+    if [[ $apt_counter -eq 0 ]]; then
+        apt_cache=$(apt list --upgradable 2>/dev/null | grep -c upgradable)
+    fi
+    apt_counter=$(( (apt_counter + 1) % 60 ))
+    if [[ "$apt_cache" -gt 0 ]]; then
+        status+="$apt_cache updates | "
+    fi
+
+    # Volume (cache last known value so transient wpctl failures don't blank it)
+    vol_str=""
+    if command -v wpctl &>/dev/null; then
+        vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null)
+        if [[ "$vol" =~ Volume:\ ([0-9.]+) ]]; then
+            vol_pct=$(awk "BEGIN {printf \"%d\", ${BASH_REMATCH[1]} * 100}")
+            if [[ "$vol" == *MUTED* ]]; then
+                vol_str="vol mute"
+            else
+                vol_str="vol ${vol_pct}%"
+            fi
+        fi
+    elif command -v amixer &>/dev/null; then
+        vol=$(amixer sget Master 2>/dev/null | grep -oP '\[\d+%\]' | head -1 | tr -d '[]')
+        mute=$(amixer sget Master 2>/dev/null | grep -oP '\[o(n|ff)\]' | head -1 | tr -d '[]')
+        if [[ -n "$vol" ]]; then
+            if [[ "$mute" == "off" ]]; then
+                vol_str="vol mute"
+            else
+                vol_str="vol ${vol}"
+            fi
+        fi
+    fi
+    # Use cached value if current read failed
+    if [[ -n "$vol_str" ]]; then
+        last_vol="$vol_str"
+    fi
+    if [[ -n "$last_vol" ]]; then
+        status+="$last_vol | "
     fi
 
     # Battery
@@ -48,5 +90,8 @@ while true; do
     status+="$(date '+%H:%M')  "
 
     xsetroot -name "$status"
-    sleep 30
+
+    # Sleep in background so USR1 can interrupt it for instant refresh
+    sleep 5 &
+    wait $! 2>/dev/null
 done

@@ -6,6 +6,14 @@ with open('dwm.c') as f:
     src = f.read()
 
 replacements = [
+    # drawbar(): add SchemeTitle enum for separate title colors
+    ('enum { SchemeNorm, SchemeSel }; /* color schemes */',
+     'enum { SchemeNorm, SchemeSel, SchemeTitle }; /* color schemes */'),
+
+    # drawbar(): use SchemeTitle for window title instead of SchemeSel
+    ('drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);\n\t\t\tdrw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);',
+     'drw_setscheme(drw, scheme[m == selmon ? SchemeTitle : SchemeNorm]);\n\t\t\tdrw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);'),
+
     # tile(): gap between master and stack areas
     ('mw = m->nmaster ? m->ww * m->mfact : 0;',
      'mw = m->nmaster ? (m->ww - gappx) * m->mfact : 0;'),
@@ -45,6 +53,22 @@ replacements = [
     # monocle(): add gaps around fullscreen window
     ('resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);',
      'resize(c, m->wx + gappx, m->wy + gappx, m->ww - 2 * c->bw - 2 * gappx, m->wh - 2 * c->bw - 2 * gappx, 0);'),
+
+    # drawbar(): left padding before tags (matches physical rounded display corners)
+    ('\tx = 0;\n\tfor (i = 0; i < LENGTH(tags); i++) {',
+     '\tdrw_setscheme(drw, scheme[SchemeNorm]);\n\tdrw_rect(drw, 0, 0, gappx, bh, 1, 1);\n\tx = gappx;\n\tfor (i = 0; i < LENGTH(tags); i++) {'),
+
+    # drawbar(): remove layout symbol (e.g. "[]=")
+    ('\t}\n\tw = TEXTW(m->ltsymbol);\n\tdrw_setscheme(drw, scheme[SchemeNorm]);\n\tx = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);\n\n\tif',
+     '\t}\n\n\tif'),
+
+    # buttonpress(): offset tag click regions to match left padding
+    ('\t\ti = x = 0;\n\t\tdo\n\t\t\tx += TEXTW(tags[i]);\n\t\twhile (ev->x >= x && ++i < LENGTH(tags));',
+     '\t\ti = 0;\n\t\tx = gappx;\n\t\tdo\n\t\t\tx += TEXTW(tags[i]);\n\t\twhile (ev->x >= x && ++i < LENGTH(tags));'),
+
+    # buttonpress(): remove layout symbol click region
+    ('\t\t} else if (ev->x < x + TEXTW(selmon->ltsymbol))\n\t\t\tclick = ClkLtSymbol;\n\t\telse if',
+     '\t\t} else if'),
 ]
 
 ok = True

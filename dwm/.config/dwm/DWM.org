@@ -27,7 +27,7 @@ and installed to =~/.local/=.
 | Super+Shift+Space   | Toggle floating              |
 | Super+Tab           | Toggle last tag              |
 | Super+b             | Toggle bar                   |
-| Super+Shift+q       | Quit dwm                     |
+| Super+Shift+BackSpace | Quit dwm                   |
 | XF86AudioRaiseVol   | Volume up 5%                 |
 | XF86AudioLowerVol   | Volume down 5%               |
 | XF86AudioMute       | Toggle mute                  |
@@ -36,9 +36,10 @@ and installed to =~/.local/=.
 
 * Status Bar
 
-Format: =[N updates | ]bat XX% (Xh Xm left) | up Xd | HH:MM=
+Format: =[N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM=
 
 - *APT updates*: count of pending upgrades (hidden if 0)
+- *Volume*: percentage or "mute" (via wpctl or amixer)
 - *Battery*: capacity percentage + time remaining
 - *Uptime*: days since boot
 - *Time*: 24-hour format
