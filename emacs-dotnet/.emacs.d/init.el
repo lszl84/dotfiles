@@ -275,7 +275,7 @@
   ;; ------------------------------------------------------------------
   ;; DAP UI tweaks
   ;; ------------------------------------------------------------------
-  (setq dap-ui-controls-mode t)
+  (dap-ui-controls-mode 1)
   ;; Automatically show locals, breakpoints, etc.
   (setq dap-auto-configure-features
         '(sessions locals breakpoints expressions controls tooltip)))

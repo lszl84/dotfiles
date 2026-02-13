@@ -51,6 +51,17 @@ X11 compositor settings:
 - 90% transparency for Xfce4-terminal, Mousepad, and Emacs
 - Blur applied only to those same apps
 
+** dwm
+
+Tiling window manager (dwm 6.5) as an alternative session alongside Cinnamon:
+- Compiled from source via ~dwm-build~ with custom ~config.h~
+- HiDPI (192 DPI / 2x) scaling for 3120x2080 display
+- st terminal with Modus Vivendi colors
+- rofi launcher, PipeWire volume keys, brightnessctl
+- Rock-solid screen locking via ~xss-lock~ + ~i3lock~
+- Touchegg 3-finger swipe for workspace switching
+- Status bar: updates, battery, uptime, clock
+
 ** themes
 
 GTK themes for a consistent desktop look:

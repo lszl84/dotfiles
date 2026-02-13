@@ -21,6 +21,7 @@ tar xzf "dwm-$DWM_VERSION.tar.gz"
 cd "dwm-$DWM_VERSION"
 cp "$CONFIG_DIR/dwm-config.h" config.h
 python3 "$CONFIG_DIR/dwm-gaps-patch.py"
+python3 "$CONFIG_DIR/dwm-status2d-patch.py"
 make clean
 make PREFIX="$PREFIX"
 make PREFIX="$PREFIX" install

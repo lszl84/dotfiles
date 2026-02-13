@@ -3,6 +3,11 @@
 # Format: [N updates • ]vol XX% • bat XX% (Xh Xm left) • up Xd • HH:MM
 # Sends USR1 to this process to trigger an immediate refresh (used by volume keys).
 
+# Kill any previous instance
+for pid in $(pgrep -f dwm-status); do
+    [ "$pid" != "$$" ] && kill "$pid" 2>/dev/null
+done
+
 last_vol=""
 apt_cache=""
 apt_counter=0
@@ -53,10 +58,17 @@ while true; do
         status+="$last_vol • "
     fi
 
-    # Battery
+    # Battery (green = charging, red = below 10%, default otherwise)
     bat_cap=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
     if [[ -n "$bat_cap" ]]; then
         bat_status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
+
+        if [[ "$bat_status" == "Charging" ]]; then
+            status+="^c#00ff00^"
+        elif [[ "$bat_cap" -lt 10 ]]; then
+            status+="^c#ff0000^"
+        fi
+
         status+="bat ${bat_cap}%"
 
         # Time remaining (from energy_now and power_now)
@@ -76,6 +88,10 @@ while true; do
                 remaining_mins=$(( mins % 60 ))
                 status+=" (${hours}h ${remaining_mins}m left)"
             fi
+        fi
+
+        if [[ "$bat_status" == "Charging" || "$bat_cap" -lt 10 ]]; then
+            status+="^d^"
         fi
 
         status+=" • "
