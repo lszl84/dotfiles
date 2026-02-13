@@ -1,0 +1,42 @@
+#!/bin/bash
+# dwm-build — Download and compile dwm + st from source
+set -euo pipefail
+
+DWM_VERSION="6.5"
+ST_VERSION="0.9.2"
+BUILD_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/dwm-build"
+PREFIX="$HOME/.local"
+CONFIG_DIR="$HOME/.config/dwm"
+
+mkdir -p "$BUILD_DIR"
+
+# --- dwm ---
+echo "==> Building dwm $DWM_VERSION"
+cd "$BUILD_DIR"
+if [[ ! -f "dwm-$DWM_VERSION.tar.gz" ]]; then
+    curl -LO "https://dl.suckless.org/dwm/dwm-$DWM_VERSION.tar.gz"
+fi
+rm -rf "dwm-$DWM_VERSION"
+tar xzf "dwm-$DWM_VERSION.tar.gz"
+cd "dwm-$DWM_VERSION"
+cp "$CONFIG_DIR/dwm-config.h" config.h
+python3 "$CONFIG_DIR/dwm-gaps-patch.py"
+make clean
+make PREFIX="$PREFIX"
+make PREFIX="$PREFIX" install
+
+# --- st ---
+echo "==> Building st $ST_VERSION"
+cd "$BUILD_DIR"
+if [[ ! -d "st-$ST_VERSION" ]]; then
+    curl -LO "https://dl.suckless.org/st/st-$ST_VERSION.tar.gz"
+    tar xzf "st-$ST_VERSION.tar.gz"
+fi
+cd "st-$ST_VERSION"
+cp "$CONFIG_DIR/st-config.h" config.h
+make clean
+make PREFIX="$PREFIX"
+make PREFIX="$PREFIX" install
+
+echo "==> dwm and st installed to $PREFIX/bin/"
+echo "==> Done! Log out and select 'Default Xsession' from LightDM."

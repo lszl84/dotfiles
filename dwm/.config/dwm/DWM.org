@@ -1,0 +1,125 @@
+#+TITLE: dwm Configuration
+#+DESCRIPTION: dwm setup for LMDE 7 with HiDPI, alongside Cinnamon
+
+* Overview
+
+A minimal dwm 6.5 tiling window manager setup that coexists with Cinnamon
+via LightDM session selection. Compiled from source with a custom =config.h=
+and installed to =~/.local/=.
+
+* Key Bindings
+
+| Key                 | Action                       |
+|---------------------+------------------------------|
+| Super+Return        | Open terminal (st)           |
+| Super+BackSpace     | Kill focused window          |
+| Super+Space         | Launch rofi                  |
+| Super+j/k           | Focus next/prev window       |
+| Super+h             | Shrink master area           |
+| Super+,/.           | Shrink/grow master area      |
+| Super+l             | Lock screen                  |
+| Super+Shift+Return  | Swap focused to master       |
+| Super+Left/Right    | Previous/next tag            |
+| Ctrl+Alt+Left/Right | Previous/next tag (touchegg) |
+| Super+1-9           | Jump to tag                  |
+| Super+Shift+1-9     | Move window to tag           |
+| Super+t/f/m         | Tiled/floating/monocle       |
+| Super+Shift+Space   | Toggle floating              |
+| Super+Tab           | Toggle last tag              |
+| Super+b             | Toggle bar                   |
+| Super+Shift+q       | Quit dwm                     |
+| XF86AudioRaiseVol   | Volume up 5%                 |
+| XF86AudioLowerVol   | Volume down 5%               |
+| XF86AudioMute       | Toggle mute                  |
+| XF86BrightnessUp    | Brightness up 10%            |
+| XF86BrightnessDown  | Brightness down 10%          |
+
+* Status Bar
+
+Format: =[N updates | ]bat XX% (Xh Xm left) | up Xd | HH:MM=
+
+- *APT updates*: count of pending upgrades (hidden if 0)
+- *Battery*: capacity percentage + time remaining
+- *Uptime*: days since boot
+- *Time*: 24-hour format
+
+Refreshes every 30 seconds via =dwm-status=.
+
+* HiDPI Configuration
+
+The display is 3120x2080 and uses 2x scaling:
+
+- =Xft.dpi: 192= via =xresources= (loaded by =xrdb=)
+- =xsettingsd= provides =Gdk/WindowScalingFactor 2= and =Gdk/UnscaledDPI 196608= for GTK apps
+- =QT_AUTO_SCREEN_SCALE_FACTOR=1= for Qt apps
+- =gsettings= sets =color-scheme= and =gtk-theme= for libadwaita/GTK 3 dark theme
+- dwm font set to =monospace:size=10=, border to 4px
+- st font set to =Liberation Mono:pixelsize=28=
+- rofi font set to =monospace 20=
+
+* Screen Locking
+
+Uses =xss-lock= with =--transfer-sleep-lock= protocol and =i3lock -u= (no indicator):
+
+1. =xss-lock -l= obtains a systemd delay inhibitor before sleep
+2. systemd-logind waits for the inhibitor to release
+3. =xss-lock= launches =dwm-lock=, passing the inhibitor file descriptor
+4. =dwm-lock= starts =i3lock=, waits for it to render, then closes the FD
+5. Only then does systemd proceed to suspend
+6. On wake, =i3lock= is still running — password required
+
+Screensaver timeout is 5 minutes (=xset s 300 5=).
+
+* Build / Install
+
+#+begin_src bash
+# Install dependencies
+sudo apt install xss-lock i3lock brightnessctl rofi xsettingsd picom \
+    libx11-dev libxft-dev libxinerama-dev libharfbuzz-dev \
+    x11-xserver-utils feh touchegg
+
+# Stow the config
+cd ~/dotfiles && stow dwm
+
+# Build dwm + st and create session file
+dwm-build
+#+end_src
+
+* Touchegg Integration
+
+Three-finger swipes send =Ctrl+Alt+Left/Right= via the existing touchegg
+config. dwm binds those same key combos to =shiftview= (previous/next tag),
+so swipes cycle workspaces just like in Cinnamon.
+
+* Compositor (picom)
+
+Picom runs as a compositor providing:
+
+- *Rounded corners* (12px radius) on all windows except the bar
+- *Terminal transparency* (92% opacity) on st windows
+- GLX backend with vsync
+
+Config: =~/.config/picom/picom.conf=
+
+* Modifying Key Bindings
+
+1. Edit =~/.config/dwm/dwm-config.h=
+2. Run =dwm-build= to recompile
+3. Restart dwm (Super+Shift+q then log back in, or send SIGHUP)
+
+* Files
+
+| File              | Purpose                                  |
+|-------------------+------------------------------------------|
+| =dwm-config.h=      | dwm config.h (keybindings, appearance)   |
+| =st-config.h=       | st config.h (font, colors)               |
+| =dwm-start=         | Session startup (env, daemons, exec)     |
+| =dwm-lock=          | xss-lock + i3lock wrapper                |
+| =dwm-status=        | Status bar loop                          |
+| =dwm-build=         | Download + compile + install             |
+| =xresources=        | Xft.dpi and font rendering               |
+| =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS      |
+| =picom.conf=        | Compositor (rounded corners, opacity)    |
+| =rofi/config.rasi=  | App launcher config                      |
+| =gtk-3.0/settings.ini= | GTK 3 theme settings                 |
+| =gtk-4.0/settings.ini= | GTK 4 theme settings                 |

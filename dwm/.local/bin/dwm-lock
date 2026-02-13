@@ -1,0 +1,20 @@
+#!/bin/bash
+# dwm-lock — Screen lock wrapper for xss-lock + i3lock
+#
+# Uses the xss-lock --transfer-sleep-lock protocol to guarantee
+# the screen is locked before the system suspends.
+
+trap 'kill %%' TERM INT
+
+if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
+    # Sleep-triggered lock: start i3lock with the inhibitor FD closed
+    # on its side, wait for it to grab the display, then release
+    i3lock -n -u -c 000000 {XSS_SLEEP_LOCK_FD}<&- &
+    sleep 0.5
+    exec {XSS_SLEEP_LOCK_FD}>&-
+else
+    # Manual lock or screensaver timeout
+    i3lock -n -u -c 000000 &
+fi
+
+wait

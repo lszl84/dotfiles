@@ -1,0 +1,52 @@
+#!/bin/bash
+# dwm-status — Status bar for dwm using xsetroot -name
+# Format: [N updates | ]bat XX% (Xh Xm left) | up Xd | HH:MM
+
+while true; do
+    status=""
+
+    # APT updates (hidden if 0)
+    updates=$(apt list --upgradable 2>/dev/null | grep -c upgradable)
+    if [[ "$updates" -gt 0 ]]; then
+        status+="$updates updates | "
+    fi
+
+    # Battery
+    bat_cap=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
+    if [[ -n "$bat_cap" ]]; then
+        bat_status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
+        status+="bat ${bat_cap}%"
+
+        # Time remaining (from energy_now and power_now)
+        energy_now=$(cat /sys/class/power_supply/BAT0/energy_now 2>/dev/null)
+        power_now=$(cat /sys/class/power_supply/BAT0/power_now 2>/dev/null)
+        if [[ -n "$power_now" && "$power_now" -gt 0 ]]; then
+            if [[ "$bat_status" == "Discharging" ]]; then
+                mins=$(( energy_now * 60 / power_now ))
+            elif [[ "$bat_status" == "Charging" ]]; then
+                energy_full=$(cat /sys/class/power_supply/BAT0/energy_full 2>/dev/null)
+                mins=$(( (energy_full - energy_now) * 60 / power_now ))
+            else
+                mins=0
+            fi
+            if [[ "$mins" -gt 0 ]]; then
+                hours=$(( mins / 60 ))
+                remaining_mins=$(( mins % 60 ))
+                status+=" (${hours}h ${remaining_mins}m left)"
+            fi
+        fi
+
+        status+=" | "
+    fi
+
+    # Uptime
+    uptime_secs=$(cut -d. -f1 /proc/uptime)
+    uptime_days=$(( uptime_secs / 86400 ))
+    status+="up ${uptime_days}d | "
+
+    # Time
+    status+="$(date '+%H:%M')  "
+
+    xsetroot -name "$status"
+    sleep 30
+done

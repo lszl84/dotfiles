@@ -1,0 +1,7 @@
+configuration {
+    modi: "drun,run";
+    font: "monospace 20";
+    show-icons: true;
+    terminal: "st";
+    drun-display-format: "{name}";
+}
