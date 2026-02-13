@@ -41,6 +41,9 @@
 ;; Show matching parentheses
 (show-paren-mode 1)
 
+;; Pixel-wise frame resizing (no gaps at edges)
+(setq frame-resize-pixelwise t)
+
 ;; Smoother scrolling
 (setq scroll-margin 3)
 (setq scroll-conservatively 101)
