@@ -2,3 +2,6 @@
 *~ 
 .#* 
 \#*#
+
+# Touchegg lock files
+touchegg/.config/touchegg/.touchegg:0.lock
