@@ -29,9 +29,10 @@ for id in $(xinput list --id-only 2>/dev/null); do
     xinput set-prop "$id" "libinput Natural Scrolling Enabled" 1 2>/dev/null || true
 done
 
-# Dark theme for GNOME/libadwaita and GTK 3 apps
+# Dark theme: xsettingsd handles GTK3, gsettings + ADW_DISABLE_PORTAL handles GTK4/libadwaita
+export ADW_DISABLE_PORTAL=1
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null || true
-gsettings set org.gnome.desktop.interface gtk-theme Slot-Dark-GTK 2>/dev/null || true
+gsettings set org.gnome.desktop.interface gtk-theme Mint-Y-Dark 2>/dev/null || true
 
 # Wallpaper (same as Cinnamon)
 feh --bg-fill ~/Wallpapers/pexels-asphotograpy-105028.jpg &
