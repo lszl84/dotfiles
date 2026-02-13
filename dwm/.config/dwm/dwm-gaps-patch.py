@@ -32,7 +32,7 @@ replacements = [
 
     # tile(): master window position and width with gaps
     ('resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);',
-     'resize(c, m->wx + gappx, m->wy + my, mw - (2*c->bw) - gappx, h - (2*c->bw), 0);'),
+     'c->bw = 0;\n\t\t\tresize(c, m->wx + gappx, m->wy + my, mw - (2*c->bw) - gappx, h - (2*c->bw), 0);'),
 
     # tile(): master vertical advance — remove conditional, always add gap
     ('\t\t\tif (my + HEIGHT(c) < m->wh)\n\t\t\t\tmy += HEIGHT(c);',
@@ -44,15 +44,15 @@ replacements = [
 
     # tile(): stack window position and width with gaps
     ('resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);',
-     'resize(c, m->wx + mw + gappx, m->wy + ty, m->ww - mw - (2*c->bw) - 2 * gappx, h - (2*c->bw), 0);'),
+     'c->bw = 0;\n\t\t\tresize(c, m->wx + mw + gappx, m->wy + ty, m->ww - mw - (2*c->bw) - 2 * gappx, h - (2*c->bw), 0);'),
 
     # tile(): stack vertical advance — remove conditional, always add gap
     ('\t\t\tif (ty + HEIGHT(c) < m->wh)\n\t\t\t\tty += HEIGHT(c);',
      '\t\t\tty += HEIGHT(c) + gappx;'),
 
-    # monocle(): add gaps around fullscreen window
-    ('resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);',
-     'resize(c, m->wx + gappx, m->wy + gappx, m->ww - 2 * c->bw - 2 * gappx, m->wh - 2 * c->bw - 2 * gappx, 0);'),
+    # monocle(): add gaps around monocle window, no borders for tiled
+    ('\tfor (c = nexttiled(m->clients); c; c = nexttiled(c->next))\n\t\tresize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);',
+     '\tfor (c = nexttiled(m->clients); c; c = nexttiled(c->next)) {\n\t\tc->bw = 0;\n\t\tresize(c, m->wx + gappx, m->wy + gappx, m->ww - 2 * c->bw - 2 * gappx, m->wh - 2 * c->bw - 2 * gappx, 0);\n\t}'),
 
     # drawbar(): left padding before tags (matches physical rounded display corners)
     ('\tx = 0;\n\tfor (i = 0; i < LENGTH(tags); i++) {',
@@ -69,6 +69,14 @@ replacements = [
     # buttonpress(): remove layout symbol click region
     ('\t\t} else if (ev->x < x + TEXTW(selmon->ltsymbol))\n\t\t\tclick = ClkLtSymbol;\n\t\telse if',
      '\t\t} else if'),
+
+    # togglefloating(): restore border when becoming floating
+    ('\tif (selmon->sel->isfloating)\n\t\tresize(selmon->sel, selmon->sel->x, selmon->sel->y,\n\t\t\tselmon->sel->w, selmon->sel->h, 0);',
+     '\tif (selmon->sel->isfloating) {\n\t\tselmon->sel->bw = borderpx;\n\t\tresize(selmon->sel, selmon->sel->x, selmon->sel->y,\n\t\t\tselmon->sel->w, selmon->sel->h, 0);\n\t}'),
+
+    # manage(): center floating windows on screen
+    ('\tif (c->isfloating)\n\t\tXRaiseWindow(dpy, c->win);',
+     '\tif (c->isfloating) {\n\t\tc->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;\n\t\tc->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;\n\t\tXRaiseWindow(dpy, c->win);\n\t}'),
 ]
 
 ok = True
