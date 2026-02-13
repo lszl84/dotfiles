@@ -24,9 +24,11 @@ xss-lock -l -- ~/.local/bin/dwm-lock &
 # Screen timeout: lock after 5 min idle
 xset s 300 5
 
-# Natural scrolling on all pointing devices
+# Touchpad / pointing device tweaks
 for id in $(xinput list --id-only 2>/dev/null); do
     xinput set-prop "$id" "libinput Natural Scrolling Enabled" 1 2>/dev/null || true
+    xinput set-prop "$id" "libinput Tapping Enabled" 0 2>/dev/null || true
+    xinput set-prop "$id" "libinput Click Method Enabled" 0 1 2>/dev/null || true
 done
 
 # Dark theme: xsettingsd handles GTK3, gsettings + ADW_DISABLE_PORTAL handles GTK4/libadwaita
