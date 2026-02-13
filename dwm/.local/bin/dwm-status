@@ -1,6 +1,6 @@
 #!/bin/bash
 # dwm-status — Status bar for dwm using xsetroot -name
-# Format: [N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM
+# Format: [N updates • ]vol XX% • bat XX% (Xh Xm left) • up Xd • HH:MM
 # Sends USR1 to this process to trigger an immediate refresh (used by volume keys).
 
 last_vol=""
@@ -19,7 +19,7 @@ while true; do
     fi
     apt_counter=$(( (apt_counter + 1) % 60 ))
     if [[ "$apt_cache" -gt 0 ]]; then
-        status+="$apt_cache updates | "
+        status+="$apt_cache updates • "
     fi
 
     # Volume (cache last known value so transient wpctl failures don't blank it)
@@ -50,7 +50,7 @@ while true; do
         last_vol="$vol_str"
     fi
     if [[ -n "$last_vol" ]]; then
-        status+="$last_vol | "
+        status+="$last_vol • "
     fi
 
     # Battery
@@ -78,16 +78,16 @@ while true; do
             fi
         fi
 
-        status+=" | "
+        status+=" • "
     fi
 
     # Uptime
     uptime_secs=$(cut -d. -f1 /proc/uptime)
     uptime_days=$(( uptime_secs / 86400 ))
-    status+="up ${uptime_days}d | "
+    status+="up ${uptime_days}d • "
 
     # Time
-    status+="$(date '+%H:%M')  "
+    status+="$(date '+%H:%M')   "
 
     xsetroot -name "$status"
 

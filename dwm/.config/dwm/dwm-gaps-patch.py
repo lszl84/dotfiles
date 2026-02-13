@@ -56,7 +56,7 @@ replacements = [
 
     # drawbar(): left padding before tags (matches physical rounded display corners)
     ('\tx = 0;\n\tfor (i = 0; i < LENGTH(tags); i++) {',
-     '\tdrw_setscheme(drw, scheme[SchemeNorm]);\n\tdrw_rect(drw, 0, 0, gappx, bh, 1, 1);\n\tx = gappx;\n\tfor (i = 0; i < LENGTH(tags); i++) {'),
+     '\tdrw_setscheme(drw, scheme[SchemeNorm]);\n\tdrw_rect(drw, 0, 0, gappx + lrpad / 2, bh, 1, 1);\n\tx = gappx + lrpad / 2;\n\tfor (i = 0; i < LENGTH(tags); i++) {'),
 
     # drawbar(): remove layout symbol (e.g. "[]=")
     ('\t}\n\tw = TEXTW(m->ltsymbol);\n\tdrw_setscheme(drw, scheme[SchemeNorm]);\n\tx = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);\n\n\tif',
@@ -64,7 +64,7 @@ replacements = [
 
     # buttonpress(): offset tag click regions to match left padding
     ('\t\ti = x = 0;\n\t\tdo\n\t\t\tx += TEXTW(tags[i]);\n\t\twhile (ev->x >= x && ++i < LENGTH(tags));',
-     '\t\ti = 0;\n\t\tx = gappx;\n\t\tdo\n\t\t\tx += TEXTW(tags[i]);\n\t\twhile (ev->x >= x && ++i < LENGTH(tags));'),
+     '\t\ti = 0;\n\t\tx = gappx + lrpad / 2;\n\t\tdo\n\t\t\tx += TEXTW(tags[i]);\n\t\twhile (ev->x >= x && ++i < LENGTH(tags));'),
 
     # buttonpress(): remove layout symbol click region
     ('\t\t} else if (ev->x < x + TEXTW(selmon->ltsymbol))\n\t\t\tclick = ClkLtSymbol;\n\t\telse if',
