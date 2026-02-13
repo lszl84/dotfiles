@@ -36,6 +36,8 @@ rm -rf "st-$ST_VERSION"
 tar xzf "st-$ST_VERSION.tar.gz"
 cd "st-$ST_VERSION"
 cp "$CONFIG_DIR/st-config.h" config.h
+patch -p1 < "$CONFIG_DIR/st-scrollback.diff"
+patch -p1 < "$CONFIG_DIR/st-scrollback-mouse.diff"
 python3 "$CONFIG_DIR/st-anysize-patch.py"
 make clean
 make PREFIX="$PREFIX"
