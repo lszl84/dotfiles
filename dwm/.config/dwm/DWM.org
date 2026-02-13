@@ -18,15 +18,19 @@ and installed to =~/.local/=.
 | Super+h             | Shrink master area           |
 | Super+,/.           | Shrink/grow master area      |
 | Super+l             | Lock screen                  |
+| Super+i/d           | Add/remove master slot       |
 | Super+Shift+Return  | Swap focused to master       |
 | Super+Left/Right    | Previous/next tag            |
 | Ctrl+Alt+Left/Right | Previous/next tag (touchegg) |
-| Super+1-9           | Jump to tag                  |
-| Super+Shift+1-9     | Move window to tag           |
+| Alt+Tab/Shift+Tab   | Cycle window focus           |
+| Super+1-4           | Jump to tag                  |
+| Super+Shift+1-4     | Move window to tag           |
 | Super+t/f/m         | Tiled/floating/monocle       |
 | Super+Shift+Space   | Toggle floating              |
 | Super+Tab           | Toggle last tag              |
 | Super+b             | Toggle bar                   |
+| Super+0             | View all tags                |
+| Super+Shift+0       | Tag window on all tags       |
 | Super+Shift+BackSpace | Quit dwm                   |
 | XF86AudioRaiseVol   | Volume up 5%                 |
 | XF86AudioLowerVol   | Volume down 5%               |
@@ -40,11 +44,12 @@ Format: =[N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM=
 
 - *APT updates*: count of pending upgrades (hidden if 0)
 - *Volume*: percentage or "mute" (via wpctl or amixer)
-- *Battery*: capacity percentage + time remaining
+- *Battery*: capacity percentage + time remaining, with status2d color coding
 - *Uptime*: days since boot
 - *Time*: 24-hour format
 
-Refreshes every 30 seconds via =dwm-status=.
+Refreshes every 30 seconds via =dwm-status=. Instant volume updates via
+=pkill -USR1 dwm-status= triggered by the volume key bindings.
 
 * HiDPI Configuration
 
@@ -54,13 +59,39 @@ The display is 3120x2080 and uses 2x scaling:
 - =xsettingsd= provides =Gdk/WindowScalingFactor 2= and =Gdk/UnscaledDPI 196608= for GTK apps
 - =QT_AUTO_SCREEN_SCALE_FACTOR=1= for Qt apps
 - =gsettings= sets =color-scheme= and =gtk-theme= for libadwaita/GTK 3 dark theme
-- dwm font set to =monospace:size=10=, border to 4px
+- dwm font set to =monospace:size=10=, border to 4px, gaps to 14px (7 logical)
 - st font set to =Liberation Mono:pixelsize=28=
 - rofi font set to =monospace 20=
+- Cursor size: 48px (=XCURSOR_SIZE= and =Xcursor.size=)
+
+* Touchpad / Input Devices
+
+Settings are applied via =dwm-touchpad=, a background daemon launched from =dwm-start=:
+
+- *Natural scrolling*: enabled
+- *Tap-to-click*: disabled
+- *Click method*: clickfinger (no button areas)
+
+The daemon uses =xinput= to set libinput properties on all pointing devices,
+and re-applies them automatically when:
+
+1. *Devices are added* — monitored via =udevadm monitor= (covers power-management
+   re-enumeration, USB hotplug, etc.)
+2. *System resumes from suspend* — monitored via DBus =PrepareForSleep= signal
+
+This avoids needing root or =/etc/X11/xorg.conf.d/= files.
+
+* Touchegg Integration
+
+Three-finger swipes send =Ctrl+Alt+Left/Right= via the existing touchegg
+config (=~/.config/touchegg/touchegg.conf=). dwm binds those same key combos
+to =shiftview= (previous/next tag), so swipes cycle workspaces just like in
+Cinnamon. Uses =SEND_KEYS= action instead of =CHANGE_DESKTOP= as a workaround
+for touchegg instability.
 
 * Screen Locking
 
-Uses =xss-lock= with =--transfer-sleep-lock= protocol and =i3lock -u= (no indicator):
+Uses =xss-lock= with =--transfer-sleep-lock= protocol and =i3lock=:
 
 1. =xss-lock -l= obtains a systemd delay inhibitor before sleep
 2. systemd-logind waits for the inhibitor to release
@@ -71,56 +102,64 @@ Uses =xss-lock= with =--transfer-sleep-lock= protocol and =i3lock -u= (no indica
 
 Screensaver timeout is 5 minutes (=xset s 300 5=).
 
+* Compositor (picom)
+
+Picom runs as a compositor providing:
+
+- *Transparency* (90% opacity) on Emacs and Xfce4-terminal windows
+- *Background blur* (dual_kawase, strength 7) on the same windows
+- GLX backend with vsync
+
+Config: =~/.config/picom/picom.conf=
+
+* Patches Applied
+
+dwm and st are built from vanilla tarballs with these patches applied by =dwm-build=:
+
+- *dwm-gaps* (=dwm-gaps-patch.py=): uselessgap-style gaps around all windows and in monocle mode
+- *dwm-status2d* (=dwm-status2d-patch.py=): colored status bar segments
+- *st-scrollback* (=st-scrollback.diff=): scrollback buffer for st
+- *st-scrollback-mouse* (=st-scrollback-mouse.diff=): Shift+scroll wheel to scroll st
+- *st-anysize* (=st-anysize-patch.py=): center content in st when window doesn't fit cell grid exactly
+
 * Build / Install
 
 #+begin_src bash
 # Install dependencies
 sudo apt install xss-lock i3lock brightnessctl rofi xsettingsd picom \
     libx11-dev libxft-dev libxinerama-dev libharfbuzz-dev \
-    x11-xserver-utils feh touchegg
+    x11-xserver-utils feh touchegg dbus-x11
 
-# Stow the config
-cd ~/dotfiles && stow dwm
+# Stow the configs
+cd ~/dotfiles && stow dwm touchegg picom
 
-# Build dwm + st and create session file
+# Build dwm + st and install to ~/.local/bin/
 dwm-build
+
+# Log out and select "Default Xsession" from LightDM
 #+end_src
-
-* Touchegg Integration
-
-Three-finger swipes send =Ctrl+Alt+Left/Right= via the existing touchegg
-config. dwm binds those same key combos to =shiftview= (previous/next tag),
-so swipes cycle workspaces just like in Cinnamon.
-
-* Compositor (picom)
-
-Picom runs as a compositor providing:
-
-- *Rounded corners* (12px radius) on all windows except the bar
-- *Terminal transparency* (92% opacity) on st windows
-- GLX backend with vsync
-
-Config: =~/.config/picom/picom.conf=
 
 * Modifying Key Bindings
 
 1. Edit =~/.config/dwm/dwm-config.h=
 2. Run =dwm-build= to recompile
-3. Restart dwm (Super+Shift+q then log back in, or send SIGHUP)
+3. Restart dwm (Super+Shift+BackSpace then log back in)
 
 * Files
 
-| File              | Purpose                                  |
-|-------------------+------------------------------------------|
-| =dwm-config.h=      | dwm config.h (keybindings, appearance)   |
-| =st-config.h=       | st config.h (font, colors)               |
-| =dwm-start=         | Session startup (env, daemons, exec)     |
-| =dwm-lock=          | xss-lock + i3lock wrapper                |
-| =dwm-status=        | Status bar loop                          |
-| =dwm-build=         | Download + compile + install             |
-| =xresources=        | Xft.dpi and font rendering               |
-| =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS      |
-| =picom.conf=        | Compositor (rounded corners, opacity)    |
-| =rofi/config.rasi=  | App launcher config                      |
-| =gtk-3.0/settings.ini= | GTK 3 theme settings                 |
-| =gtk-4.0/settings.ini= | GTK 4 theme settings                 |
+| File                 | Purpose                                    |
+|----------------------+--------------------------------------------|
+| =dwm-config.h=      | dwm config.h (keybindings, appearance)     |
+| =st-config.h=       | st config.h (font, colors)                 |
+| =dwm-start=         | Session startup (env, daemons, exec)        |
+| =dwm-lock=          | xss-lock + i3lock wrapper                  |
+| =dwm-status=        | Status bar loop                            |
+| =dwm-build=         | Download + compile + install               |
+| =dwm-touchpad=      | Touchpad settings daemon (survive resume)  |
+| =xresources=        | Xft.dpi and font rendering                 |
+| =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS        |
+| =picom.conf=        | Compositor (transparency, blur)            |
+| =rofi/config.rasi=  | App launcher config                        |
+| =gtk-3.0/settings.ini= | GTK 3 theme settings                    |
+| =gtk-4.0/settings.ini= | GTK 4 theme settings                    |
+| =touchegg.conf=     | Three-finger swipe gestures                |

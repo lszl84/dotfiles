@@ -1,5 +1,6 @@
 #!/bin/bash
-# dwm-touchpad — Apply libinput settings on start and after resume
+# dwm-touchpad — Apply libinput settings on start, after resume,
+#                and when input devices are added (power management re-enumeration)
 
 apply() {
     for id in $(xinput list --id-only 2>/dev/null); do
@@ -11,11 +12,22 @@ apply() {
 
 apply
 
+# Watch for device additions (covers power-management re-enumeration)
+udevadm monitor --subsystem-match=input --udev |
+while read -r line; do
+    if [[ "$line" == *" add "* ]]; then
+        sleep 0.5
+        apply
+    fi
+done &
+
+# Watch for system resume
 dbus-monitor --system "type='signal',interface='org.freedesktop.login1.Manager',member=PrepareForSleep" |
 while read -r line; do
-    # PrepareForSleep(false) = system just resumed
     if [[ "$line" == *"boolean false"* ]]; then
         sleep 1
         apply
     fi
-done
+done &
+
+wait
