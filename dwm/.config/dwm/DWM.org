@@ -48,7 +48,7 @@ Format: =[N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM=
 - *Uptime*: days since boot
 - *Time*: 24-hour format
 
-Refreshes every 30 seconds via =dwm-status=. Instant volume updates via
+Refreshes every 5 seconds via =dwm-status=. Instant volume updates via
 =pkill -USR1 dwm-status= triggered by the volume key bindings.
 
 * HiDPI Configuration
@@ -59,7 +59,7 @@ The display is 3120x2080 and uses 2x scaling:
 - =xsettingsd= provides =Gdk/WindowScalingFactor 2= and =Gdk/UnscaledDPI 196608= for GTK apps
 - =QT_AUTO_SCREEN_SCALE_FACTOR=1= for Qt apps
 - =gsettings= sets =color-scheme= and =gtk-theme= for libadwaita/GTK 3 dark theme
-- dwm font set to =monospace:size=10=, border to 4px, gaps to 14px (7 logical)
+- dwm font set to =monospace:size=10=, border to 2px, gaps to 14px (7 logical)
 - st font set to =Liberation Mono:pixelsize=28=
 - rofi font set to =monospace 20=
 - Cursor size: 48px (=XCURSOR_SIZE= and =Xcursor.size=)
@@ -100,15 +100,21 @@ Uses =xss-lock= with =--transfer-sleep-lock= protocol and =i3lock=:
 5. Only then does systemd proceed to suspend
 6. On wake, =i3lock= is still running — password required
 
-Screensaver timeout is 5 minutes (=xset s 300 5=).
+Idle timeouts are managed by =dwm-idle= (via =xprintidle=):
+
+- *10 minutes*: lock session (=loginctl lock-session= → triggers =xss-lock=)
+- *25 minutes*: suspend (=systemctl suspend=)
+- Fullscreen windows inhibit both lock and suspend
 
 * Compositor (picom)
 
 Picom runs as a compositor providing:
 
-- *Transparency* (90% opacity) on Emacs and Xfce4-terminal windows
+- *Transparency* (83% opacity) on st and Emacs windows
 - *Background blur* (dual_kawase, strength 7) on the same windows
-- GLX backend with vsync
+- *Rounded corners* (22px radius) on all windows except the bar
+- *Inactive dimming* (35%) to visually indicate focused window
+- GLX backend with vsync, fading enabled
 
 Config: =~/.config/picom/picom.conf=
 
@@ -131,7 +137,7 @@ sudo apt install xss-lock i3lock brightnessctl rofi xsettingsd picom \
     x11-xserver-utils feh touchegg dbus-x11
 
 # Stow the configs
-cd ~/dotfiles && stow dwm touchegg picom
+cd ~/dotfiles && stow dwm touchegg
 
 # Build dwm + st and install to ~/.local/bin/
 dwm-build
@@ -155,6 +161,7 @@ dwm-build
 | =dwm-lock=          | xss-lock + i3lock wrapper                  |
 | =dwm-status=        | Status bar loop                            |
 | =dwm-build=         | Download + compile + install               |
+| =dwm-idle=          | Idle lock & suspend with fullscreen inhibit |
 | =dwm-touchpad=      | Touchpad settings daemon (survive resume)  |
 | =xresources=        | Xft.dpi and font rendering                 |
 | =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS        |

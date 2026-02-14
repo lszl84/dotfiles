@@ -1,9 +1,9 @@
 #+TITLE: Dotfiles
-#+DESCRIPTION: Configuration files for Arch Linux
+#+DESCRIPTION: Configuration files for Linux
 
 * Overview
 
-Personal dotfiles for an Arch Linux setup with XFCE.
+Personal dotfiles for a Linux setup with dwm.
 
 * Contents
 
@@ -13,6 +13,21 @@ Shell configuration for Bash:
 - Colored output for ~ls~ and ~grep~
 - Minimal prompt showing current directory
 - PATH additions for ~.local/bin~, VSCodium, and opencode
+
+** dwm
+
+Tiling window manager (dwm 6.5) with a complete desktop environment:
+- Compiled from source via ~dwm-build~ with custom ~config.h~
+- HiDPI (192 DPI / 2x) scaling for 3120x2080 display
+- st terminal with Modus Vivendi colors
+- rofi launcher, PipeWire volume keys, brightnessctl
+- Picom compositor: 83% transparency on st/Emacs, dual-kawase blur, rounded corners, inactive window dimming
+- Screen locking via ~xss-lock~ + ~i3lock~
+- Idle lock (10 min) and suspend (25 min) with fullscreen inhibition
+- Status bar: updates, volume, battery, uptime, clock
+- GTK 3/4 dark theme settings
+
+See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
 
 ** emacs-easy
 
@@ -39,34 +54,10 @@ Handy snippets for video conversion (e.g., high-quality GIF encoding).
 
 GDB debugger config enabling ~debuginfod~ for automatic debug symbol downloads.
 
-** gtksourceview
+** touchegg
 
-Zenburn color scheme for GTK-based text editors (gedit, Mousepad, GNOME Builder) supporting both gtksourceview-3.0 and gtksourceview-4.
-
-** picom
-
-X11 compositor settings:
-- GLX backend with vsync
-- Dual-kawase blur (strength 7)
-- 90% transparency for Xfce4-terminal, Mousepad, and Emacs
-- Blur applied only to those same apps
-
-** dwm
-
-Tiling window manager (dwm 6.5) as an alternative session alongside Cinnamon:
-- Compiled from source via ~dwm-build~ with custom ~config.h~
-- HiDPI (192 DPI / 2x) scaling for 3120x2080 display
-- st terminal with Modus Vivendi colors
-- rofi launcher, PipeWire volume keys, brightnessctl
-- Rock-solid screen locking via ~xss-lock~ + ~i3lock~
-- Touchegg 3-finger swipe for workspace switching
-- Status bar: updates, battery, uptime, clock
-
-** themes
-
-GTK themes for a consistent desktop look:
-- *Slot-Dark-GTK* — dark theme with GTK 2/3/4 support
-- *Win12X-Fantasy-Compact* — compact theme with Cinnamon, GNOME Shell, and GTK 2/3 support
+Touchpad gesture daemon:
+- Three-finger swipe left/right for workspace switching
 
 * Installation
 
@@ -75,6 +66,8 @@ Symlink or copy the contents of each directory to your home folder:
 #+begin_src bash
 stow bash
 stow emacs-easy
+stow dwm
+stow touchegg
 stow fastfetch
 # etc.
 #+end_src
