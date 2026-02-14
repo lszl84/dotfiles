@@ -30,10 +30,10 @@ xss-lock -l -- ~/.local/bin/dwm-lock &
 # Dark theme: xsettingsd handles GTK3, gsettings + ADW_DISABLE_PORTAL handles GTK4/libadwaita
 export ADW_DISABLE_PORTAL=1
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null || true
-gsettings set org.gnome.desktop.interface gtk-theme Mint-Y-Dark 2>/dev/null || true
+gsettings set org.gnome.desktop.interface gtk-theme Mint-Y-Dark-Blue 2>/dev/null || true
 
 # Wallpaper (same as Cinnamon)
-feh --bg-fill ~/Wallpapers/pexels-asphotograpy-105028.jpg &
+feh --bg-fill /usr/share/backgrounds/linuxmint-wilma/aksenapati_blanket.jpg &
 
 # Status bar
 ~/.local/bin/dwm-status &
