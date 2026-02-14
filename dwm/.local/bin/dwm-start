@@ -21,8 +21,8 @@ touchegg &
 # Screen locker — race-condition-free via sleep lock transfer
 xss-lock -l -- ~/.local/bin/dwm-lock &
 
-# Screen timeout: lock after 5 min idle
-xset s 300 5
+# Idle lock (10 min) & suspend (25 min) with fullscreen inhibition
+~/.local/bin/dwm-idle &
 
 # Touchpad / pointing device tweaks (applies on start + re-applies after resume)
 ~/.local/bin/dwm-touchpad &
