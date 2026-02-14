@@ -16,15 +16,21 @@ apply
 udevadm monitor --subsystem-match=input --udev |
 while read -r line; do
     if [[ "$line" == *" add "* ]]; then
-        sleep 0.5
+        sleep 2
         apply
     fi
 done &
 
-# Watch for system resume
+# Watch for system resume — wait for the hardware-level touchpad fix to finish
+# before re-applying libinput settings
 dbus-monitor --system "type='signal',interface='org.freedesktop.login1.Manager',member=PrepareForSleep" |
 while read -r line; do
     if [[ "$line" == *"boolean false"* ]]; then
+        # Wait for touchpad-fix-resume.service to finish (up to 30s)
+        for _ in $(seq 1 30); do
+            systemctl is-active --quiet touchpad-fix-resume.service 2>/dev/null || break
+            sleep 1
+        done
         sleep 1
         apply
     fi
