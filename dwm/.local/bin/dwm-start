@@ -24,9 +24,6 @@ xss-lock -l -- ~/.local/bin/dwm-lock &
 # Idle lock (10 min) & suspend (25 min) with fullscreen inhibition
 ~/.local/bin/dwm-idle &
 
-# Touchpad / pointing device tweaks (applies on start + re-applies after resume)
-~/.local/bin/dwm-touchpad &
-
 # Dark theme: xsettingsd handles GTK3, gsettings + ADW_DISABLE_PORTAL handles GTK4/libadwaita
 export ADW_DISABLE_PORTAL=1
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null || true

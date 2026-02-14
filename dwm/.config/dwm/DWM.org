@@ -66,20 +66,13 @@ The display is 3120x2080 and uses 2x scaling:
 
 * Touchpad / Input Devices
 
-Settings are applied via =dwm-touchpad=, a background daemon launched from =dwm-start=:
+Configured via Xorg at =/etc/X11/xorg.conf.d/40-touchpad.conf=:
 
 - *Natural scrolling*: enabled
 - *Tap-to-click*: enabled
 - *Click method*: clickfinger (no button areas)
 
-The daemon uses =xinput= to set libinput properties on all pointing devices,
-and re-applies them automatically when:
-
-1. *Devices are added* — monitored via =udevadm monitor= (covers power-management
-   re-enumeration, USB hotplug, etc.)
-2. *System resumes from suspend* — monitored via DBus =PrepareForSleep= signal
-
-This avoids needing root or =/etc/X11/xorg.conf.d/= files.
+Settings are applied by libinput automatically, including after resume.
 
 * Touchegg Integration
 
@@ -162,7 +155,6 @@ dwm-build
 | =dwm-status=        | Status bar loop                            |
 | =dwm-build=         | Download + compile + install               |
 | =dwm-idle=          | Idle lock & suspend with fullscreen inhibit |
-| =dwm-touchpad=      | Touchpad settings daemon (survive resume)  |
 | =xresources=        | Xft.dpi and font rendering                 |
 | =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS        |
 | =picom.conf=        | Compositor (transparency, blur)            |
