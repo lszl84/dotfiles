@@ -69,7 +69,7 @@ The display is 3120x2080 and uses 2x scaling:
 Settings are applied via =dwm-touchpad=, a background daemon launched from =dwm-start=:
 
 - *Natural scrolling*: enabled
-- *Tap-to-click*: disabled
+- *Tap-to-click*: enabled
 - *Click method*: clickfinger (no button areas)
 
 The daemon uses =xinput= to set libinput properties on all pointing devices,
