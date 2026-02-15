@@ -48,6 +48,7 @@
 (setq scroll-margin 3)
 (setq scroll-conservatively 101)
 (setq scroll-preserve-screen-position t)
+(pixel-scroll-precision-mode 1)
 
 ;; =============================================================================
 ;; Modus Vivendi Theme (Dark)
@@ -158,6 +159,17 @@
                              (org-indent-mode)
                              (variable-pitch-mode -1)
                              (auto-fill-mode 1))))
+
+;; =============================================================================
+;; Compilation
+;; =============================================================================
+
+;; Auto-close compilation buffer on success
+(defun my/compilation-finish (buf status)
+  "Close compilation BUF if STATUS indicates no errors."
+  (when (string-match-p "finished" status)
+    (run-at-time 1 nil #'delete-windows-on buf)))
+(add-hook 'compilation-finish-functions #'my/compilation-finish)
 
 ;; =============================================================================
 ;; Better Defaults
