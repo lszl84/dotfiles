@@ -1,6 +1,6 @@
 #!/bin/bash
 # dwm-status — Status bar for dwm using xsetroot -name
-# Format: [N updates • ]vol XX% • bat XX% (Xh Xm left) • up Xd • HH:MM
+# Format: [N updates • ]vol XX% • bat XX% (Xh Xm left) • up Xd • Day, DD, HH:MM
 # Sends USR1 to this process to trigger an immediate refresh (used by volume keys).
 
 # Kill any previous instance
@@ -103,7 +103,7 @@ while true; do
     status+="up ${uptime_days}d • "
 
     # Time
-    status+="$(date '+%H:%M')   "
+    status+="$(date '+%a, %-d, %H:%M')  "
 
     xsetroot -name "$status"
 
