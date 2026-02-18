@@ -18,6 +18,9 @@ picom --config ~/.config/picom/picom.conf &
 # Touchegg (3-finger swipe → Ctrl+Alt+Left/Right → tag switch)
 touchegg &
 
+# Disable tap-to-click (slick-greeter force-enables it on login)
+xinput set-prop "GXTP7863:00 27C6:01E0 Touchpad" "libinput Tapping Enabled" 0
+
 # Screen locker — race-condition-free via sleep lock transfer
 xss-lock -l -- ~/.local/bin/dwm-lock &
 
