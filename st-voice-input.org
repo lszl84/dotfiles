@@ -1,0 +1,168 @@
+#+TITLE: st + whisper.cpp Voice Input Mode
+#+STARTUP: showall
+
+* Concept
+Integrate real-time voice-to-text into st (suckless terminal) using
+whisper.cpp. Press a hotkey, speak, see words appear and self-correct
+live, then send or keep the text.
+
+Useful for controlling CLI agents (claude-code, aider, etc.) via voice.
+
+* UX Flow
+1. User presses =Ctrl+Shift+V= (or similar unbound combo)
+2. Cursor changes to =🎤= (or =⏺= if font lacks emoji), status bar or
+   window title shows "VOICE"
+3. User speaks naturally
+4. Words appear at cursor in real time, self-correcting as whisper
+   refines its transcription (speculative text → confirmed text)
+5. User presses =Return= → text is finalized, newline sent, voice
+   mode exits
+6. User presses =Escape= → voice mode exits, text stays in place, no
+   newline sent (useful for editing before sending)
+7. User presses =Ctrl+C= → voice mode exits, text is discarded
+   (backspaces emitted to erase)
+
+* Architecture: External Helper + st Patch
+
+Keep st and whisper decoupled. Two components:
+
+** st patch (~100-150 lines)
+- New keybinding triggers =voice_start()=
+- Forks =st-voice-helper= as a child process
+- Reads helper's stdout and injects characters into the pty
+  (same mechanism as =selpaste()= --- st already has this)
+- Tracks =voice_pid= to know when voice mode is active
+- Draw tweak: render mode indicator when =voice_pid > 0=
+- =Return= → kill helper + inject =\n=
+- =Escape= → kill helper, keep text, no newline
+- =Ctrl+C= → kill helper + emit backspaces to erase buffered text
+
+** st-voice-helper (standalone C program)
+- Opens mic via PipeWire (PulseAudio compat) or SDL2
+- Loads whisper.cpp model (tiny/base for speed)
+- Runs in stream mode with rolling 3-5 second audio window
+- Outputs transcribed text to stdout as it's recognized
+- For corrections: emits =\b\b\b...= (backspaces) + corrected text
+- Tracks "confirmed" vs "speculative" segments (whisper.cpp stream
+  example already does this)
+- Exits cleanly on SIGTERM / SIGPIPE
+
+** Communication protocol (stdout)
+#+begin_example
+hello               # new confirmed text, just print
+\b\b\b\b\bhello world  # correction: erase "hello", replace with "hello world"
+ how are you        # more confirmed text (note leading space)
+#+end_example
+
+Backspace chars (=0x08=) erase previous characters. Everything else
+is literal text to inject into the terminal.
+
+* Key Implementation Details
+
+** Whisper model selection
+| Model        | Size   | Latency  | Accuracy | Recommendation        |
+|--------------+--------+----------+----------+-----------------------|
+| whisper-tiny | 75 MB  | ~200ms   | Good     | Default. Real-time.   |
+| whisper-base | 142 MB | ~300ms   | Better   | Good balance.         |
+| whisper-small | 466 MB | ~500ms  | Great    | If CPU is fast.       |
+
+Use =tiny= or =base= for the real-time feel. Model path should be
+configurable via env var: =ST_VOICE_MODEL=.
+
+** Audio capture
+- *SDL2* is simplest --- whisper.cpp's =stream= example already uses
+  it, so we can reuse that code almost verbatim
+- *PipeWire/PulseAudio* is more native but more code
+- Recommendation: start with SDL2, it's 20 lines of setup
+
+** Live correction strategy
+whisper.cpp stream mode processes overlapping audio windows. Each
+window produces a transcription that may refine the previous one.
+
+Strategy:
+1. Keep a buffer of "unconfirmed" text (current window's output)
+2. When a new window is processed:
+   - Emit backspaces to erase the unconfirmed portion
+   - Emit the new transcription (which may be longer/corrected)
+3. When text is "confirmed" (window has moved past it), stop
+   correcting it
+
+The =stream= example in whisper.cpp already distinguishes these
+segments --- look at =params.no_context= and how it handles
+=t_last= vs =t_new=.
+
+** st patch: injecting text into pty
+Look at =selpaste()= in =st.c=:
+#+begin_src c
+void selpaste(const Arg *dummy)
+{
+    xselpaste();
+}
+#+end_src
+
+And =ttywrite()= which writes to the pty fd. The voice helper's
+stdout should be read in st's event loop (=XEvent= loop in =x.c=)
+and passed to =ttywrite()=.
+
+Add the helper's stdout fd to the =select()= / =poll()= call in
+=run()= in =x.c=.
+
+** st patch: mode indicator
+In =xdrawline()= or =drawregion()=, when =voice_pid > 0=, render a
+small indicator. Options:
+- Change cursor glyph to 🎤
+- Prepend a colored block to the status line
+- Change window title to include "[VOICE]" via =xsettitle()=
+
+Simplest: just change the cursor shape/color. st's =cursorshape=
+is already configurable --- override it while in voice mode.
+
+* Dependencies
+- whisper.cpp (for the helper)
+- SDL2 (for audio capture in the helper)
+- A whisper model file (tiny: 75MB download)
+- st (obviously)
+
+No runtime dependencies added to st itself beyond forking the helper.
+
+* Build sketch
+#+begin_src makefile
+# st-voice-helper
+WHISPER_DIR = /path/to/whisper.cpp
+
+st-voice-helper: st-voice-helper.c
+	$(CC) -O2 -o $@ $< \
+		-I$(WHISPER_DIR)/include \
+		-L$(WHISPER_DIR)/build/src -lwhisper \
+		$(shell sdl2-config --cflags --libs) \
+		-lm -lpthread
+#+end_src
+
+#+begin_src bash
+# Download model
+wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin \
+     -O ~/.local/share/whisper/ggml-tiny.bin
+#+end_src
+
+* TODO Implementation Steps
+** TODO Write st-voice-helper.c
+Based on whisper.cpp's =examples/stream/stream.cpp=. Strip it down to:
+- Open mic via SDL2
+- Run whisper stream loop
+- Output text + backspace corrections to stdout
+- Handle SIGTERM for clean shutdown
+
+** TODO Write st patch
+- Add voice keybinding in =config.h=
+- Add =voice_start()= / =voice_stop()= in =st.c=
+- Add helper fd to event loop in =x.c=
+- Add cursor/indicator change in =x.c=
+
+** TODO Test with common CLI tools
+- bash / zsh (basic input)
+- fzf (make sure backspaces don't break TUI)
+- claude-code / aider (the main use case)
+
+** TODO Package as a proper st patch
+Follow suckless patch conventions: single =.diff= file against latest
+st release.

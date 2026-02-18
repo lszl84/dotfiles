@@ -45,9 +45,6 @@
 (setq frame-resize-pixelwise t)
 
 ;; Smoother scrolling
-(setq scroll-margin 3)
-(setq scroll-conservatively 101)
-(setq scroll-preserve-screen-position t)
 (pixel-scroll-precision-mode 1)
 
 ;; =============================================================================

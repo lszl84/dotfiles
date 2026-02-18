@@ -7,6 +7,7 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias cco='claude --continue'
 export PS1='\W\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
