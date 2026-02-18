@@ -138,7 +138,17 @@
 ;; =============================================================================
 
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :config
+  (defun my/magit-quick-push (message)
+    "Stage all, commit with MESSAGE, push to origin, and close magit."
+    (interactive "sCommit message: ")
+    (magit-commit-create (list "-m" message))
+    (magit-run-git-async "push" "origin" (magit-get-current-branch))
+    (magit-process-wait)
+    (when (zerop magit-this-error)
+      (magit-mode-bury-buffer)))
+  (define-key magit-mode-map (kbd "C-c p") #'my/magit-quick-push))
 
 ;; =============================================================================
 ;; Org Mode
