@@ -99,6 +99,31 @@ Idle timeouts are managed by =dwm-idle= (via =xprintidle=):
 - *25 minutes*: suspend (=systemctl suspend=)
 - Fullscreen windows inhibit both lock and suspend
 
+** Idea: Built-in dwm locker
+
+The current i3lock approach has a race condition: when switching from a TTY
+back to X, the desktop flashes briefly before i3lock's window appears. This is
+because the kernel switches the framebuffer to X's VT before the X server
+repaints with i3lock on top.
+
+Patching a locker directly into dwm eliminates this entirely. Since dwm is
+already running and managing the display, it can enter a "locked" state
+instantly — grab input, paint a black overlay, accept only password input. No
+process to spawn, no window to create and map, no race.
+
+Security-wise this is strictly better than an external locker. If dwm crashes
+while locked, the X session dies and drops back to the LightDM login screen —
+still protected. The "external locker survives WM crash" argument doesn't apply
+because the session is gone either way.
+
+Implementation:
+- Add a =locked= flag to dwm
+- On lock: grab keyboard/pointer, draw fullscreen black, accept password input
+- Verify via PAM (=pam_authenticate=)
+- On success: ungrab, resume normal operation
+- Signal lock via =xsetroot= property or client message from =dwm-idle=
+- Eliminates =xss-lock=, =i3lock=, and =dwm-lock= script entirely
+
 * Compositor (picom)
 
 Picom runs as a compositor providing:
