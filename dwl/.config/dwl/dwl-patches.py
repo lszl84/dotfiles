@@ -97,56 +97,46 @@ gaps_replacements.append(
 )
 
 # ---------------------------------------------------------------------------
-# 2. DIM-UNFOCUSED — dimmer overlay on inactive windows
+# 2. DIM-UNFOCUSED — opacity-based (no overlay rect, no input blocking)
+#    Uses wlr_scene_buffer_set_opacity() on unfocused client surfaces.
 # ---------------------------------------------------------------------------
 
 dim_replacements = [
-    # Client struct: add dimmer rect after borders
-    ('\tstruct wlr_scene_rect *border[4]; /* top, bottom, left, right */',
-     '\tstruct wlr_scene_rect *border[4]; /* top, bottom, left, right */\n'
-     '\tstruct wlr_scene_rect *dimmer;'),
-
-    # Client struct: add neverdim flag
+    # Client struct: add opacity fields
     ('\tint isfloating, isurgent, isfullscreen;',
-     '\tint isfloating, isurgent, isfullscreen, neverdim;'),
+     '\tint isfloating, isurgent, isfullscreen;\n'
+     '\tfloat opacity, opacity_focus, opacity_unfocus;'),
 
-    # Rule struct: add neverdim field
+    # Rule struct: add opacity_unfocus field
     ('\tint isfloating;\n\tint monitor;\n} Rule;',
-     '\tint isfloating;\n\tint neverdim;\n\tint monitor;\n} Rule;'),
+     '\tint isfloating;\n\tfloat opacity_unfocus;\n\tint monitor;\n} Rule;'),
 
-    # applyrules(): apply neverdim from rule
+    # Forward declarations: add scenebuffersetopacity
+    ('static void resize(Client *c, struct wlr_box geo, int interact);',
+     'static void resize(Client *c, struct wlr_box geo, int interact);\n'
+     'static void scenebuffersetopacity(struct wlr_scene_buffer *buffer, int sx, int sy, void *user_data);'),
+
+    # applyrules(): apply opacity from rule
     ('\t\t\tc->isfloating = r->isfloating;',
      '\t\t\tc->isfloating = r->isfloating;\n'
-     '\t\t\tc->neverdim = r->neverdim;'),
+     '\t\t\tif (r->opacity_unfocus > 0)\n'
+     '\t\t\t\tc->opacity_unfocus = r->opacity_unfocus;'),
 
-    # mapnotify(): add *d variable for focused-window undim
-    ('\tClient *p = NULL;\n\tClient *w, *c = wl_container_of(listener, c, map);',
-     '\tClient *p = NULL;\n\tClient *w, *d, *c = wl_container_of(listener, c, map);'),
+    # createnotify(): init default opacity (after c->bw = borderpx)
+    ('\tc->bw = borderpx;\n\n\tLISTEN',
+     '\tc->bw = borderpx;\n'
+     '\tc->opacity_unfocus = default_opacity_unfocus;\n'
+     '\tc->opacity_focus = default_opacity_focus;\n'
+     '\tc->opacity = default_opacity_unfocus;\n\n'
+     '\tLISTEN'),
 
-    # mapnotify(): create dimmer rect after border loop
-    ('\t\tc->border[i]->node.data = c;\n\t}\n\n\t/* Initialize client geometry',
-     '\t\tc->border[i]->node.data = c;\n\t}\n\n'
-     '\t/* Dim overlay (initially dimmed for unfocused windows) */\n'
-     '\tc->dimmer = wlr_scene_rect_create(c->scene, 0, 0, unfocuseddim);\n'
-     '\tc->dimmer->node.data = c;\n'
-     '\twlr_scene_node_set_enabled(&c->dimmer->node, 1);\n\n'
-     '\t/* Initialize client geometry'),
-
-    # mapnotify(): undim focused client after applyrules
-    ('\t} else {\n\t\tapplyrules(c);\n\t}\n\tdrawbars();',
-     '\t} else {\n\t\tapplyrules(c);\n'
-     '\t\td = focustop(selmon);\n'
-     '\t\tif (d)\n'
-     '\t\t\twlr_scene_node_set_enabled(&d->dimmer->node, 0);\n'
-     '\t}\n\tdrawbars();'),
-
-    # focusclient(): undim newly focused client (wrap single-line if in braces)
+    # focusclient(): set focused client to full opacity (wrap single-line if)
     ('\t\tif (!exclusive_focus && !seat->drag)\n'
      '\t\t\tclient_set_border_color(c, (float[])COLOR(colors[SchemeSel][ColBorder]));',
 
      '\t\tif (!exclusive_focus && !seat->drag) {\n'
      '\t\t\tclient_set_border_color(c, (float[])COLOR(colors[SchemeSel][ColBorder]));\n'
-     '\t\t\twlr_scene_node_set_enabled(&c->dimmer->node, 0);\n'
+     '\t\t\tc->opacity = c->opacity_focus;\n'
      '\t\t}'),
 
     # focusclient(): dim old client on defocus
@@ -154,16 +144,32 @@ dim_replacements = [
      '\t\t\tclient_activate_surface(old, 0);',
 
      '\t\t\tclient_set_border_color(old_c, (float[])COLOR(colors[SchemeNorm][ColBorder]));\n'
-     '\t\t\tif (!old_c->neverdim)\n'
-     '\t\t\t\twlr_scene_node_set_enabled(&old_c->dimmer->node, 1);\n'
+     '\t\t\told_c->opacity = old_c->opacity_unfocus;\n'
      '\t\t\tclient_activate_surface(old, 0);'),
 
-    # resize(): update dimmer geometry after border positions
-    ('\twlr_scene_node_set_position(&c->border[3]->node, c->geom.width - c->bw, c->bw);',
-     '\twlr_scene_node_set_position(&c->border[3]->node, c->geom.width - c->bw, c->bw);\n'
-     '\twlr_scene_rect_set_size(c->dimmer, c->geom.width - 2 * c->bw, c->geom.height - 2 * c->bw);\n'
-     '\twlr_scene_node_set_position(&c->dimmer->node, c->bw, c->bw);'),
+    # rendermon(): apply opacity to all client buffers before rendering
+    ('\twl_list_for_each(c, &clients, link) {\n'
+     '\t\tif (c->resize && !c->isfloating',
+     '\twl_list_for_each(c, &clients, link) {\n'
+     '\t\twlr_scene_node_for_each_buffer(&c->scene_surface->node, scenebuffersetopacity, c);\n'
+     '\t\tif (c->resize && !c->isfloating'),
 ]
+
+# scenebuffersetopacity() function — insert before setcursor()
+scenebuf_fn = (
+    'void\n'
+    'scenebuffersetopacity(struct wlr_scene_buffer *buffer, int sx, int sy, void *data)\n'
+    '{\n'
+    '\tClient *c = data;\n'
+    '\twlr_scene_buffer_set_opacity(buffer, c->isfullscreen ? 1.0f : c->opacity);\n'
+    '}\n'
+    '\n'
+    'void\n'
+    'setcursor'
+)
+dim_replacements.append(
+    ('void\nsetcursor', scenebuf_fn)
+)
 
 # ---------------------------------------------------------------------------
 # 3. BORDER TWEAKS — tiled windows lose borders, floating get them back
@@ -200,4 +206,4 @@ if not ok:
 with open('dwl.c', 'w') as f:
     f.write(src)
 
-print("Patches applied: gaps, dim-unfocused, border tweaks.")
+print("Patches applied: gaps, dim-unfocused (opacity), border tweaks.")

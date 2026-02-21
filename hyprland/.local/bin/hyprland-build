@@ -1,0 +1,91 @@
+#!/bin/bash
+# hyprland-build — Build Hyprland + ecosystem from source
+# Installs to ~/.local (no sudo needed — run hyprland-install first for deps)
+set -euo pipefail
+
+PREFIX="$HOME/.local"
+BUILD_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hyprland-build"
+JOBS="$(nproc)"
+
+# Prefer GCC 14 (Debian Trixie / LMDE 7), fall back to clang-19
+if command -v g++-14 &>/dev/null; then
+    export CC=gcc-14 CXX=g++-14
+    echo "==> Using GCC 14"
+elif command -v clang-19 &>/dev/null; then
+    export CC=clang-19 CXX=clang++-19
+    echo "==> Using Clang 19"
+else
+    echo "==> Using default compiler"
+fi
+
+mkdir -p "$BUILD_DIR"
+cd "$BUILD_DIR"
+
+# ── Helper functions ─────────────────────────────────────────────────
+
+clone_or_pull() {
+    local repo="$1" dir="$2"
+    if [[ -d "$dir" ]]; then
+        echo "    Updating $dir..."
+        git -C "$dir" pull --ff-only || true
+    else
+        echo "    Cloning $repo..."
+        git clone --depth 1 "$repo" "$dir"
+    fi
+}
+
+build_cmake() {
+    local dir="$1"
+    shift
+    echo "==> Building $dir"
+    cd "$BUILD_DIR/$dir"
+    cmake -B build -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+        -DCMAKE_PREFIX_PATH="$PREFIX" \
+        "$@"
+    cmake --build build -j "$JOBS"
+    cmake --install build
+}
+
+# ── Clone all repos ──────────────────────────────────────────────────
+
+echo "==> Cloning repositories"
+
+clone_or_pull https://github.com/hyprwm/hyprland-protocols hyprland-protocols
+clone_or_pull https://github.com/hyprwm/hyprwayland-scanner hyprwayland-scanner
+clone_or_pull https://github.com/hyprwm/hyprutils hyprutils
+clone_or_pull https://github.com/hyprwm/hyprgraphics hyprgraphics
+clone_or_pull https://github.com/hyprwm/hyprlang hyprlang
+clone_or_pull https://github.com/hyprwm/hyprcursor hyprcursor
+clone_or_pull https://github.com/hyprwm/aquamarine aquamarine
+clone_or_pull https://github.com/stephenberry/glaze glaze
+clone_or_pull https://github.com/hyprwm/hyprwire hyprwire
+clone_or_pull https://github.com/hyprwm/hyprtoolkit hyprtoolkit
+clone_or_pull https://github.com/hyprwm/Hyprland Hyprland
+
+# ── Build dependency chain (order matters) ───────────────────────────
+
+build_cmake hyprland-protocols
+build_cmake hyprwayland-scanner
+build_cmake hyprutils
+build_cmake hyprgraphics
+build_cmake hyprlang
+build_cmake hyprcursor
+build_cmake aquamarine
+build_cmake glaze
+build_cmake hyprwire
+build_cmake hyprtoolkit
+
+# ── Build Hyprland ───────────────────────────────────────────────────
+
+echo "==> Building Hyprland"
+cd "$BUILD_DIR/Hyprland"
+cmake -B build -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+    -DCMAKE_PREFIX_PATH="$PREFIX"
+cmake --build build -j "$JOBS"
+cmake --install build
+
+echo ""
+echo "==> Hyprland installed to $PREFIX/bin/"
+echo "==> Log out and select 'Hyprland' from LightDM."

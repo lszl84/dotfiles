@@ -1,0 +1,32 @@
+#!/bin/bash
+# dwm-lock — xss-lock wrapper for dwm's built-in locker
+#
+# Signals dwm to lock via _DWM_LOCK root window property, then
+# waits for unlock (property removal). Handles XSS_SLEEP_LOCK_FD
+# for logind sleep lock transfer.
+trap 'kill %% 2>/dev/null' TERM INT
+
+LOG="$HOME/.cache/dwm-lock.log"
+log() { echo "[$(date +%s.%3N)] dwm-lock: $*" >> "$LOG"; }
+
+log "started (pid=$$, XSS_SLEEP_LOCK_FD=${XSS_SLEEP_LOCK_FD:-unset})"
+
+# Signal dwm to lock
+log "setting _DWM_LOCK property"
+xprop -root -f _DWM_LOCK 8s -set _DWM_LOCK "locked"
+log "xprop returned"
+
+# Transfer sleep lock fd (close after dwm has painted lock window)
+if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
+    log "sleep lock fd exists, sleeping 0.3s before close"
+    sleep 0.3
+    exec {XSS_SLEEP_LOCK_FD}>&-
+    log "sleep lock fd closed"
+fi
+
+# Wait for unlock (dwm deletes the property)
+log "polling for unlock"
+while xprop -root _DWM_LOCK 2>/dev/null | grep -q '"locked"'; do
+    sleep 0.5
+done
+log "unlock detected, exiting"

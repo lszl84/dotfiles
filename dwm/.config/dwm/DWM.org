@@ -84,19 +84,25 @@ for touchegg instability.
 
 * Screen Locking
 
-Uses =xss-lock= with =--transfer-sleep-lock= protocol, =xsecurelock=, and
-systemd =IdleAction= for idle suspend:
+Uses a built-in dwm locker (PAM auth, OverrideRedirect black window) triggered
+via =xss-lock= for IdleHint and sleep lock transfer:
 
-1. =xset s 600 0= sets a 10-minute X screensaver timeout
-2. When the screensaver activates, =xss-lock= launches =xsecurelock=
-3. =xsecurelock= handles the sleep lock fd transfer natively
-4. =xss-lock= also sets logind =IdleHint=true= for the session
-5. After all sessions are idle for =IdleActionSec= (15 min), logind suspends
-6. On wake, =xsecurelock= is still running — password required
+1. =xset s 180 0= sets the X screensaver timeout (or =Super+l= / =loginctl lock-session=)
+2. =xss-lock= launches =dwm-lock=, which sets =_DWM_LOCK= root property
+3. dwm's =propertynotify()= detects this and calls =lock()=
+4. =lock()= creates a fullscreen black window, grabs keyboard/pointer, collects password
+5. PAM authentication runs in a forked child (pipe-based result, safe with =SA_NOCLDWAIT=)
+6. On unlock, dwm deletes =_DWM_LOCK= property; =dwm-lock= sees this and exits
+7. =xss-lock= sets logind =IdleHint=true=; after =IdleActionSec=, logind suspends
 
-Total: 10 min idle → lock, 25 min idle → suspend. Configured in:
-- =dwm-start=: =xset s 600 0= (screensaver timeout)
-- =/etc/systemd/logind.conf=: =IdleAction=suspend=, =IdleActionSec=15min=
+The built-in locker avoids the VT switch flash that external lockers have — the
+black window is painted in-process before any frame of desktop content is visible.
+
+Requires =/etc/pam.d/dwm= with =@include common-auth= and =@include common-account=.
+
+Configured in:
+- =dwm-start=: =xset s 180 0= (screensaver timeout)
+- =/etc/systemd/logind.conf=: =IdleAction=suspend=, =IdleActionSec=2min=
 
 * Compositor (picom)
 
@@ -116,6 +122,7 @@ dwm and st are built from vanilla tarballs with these patches applied by =dwm-bu
 
 - *dwm-gaps* (=dwm-gaps-patch.py=): uselessgap-style gaps around all windows and in monocle mode
 - *dwm-status2d* (=dwm-status2d-patch.py=): colored status bar segments
+- *dwm-lock* (=dwm-lock-patch.py=): built-in PAM screen locker
 - *st-scrollback* (=st-scrollback.diff=): scrollback buffer for st
 - *st-scrollback-mouse* (=st-scrollback-mouse.diff=): Shift+scroll wheel to scroll st
 - *st-anysize* (=st-anysize-patch.py=): center content in st when window doesn't fit cell grid exactly
@@ -124,8 +131,8 @@ dwm and st are built from vanilla tarballs with these patches applied by =dwm-bu
 
 #+begin_src bash
 # Install dependencies
-sudo apt install xss-lock xsecurelock brightnessctl rofi xsettingsd picom \
-    libx11-dev libxft-dev libxinerama-dev libharfbuzz-dev \
+sudo apt install xss-lock brightnessctl rofi xsettingsd picom \
+    libx11-dev libxft-dev libxinerama-dev libharfbuzz-dev libpam0g-dev \
     x11-xserver-utils feh touchegg
 
 # Stow the configs
@@ -151,6 +158,7 @@ dwm-build
 | =st-config.h=       | st config.h (font, colors)                 |
 | =dwm-start=         | Session startup (env, daemons, exec)        |
 | =dwm-status=        | Status bar loop                            |
+| =dwm-lock=          | xss-lock wrapper (signals dwm to lock)     |
 | =dwm-build=         | Download + compile + install               |
 | =xresources=        | Xft.dpi and font rendering                 |
 | =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS        |

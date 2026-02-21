@@ -1,0 +1,45 @@
+#!/bin/bash
+# hyprland-install — Install build deps, runtime deps, and session file
+# Run once with: sudo hyprland-install
+set -euo pipefail
+
+if [[ $EUID -ne 0 ]]; then
+    echo "Run with sudo: sudo hyprland-install"
+    exit 1
+fi
+
+echo "==> Installing build dependencies"
+apt install -y \
+    meson ninja-build cmake gcc-14 g++-14 \
+    libfontconfig-dev libffi-dev libdrm-dev libxkbcommon-dev \
+    libpixman-1-dev libudev-dev libseat-dev seatd \
+    libegl-dev libgles2 libegl1-mesa-dev glslang-tools libinput-dev \
+    libxcb-dri3-dev libxcb-composite0-dev libxcb-present-dev \
+    libxcb-icccm4-dev libxcb-render-util0-dev libxcb-res0-dev \
+    libxcb-xinput-dev libxcb-errors-dev libxcb-ewmh-dev libxcb-util-dev \
+    libtomlplusplus-dev libre2-dev libmuparser-dev \
+    libdisplay-info-dev libliftoff-dev \
+    libcairo2-dev libpango1.0-dev xwayland \
+    libavutil-dev libavcodec-dev libavformat-dev \
+    libpugixml-dev libjpeg-dev libwebp-dev libmagic-dev \
+    libzip-dev uuid-dev librsvg2-dev libpng-dev \
+    libwayland-dev wayland-protocols libgbm-dev hwdata \
+    libxcb1-dev libxcb-render0-dev libxcb-xfixes0-dev libxcursor-dev \
+    libiniparser-dev libglib2.0-dev \
+    libpipewire-0.3-dev
+
+echo "==> Installing runtime dependencies"
+apt install -y \
+    foot fuzzel waybar swaybg swayidle swaylock brightnessctl
+
+echo "==> Installing LightDM session file"
+DESKTOP_FILE="/home/luke/.local/share/hyprland.desktop"
+if [[ -f "$DESKTOP_FILE" ]]; then
+    cp "$DESKTOP_FILE" /usr/share/wayland-sessions/hyprland.desktop
+    echo "    Copied to /usr/share/wayland-sessions/"
+else
+    echo "    Warning: $DESKTOP_FILE not found — run 'stow hyprland' first"
+fi
+
+echo ""
+echo "==> Done! Now run hyprland-build (no sudo needed)."

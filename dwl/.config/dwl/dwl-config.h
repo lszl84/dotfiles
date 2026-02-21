@@ -18,7 +18,8 @@ static const int topbar                     = 1;
 static const char *fonts[]                  = { "monospace:size=11" };
 static const float rootcolor[]              = COLOR(0x000000ff);
 static const float fullscreen_bg[]          = {0.0f, 0.0f, 0.0f, 1.0f};
-static const float unfocuseddim[]           = COLOR(0x00000059); /* ~35% dim overlay */
+static const float default_opacity_unfocus   = 0.65f;  /* ~35% dim on unfocused */
+static const float default_opacity_focus     = 1.0f;
 
 /* bar colors — matching dwm SchemeNorm/SchemeSel */
 static uint32_t colors[][3]                 = {
@@ -35,9 +36,9 @@ static char *tags[] = { "1", "2", "3", "4" };
 static int log_level = WLR_ERROR;
 
 static const Rule rules[] = {
-	/* app_id     title  tags  isfloating  neverdim  monitor */
-	{ "Gimp",     NULL,  0,    1,          0,        -1 },
-	{ "VibeCut",  NULL,  0,    1,          0,        -1 },
+	/* app_id     title  tags  isfloating  opacity_unfocus  monitor */
+	{ "Gimp",     NULL,  0,    1,          0,               -1 },
+	{ "VibeCut",  NULL,  0,    1,          0,               -1 },
 };
 
 /* layout(s) */

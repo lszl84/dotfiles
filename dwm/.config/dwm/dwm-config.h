@@ -91,7 +91,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 static const char *roficmd[]  = { "rofi", "-show", "drun", NULL };
 
-/* lock screen (triggers xss-lock → xsecurelock) */
+/* lock screen (triggers xss-lock → dwm-lock → dwm built-in locker) */
 static const char *lockcmd[] = { "loginctl", "lock-session", NULL };
 
 /* volume commands (PipeWire / WirePlumber)

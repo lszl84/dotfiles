@@ -22,6 +22,8 @@ cd "dwm-$DWM_VERSION"
 cp "$CONFIG_DIR/dwm-config.h" config.h
 python3 "$CONFIG_DIR/dwm-gaps-patch.py"
 python3 "$CONFIG_DIR/dwm-status2d-patch.py"
+python3 "$CONFIG_DIR/dwm-lock-patch.py"
+python3 "$CONFIG_DIR/dwm-vtblack-patch.py"
 make clean
 make PREFIX="$PREFIX"
 make PREFIX="$PREFIX" install
