@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Hyprland
-Comment=Hyprland Wayland compositor
-Exec=/home/luke/.local/bin/hyprland-start
-Type=Application
