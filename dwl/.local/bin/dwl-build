@@ -1,0 +1,50 @@
+#!/bin/bash
+# dwl-build — Download and compile dwl from source with patches
+set -euo pipefail
+
+DWL_VERSION="0.7"
+BUILD_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/dwl-build"
+PREFIX="$HOME/.local"
+CONFIG_DIR="$HOME/.config/dwl"
+BAR_PATCH="bar-${DWL_VERSION}.patch"
+BAR_URL="https://codeberg.org/dwl/dwl-patches/raw/branch/main/patches/bar/${BAR_PATCH}"
+
+echo "==> Building dwl $DWL_VERSION"
+mkdir -p "$BUILD_DIR"
+cd "$BUILD_DIR"
+
+# Download dwl source
+if [[ ! -f "dwl-v${DWL_VERSION}.tar.gz" ]]; then
+    echo "    Downloading dwl v${DWL_VERSION}..."
+    curl -Lo "dwl-v${DWL_VERSION}.tar.gz" \
+        "https://codeberg.org/dwl/dwl/archive/v${DWL_VERSION}.tar.gz"
+fi
+
+# Download bar patch
+if [[ ! -f "$BAR_PATCH" ]]; then
+    echo "    Downloading bar patch..."
+    curl -Lo "$BAR_PATCH" "$BAR_URL"
+fi
+
+rm -rf dwl
+tar xzf "dwl-v${DWL_VERSION}.tar.gz"
+cd dwl
+
+# Apply bar patch (must be first — changes config.def.h structure)
+echo "==> Applying bar patch"
+patch -p1 < "$BUILD_DIR/$BAR_PATCH"
+
+# Copy config and shiftview
+cp "$CONFIG_DIR/dwl-config.h" config.h
+cp "$CONFIG_DIR/shiftview.c" .
+
+# Apply gaps + dim + border patches (Python, targets post-bar-patch source)
+echo "==> Applying gaps/dim/border patches"
+python3 "$CONFIG_DIR/dwl-patches.py"
+
+make clean
+make PREFIX="$PREFIX"
+make PREFIX="$PREFIX" install
+
+echo "==> dwl installed to $PREFIX/bin/"
+echo "==> Done! Log out and select 'dwl' from LightDM."

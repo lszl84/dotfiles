@@ -1,0 +1,16 @@
+#!/bin/bash
+# dwl-start — Session entry point for dwl (launched by LightDM)
+
+# HiDPI (Wayland handles scaling natively via output scale, but apps need hints)
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export XCURSOR_SIZE=48
+export XDG_CURRENT_DESKTOP=dwl
+
+# Dark theme: gsettings + ADW_DISABLE_PORTAL for GTK4/libadwaita
+export ADW_DISABLE_PORTAL=1
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null || true
+gsettings set org.gnome.desktop.interface gtk-theme Mint-Y-Dark-Blue 2>/dev/null || true
+
+# Status bar piped to dwl stdin
+# Daemons launch via dwl -s (after compositor is ready)
+exec ~/.local/bin/dwl-status | ~/.local/bin/dwl -s ~/.local/bin/dwl-daemons

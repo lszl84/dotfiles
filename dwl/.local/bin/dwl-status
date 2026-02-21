@@ -1,0 +1,102 @@
+#!/bin/bash
+# dwl-status — Status bar for dwl via stdout (piped to dwl stdin)
+# Format: [N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | Day, DD, HH:MM
+# Sends USR1 to this process to trigger an immediate refresh (used by volume keys).
+
+# Kill any previous instance
+for pid in $(pgrep -f dwl-status); do
+    [ "$pid" != "$$" ] && kill "$pid" 2>/dev/null
+done
+
+last_vol=""
+apt_cache=""
+apt_counter=0
+
+# USR1 interrupts 'wait' below, causing an immediate refresh
+trap 'true' USR1
+
+while true; do
+    status=""
+
+    # APT updates (check every ~5 minutes, cached otherwise)
+    if [[ $apt_counter -eq 0 ]]; then
+        apt_cache=$(apt list --upgradable 2>/dev/null | grep -c upgradable)
+    fi
+    apt_counter=$(( (apt_counter + 1) % 60 ))
+    if [[ "$apt_cache" -gt 0 ]]; then
+        status+="$apt_cache updates | "
+    fi
+
+    # Volume (cache last known value so transient wpctl failures don't blank it)
+    vol_str=""
+    if command -v wpctl &>/dev/null; then
+        vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null)
+        if [[ "$vol" =~ Volume:\ ([0-9.]+) ]]; then
+            vol_pct=$(awk "BEGIN {printf \"%d\", ${BASH_REMATCH[1]} * 100}")
+            if [[ "$vol" == *MUTED* ]]; then
+                vol_str="vol mute"
+            else
+                vol_str="vol ${vol_pct}%"
+            fi
+        fi
+    elif command -v amixer &>/dev/null; then
+        vol=$(amixer sget Master 2>/dev/null | grep -oP '\[\d+%\]' | head -1 | tr -d '[]')
+        mute=$(amixer sget Master 2>/dev/null | grep -oP '\[o(n|ff)\]' | head -1 | tr -d '[]')
+        if [[ -n "$vol" ]]; then
+            if [[ "$mute" == "off" ]]; then
+                vol_str="vol mute"
+            else
+                vol_str="vol ${vol}"
+            fi
+        fi
+    fi
+    # Use cached value if current read failed
+    if [[ -n "$vol_str" ]]; then
+        last_vol="$vol_str"
+    fi
+    if [[ -n "$last_vol" ]]; then
+        status+="$last_vol | "
+    fi
+
+    # Battery (plain text — no status2d color codes)
+    bat_cap=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
+    if [[ -n "$bat_cap" ]]; then
+        bat_status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
+        status+="bat ${bat_cap}%"
+
+        # Time remaining (from energy_now and power_now)
+        energy_now=$(cat /sys/class/power_supply/BAT0/energy_now 2>/dev/null)
+        power_now=$(cat /sys/class/power_supply/BAT0/power_now 2>/dev/null)
+        if [[ -n "$power_now" && "$power_now" -gt 0 ]]; then
+            if [[ "$bat_status" == "Discharging" ]]; then
+                mins=$(( energy_now * 60 / power_now ))
+            elif [[ "$bat_status" == "Charging" ]]; then
+                energy_full=$(cat /sys/class/power_supply/BAT0/energy_full 2>/dev/null)
+                mins=$(( (energy_full - energy_now) * 60 / power_now ))
+            else
+                mins=0
+            fi
+            if [[ "$mins" -gt 0 ]]; then
+                hours=$(( mins / 60 ))
+                remaining_mins=$(( mins % 60 ))
+                status+=" (${hours}h ${remaining_mins}m left)"
+            fi
+        fi
+
+        status+=" | "
+    fi
+
+    # Uptime
+    uptime_secs=$(cut -d. -f1 /proc/uptime)
+    uptime_days=$(( uptime_secs / 86400 ))
+    status+="up ${uptime_days}d | "
+
+    # Time
+    status+="$(date '+%a, %-d, %H:%M')  "
+
+    printf '%s\n' "$status"
+
+    # Sleep in background so USR1 can interrupt it for instant refresh
+    sleep 5 &
+    wait $! 2>/dev/null
+done

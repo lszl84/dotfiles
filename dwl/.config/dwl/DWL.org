@@ -1,0 +1,156 @@
+#+TITLE: dwl Configuration
+#+DESCRIPTION: dwl (dwm for Wayland) setup for LMDE 7 with HiDPI, alongside Cinnamon
+
+* Overview
+
+A minimal dwl 0.7 Wayland compositor setup that mirrors the existing dwm/X11
+configuration. Coexists with Cinnamon and dwm via LightDM session selection.
+Compiled from source with a custom =config.h= and installed to =~/.local/=.
+
+* Key Bindings
+
+| Key                 | Action                       |
+|---------------------+------------------------------|
+| Super+Return        | Open terminal (foot)         |
+| Super+BackSpace     | Kill focused window          |
+| Super+Space         | Launch fuzzel                |
+| Super+j/k           | Focus next/prev window       |
+| Super+h             | Shrink master area           |
+| Super+,/.           | Shrink/grow master area      |
+| Super+l             | Lock screen                  |
+| Super+i/d           | Add/remove master slot       |
+| Super+Shift+Return  | Swap focused to master       |
+| Super+Left/Right    | Previous/next tag            |
+| Ctrl+Alt+Left/Right | Previous/next tag (touchegg) |
+| Alt+Tab/Shift+Tab   | Cycle window focus           |
+| Super+1-4           | Jump to tag                  |
+| Super+Shift+1-4     | Move window to tag           |
+| Super+t/f/m         | Tiled/floating/monocle       |
+| Super+Shift+Space   | Toggle floating              |
+| Super+Tab           | Toggle last tag              |
+| Super+b             | Toggle bar                   |
+| Super+0             | View all tags                |
+| Super+Shift+0       | Tag window on all tags       |
+| Super+Shift+BackSpace | Quit dwl                   |
+| XF86AudioRaiseVol   | Volume up 5%                 |
+| XF86AudioLowerVol   | Volume down 5%               |
+| XF86AudioMute       | Toggle mute                  |
+| XF86BrightnessUp    | Brightness up 10%            |
+| XF86BrightnessDown  | Brightness down 10%          |
+
+* Status Bar
+
+Format: =[N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM=
+
+- *APT updates*: count of pending upgrades (hidden if 0)
+- *Volume*: percentage or "mute" (via wpctl or amixer)
+- *Battery*: capacity percentage + time remaining (plain text, no color)
+- *Uptime*: days since boot
+- *Time*: 24-hour format
+
+Refreshes every 5 seconds via =dwl-status=. Instant volume updates via
+=pkill -USR1 dwl-status= triggered by the volume key bindings.
+
+* HiDPI Configuration
+
+The display is 3120x2080 and uses 2x scaling:
+
+- Wayland handles scaling natively via =MonitorRule= scale factor (2)
+- =QT_AUTO_SCREEN_SCALE_FACTOR=1= for Qt apps
+- =gsettings= sets =color-scheme= and =gtk-theme= for libadwaita/GTK dark theme
+- dwl font set to =monospace:size=10=, border to 2px, gaps to 14px (7 logical)
+- foot font set to =Liberation Mono:size=14=
+- Cursor size: 48px (=XCURSOR_SIZE=)
+
+* Touchpad / Input Devices
+
+Configured in =dwl-config.h= (libinput settings applied by dwl directly):
+
+- *Natural scrolling*: enabled
+- *Tap-to-click*: disabled
+- *Click method*: clickfinger (no button areas)
+- *Scroll method*: two-finger
+
+* Screen Locking
+
+Uses swayidle + swaylock:
+
+1. =swayidle= watches for idle (1500s = 25 min) and triggers =swaylock=
+2. At 1800s (30 min total), =systemctl suspend= is called
+3. =before-sleep= ensures lock before suspend (lid close, manual suspend)
+4. =loginctl lock-session= (Super+l) triggers the =lock= event
+
+* What's Different from dwm (X11)
+
+| dwm (X11)           | dwl (Wayland)                | Notes                        |
+|----------------------+------------------------------+------------------------------|
+| st terminal          | foot                         | Native Wayland, alpha support|
+| picom (compositor)   | dwl IS the compositor        | No separate process needed   |
+| rofi                 | fuzzel                       | rofi is X11-only in repos    |
+| xss-lock + dwm-lock | swayidle + swaylock          | Wayland equivalents          |
+| feh (wallpaper)      | swaybg                       | Wayland equivalent           |
+| xsetroot -name       | stdin pipe to dwl            | Bar patch reads from stdin   |
+| xrdb/xsettingsd      | Native Wayland scale + env   | HiDPI is native              |
+| picom opacity-rule    | foot alpha + emacs alpha-bg  | Per-app, no compositor rule  |
+| picom inactive-dim    | dim-unfocused patch          | Built into dwl               |
+
+* Patches Applied
+
+dwl is built from the v0.7 tarball with these patches applied by =dwl-build=:
+
+- *bar* (=bar-0.7.patch=): dwm-style bar with tags, layout, title, status
+- *gaps* (=dwl-patches.py=): uselessgap-style gaps around all windows
+- *dim-unfocused* (=dwl-patches.py=): dim inactive windows ~35%
+- *border tweaks* (=dwl-patches.py=): no borders on tiled, 2px white on floating
+
+* Deferred (TODO)
+
+- Rounded corners (22px) — requires SceneFX library
+- Background blur (dual_kawase) — requires SceneFX
+- Three-finger swipe gestures — needs libinput-gestures + ydotool
+
+* Build / Install
+
+#+begin_src bash
+# Install dependencies
+sudo apt install libwlroots-0.18-dev wayland-protocols libwayland-dev \
+    libxkbcommon-dev libinput-dev libfcft-dev libpixman-1-dev \
+    foot swaybg swayidle swaylock fuzzel wl-clipboard
+
+# Stow the configs
+cd ~/dotfiles && stow dwl
+
+# Build dwl and install to ~/.local/bin/
+dwl-build
+
+# Create LightDM session file (one-time, requires sudo)
+sudo mkdir -p /usr/share/wayland-sessions
+sudo tee /usr/share/wayland-sessions/dwl.desktop << 'DEOF'
+[Desktop Entry]
+Name=dwl
+Comment=dwm for Wayland
+Exec=/home/luke/.local/bin/dwl-start
+Type=Application
+DEOF
+
+# Log out and select "dwl" from LightDM
+#+end_src
+
+* Modifying Key Bindings
+
+1. Edit =~/.config/dwl/dwl-config.h=
+2. Run =dwl-build= to recompile
+3. Restart dwl (Super+Shift+BackSpace then log back in)
+
+* Files
+
+| File                 | Purpose                                    |
+|----------------------+--------------------------------------------|
+| =dwl-config.h=      | dwl config.h (keybindings, appearance)     |
+| =shiftview.c=        | Tag cycling function                       |
+| =bar-0.7.patch=      | Bar patch (downloaded separately)          |
+| =dwl-patches.py=     | Python patcher (gaps, dim, borders)        |
+| =foot.ini=           | Terminal config (font, colors, alpha)      |
+| =dwl-start=          | Session startup (env, daemons, exec)       |
+| =dwl-status=         | Status bar loop (stdout to dwl)            |
+| =dwl-build=          | Download + compile + install               |
