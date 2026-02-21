@@ -21,11 +21,12 @@ touchegg &
 # Disable tap-to-click (slick-greeter force-enables it on login)
 xinput set-prop "GXTP7863:00 27C6:01E0 Touchpad" "libinput Tapping Enabled" 0
 
-# Screen locker — race-condition-free via sleep lock transfer
-xss-lock -l -- ~/.local/bin/dwm-lock &
+# X screensaver timeout (3 min for testing, production: 15 min) — triggers xss-lock
+xset s 180 0
 
-# Idle lock (10 min) & suspend (25 min) with fullscreen inhibition
-~/.local/bin/dwm-idle &
+# Screen locker — race-condition-free via sleep lock transfer
+# Also sets logind IdleHint, enabling systemd IdleAction=suspend (see logind.conf)
+xss-lock -l -- xsecurelock &
 
 # Dark theme: xsettingsd handles GTK3, gsettings + ADW_DISABLE_PORTAL handles GTK4/libadwaita
 export ADW_DISABLE_PORTAL=1

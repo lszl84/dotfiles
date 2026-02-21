@@ -84,45 +84,19 @@ for touchegg instability.
 
 * Screen Locking
 
-Uses =xss-lock= with =--transfer-sleep-lock= protocol and =i3lock=:
+Uses =xss-lock= with =--transfer-sleep-lock= protocol, =xsecurelock=, and
+systemd =IdleAction= for idle suspend:
 
-1. =xss-lock -l= obtains a systemd delay inhibitor before sleep
-2. systemd-logind waits for the inhibitor to release
-3. =xss-lock= launches =dwm-lock=, passing the inhibitor file descriptor
-4. =dwm-lock= starts =i3lock=, waits for it to render, then closes the FD
-5. Only then does systemd proceed to suspend
-6. On wake, =i3lock= is still running — password required
+1. =xset s 600 0= sets a 10-minute X screensaver timeout
+2. When the screensaver activates, =xss-lock= launches =xsecurelock=
+3. =xsecurelock= handles the sleep lock fd transfer natively
+4. =xss-lock= also sets logind =IdleHint=true= for the session
+5. After all sessions are idle for =IdleActionSec= (15 min), logind suspends
+6. On wake, =xsecurelock= is still running — password required
 
-Idle timeouts are managed by =dwm-idle= (via =xprintidle=):
-
-- *10 minutes*: lock session (=loginctl lock-session= → triggers =xss-lock=)
-- *25 minutes*: suspend (=systemctl suspend=)
-- Fullscreen windows inhibit both lock and suspend
-
-** Idea: Built-in dwm locker
-
-The current i3lock approach has a race condition: when switching from a TTY
-back to X, the desktop flashes briefly before i3lock's window appears. This is
-because the kernel switches the framebuffer to X's VT before the X server
-repaints with i3lock on top.
-
-Patching a locker directly into dwm eliminates this entirely. Since dwm is
-already running and managing the display, it can enter a "locked" state
-instantly — grab input, paint a black overlay, accept only password input. No
-process to spawn, no window to create and map, no race.
-
-Security-wise this is strictly better than an external locker. If dwm crashes
-while locked, the X session dies and drops back to the LightDM login screen —
-still protected. The "external locker survives WM crash" argument doesn't apply
-because the session is gone either way.
-
-Implementation:
-- Add a =locked= flag to dwm
-- On lock: grab keyboard/pointer, draw fullscreen black, accept password input
-- Verify via PAM (=pam_authenticate=)
-- On success: ungrab, resume normal operation
-- Signal lock via =xsetroot= property or client message from =dwm-idle=
-- Eliminates =xss-lock=, =i3lock=, and =dwm-lock= script entirely
+Total: 10 min idle → lock, 25 min idle → suspend. Configured in:
+- =dwm-start=: =xset s 600 0= (screensaver timeout)
+- =/etc/systemd/logind.conf=: =IdleAction=suspend=, =IdleActionSec=15min=
 
 * Compositor (picom)
 
@@ -150,9 +124,9 @@ dwm and st are built from vanilla tarballs with these patches applied by =dwm-bu
 
 #+begin_src bash
 # Install dependencies
-sudo apt install xss-lock i3lock brightnessctl rofi xsettingsd picom \
+sudo apt install xss-lock xsecurelock brightnessctl rofi xsettingsd picom \
     libx11-dev libxft-dev libxinerama-dev libharfbuzz-dev \
-    x11-xserver-utils feh touchegg dbus-x11
+    x11-xserver-utils feh touchegg
 
 # Stow the configs
 cd ~/dotfiles && stow dwm touchegg
@@ -176,10 +150,8 @@ dwm-build
 | =dwm-config.h=      | dwm config.h (keybindings, appearance)     |
 | =st-config.h=       | st config.h (font, colors)                 |
 | =dwm-start=         | Session startup (env, daemons, exec)        |
-| =dwm-lock=          | xss-lock + i3lock wrapper                  |
 | =dwm-status=        | Status bar loop                            |
 | =dwm-build=         | Download + compile + install               |
-| =dwm-idle=          | Idle lock & suspend with fullscreen inhibit |
 | =xresources=        | Xft.dpi and font rendering                 |
 | =xsettingsd.conf=   | GTK scaling and theme via XSETTINGS        |
 | =picom.conf=        | Compositor (transparency, blur)            |

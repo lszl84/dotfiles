@@ -21,3 +21,6 @@ alias ffgrab='ffmpeg -use_wallclock_as_timestamps 1 \
   -c:v h264_vaapi -qp 23 \
   -c:a aac -b:a 192k'
 
+
+# opencode
+export PATH=/home/luke/.opencode/bin:$PATH

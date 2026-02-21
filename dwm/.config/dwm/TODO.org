@@ -1,0 +1,6 @@
+#+TITLE: dwm TODO
+
+* TODO Fullscreen videos do not inhibit idle suspend
+systemd-inhibit or an XDG portal could be used to suppress IdleAction
+while fullscreen video is playing. Investigate whether browsers/players
+already take inhibitors, or if a lightweight wrapper is needed.
