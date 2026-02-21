@@ -1,7 +1,7 @@
 /* waybar style — matching dwm bar appearance */
 
 * {
-    font-family: "JetBrains Mono", monospace;
+    font-family: "Adwaita Mono", monospace;
     font-size: 13px;
     min-height: 0;
 }
