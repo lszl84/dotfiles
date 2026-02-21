@@ -3,7 +3,7 @@
 
 * Overview
 
-Personal dotfiles for a Linux setup with dwm.
+Personal dotfiles for a Linux setup with dwm (X11) or Hyprland (Wayland).
 
 * Contents
 
@@ -28,6 +28,21 @@ Tiling window manager (dwm 6.5) with a complete desktop environment:
 - GTK 3/4 dark theme settings
 
 See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
+
+** hyprland
+
+Hyprland Wayland compositor setup for Arch Linux:
+- Master layout, HiDPI 2x scaling, rounded corners, blur, inactive dimming
+- foot terminal (server mode), fuzzel launcher, waybar
+- hyprlock + hypridle for screen locking and idle management
+- Lock on Super+L, idle lock at 2 min, DPMS off at 3 min, suspend at 4 min
+- swaybg wallpaper, PipeWire volume keys, brightnessctl
+
+Packages:
+
+#+begin_src bash
+sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar swaybg brightnessctl
+#+end_src
 
 ** emacs-easy
 
@@ -66,7 +81,8 @@ Symlink or copy the contents of each directory to your home folder:
 #+begin_src bash
 stow bash
 stow emacs-easy
-stow dwm
+stow dwm         # X11
+stow hyprland    # Wayland
 stow touchegg
 stow fastfetch
 # etc.
