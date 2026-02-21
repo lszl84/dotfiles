@@ -100,6 +100,9 @@ lock(const Arg *arg)
 	locklog_open();
 	locklog_msg("lock() entered");
 
+	/* Log whether picom (compositor) is running */
+	locklog_msg("picom running: %s", system("pgrep -x picom >/dev/null 2>&1") == 0 ? "yes" : "no");
+
 	col_black = BlackPixel(dpy, screen);
 	col_input = col_black;
 	col_fail = col_black;
@@ -115,6 +118,7 @@ lock(const Arg *arg)
 		DefaultVisual(dpy, screen),
 		CWOverrideRedirect | CWBackPixel, &wa);
 	XMapRaised(dpy, lockwin);
+	XSelectInput(dpy, lockwin, KeyPressMask | VisibilityChangeMask | ExposureMask);
 	locklog_msg("window created and mapped (0x%lx)", lockwin);
 
 	for (i = 0; i < 10 && !grabbed; i++) {
@@ -202,7 +206,14 @@ lock(const Arg *arg)
 				}
 			}
 		} else {
-			locklog_msg("non-key event type=%d, raising lock window", ev.type);
+			locklog_msg("event type=%d%s, raising lock window",
+				ev.type,
+				ev.type == FocusIn ? " FocusIn" :
+				ev.type == FocusOut ? " FocusOut" :
+				ev.type == Expose ? " Expose" :
+				ev.type == VisibilityNotify ? " VisibilityNotify" :
+				ev.type == MapNotify ? " MapNotify" :
+				ev.type == ConfigureNotify ? " ConfigureNotify" : "");
 			XRaiseWindow(dpy, lockwin);
 		}
 	}
