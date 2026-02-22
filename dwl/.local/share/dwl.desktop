@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=dwl
-Comment=dwm for Wayland
-Exec=/home/luke/.local/bin/dwl-start
-Type=Application
