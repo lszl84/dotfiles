@@ -1,6 +1,8 @@
 #!/bin/bash
 # dwm-start — Session entry point for dwm (launched by LightDM)
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # HiDPI environment (3120x2080 @ 2x)
 # GTK scaling is handled by xsettingsd (Gdk/WindowScalingFactor, Gdk/UnscaledDPI)
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
@@ -21,8 +23,8 @@ touchegg &
 # Disable tap-to-click (slick-greeter force-enables it on login)
 xinput set-prop "GXTP7863:00 27C6:01E0 Touchpad" "libinput Tapping Enabled" 0
 
-# X screensaver timeout (2 min) — triggers xss-lock → dwm lock
-xset s 120 0
+# Idle: lock at 20min (xss-lock → dwm-lock), suspend 30s after lock
+xset s 1200 0
 
 # Screen locker — dwm built-in locker via xss-lock for IdleHint + sleep inhibitor
 # dwm-lock sets _DWM_LOCK property → dwm lock() paints black OverrideRedirect window
@@ -34,7 +36,7 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null |
 gsettings set org.gnome.desktop.interface gtk-theme Mint-Y-Dark-Blue 2>/dev/null || true
 
 # Wallpaper (same as Cinnamon)
-feh --bg-fill /usr/share/backgrounds/linuxmint-wilma/aksenapati_blanket.jpg &
+feh --bg-fill ~/Wallpapers/pexels-nietjuhart-29196582.jpg &
 
 # Status bar
 ~/.local/bin/dwm-status &

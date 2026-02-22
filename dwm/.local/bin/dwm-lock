@@ -24,9 +24,14 @@ if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
     log "sleep lock fd closed"
 fi
 
+# Suspend after 30s if still locked
+(sleep 30 && log "suspend timer fired" && systemctl suspend) &
+SUSPEND_PID=$!
+
 # Wait for unlock (dwm deletes the property)
 log "polling for unlock"
 while xprop -root _DWM_LOCK 2>/dev/null | grep -q '"locked"'; do
     sleep 0.5
 done
+kill $SUSPEND_PID 2>/dev/null
 log "unlock detected, exiting"

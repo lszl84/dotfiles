@@ -45,5 +45,12 @@ make clean
 make PREFIX="$PREFIX"
 make PREFIX="$PREFIX" install
 
+# --- system config (requires sudo) ---
+echo "==> Installing dwm.desktop session entry"
+sudo install -Dm644 "$CONFIG_DIR/dwm.desktop" /usr/share/xsessions/dwm.desktop
+
+echo "==> Installing PAM config for dwm lock screen"
+sudo cp -n /etc/pam.d/login /etc/pam.d/dwm
+
 echo "==> dwm and st installed to $PREFIX/bin/"
-echo "==> Done! Log out and select 'Default Xsession' from LightDM."
+echo "==> Done! Log out and select 'dwm' from LightDM."
