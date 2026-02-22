@@ -41,6 +41,9 @@
 ;; Show matching parentheses
 (show-paren-mode 1)
 
+;; Font
+(set-face-attribute 'default nil :family "Adwaita Mono" :height 100)
+
 ;; Pixel-wise frame resizing (no gaps at edges)
 (setq frame-resize-pixelwise t)
 
