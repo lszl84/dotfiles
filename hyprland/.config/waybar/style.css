@@ -31,8 +31,9 @@ window#waybar {
 
 #pulseaudio,
 #battery,
+#custom-uptime,
 #clock {
-    padding: 0 8px;
+    padding: 0 4px;
     color: #bbbbbb;
 }
 
