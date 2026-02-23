@@ -24,7 +24,10 @@
     "battery": {
         "format": "Bat {capacity}% ·",
         "format-charging": "Bat {capacity}%+ ·",
-        "interval": 30
+        "interval": 30,
+        "states": {
+            "warning": 10
+        }
     },
 
     "custom/uptime": {
