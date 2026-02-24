@@ -36,7 +36,7 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null |
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark 2>/dev/null || true
 
 # Wallpaper (same as Cinnamon)
-feh --bg-fill ~/Wallpapers/pexels-nietjuhart-29196582.jpg &
+feh --bg-fill ~/Wallpapers/aksenapati_blanket.jpg &
 
 # Status bar
 ~/.local/bin/dwm-status &
