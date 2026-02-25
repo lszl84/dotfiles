@@ -38,6 +38,7 @@ Hyprland Wayland compositor setup for Arch Linux:
 - Lock on Super+L, idle lock at 2 min, DPMS off at 3 min, suspend at 4 min
 - swaybg wallpaper, PipeWire volume keys, brightnessctl
 - CapsLock triggers [[https://github.com/lszl84/live-whisper][live-whisper]] speech-to-text overlay
+- Low battery indicator: red dot overlay (screen shader) when <15%, discharging, and waybar hidden
 
 Packages:
 
