@@ -198,11 +198,18 @@
   (add-hook 'org-mode-hook (lambda ()
                              (org-indent-mode)
                              (variable-pitch-mode -1)
-                             (auto-fill-mode 1))))
+                             (auto-fill-mode 1)))
+  (setq org-clock-persist t))
 
 ;; =============================================================================
 ;; Compilation
 ;; =============================================================================
+
+;; Always open compilation window at bottom (horizontal split)
+(add-to-list 'display-buffer-alist
+             '("^\\*compilation\\*"
+               (display-buffer-reuse-mode-window display-buffer-at-bottom)
+               (window-height . 0.4)))
 
 ;; Auto-close compilation buffer on success
 (defun my/compilation-finish (buf status)
@@ -210,6 +217,16 @@
   (when (string-match-p "finished" status)
     (run-at-time 1 nil #'delete-windows-on buf)))
 (add-hook 'compilation-finish-functions #'my/compilation-finish)
+
+;; Build with cmake and run the binary
+(defun my/cmake-build-and-run ()
+  "Run cmake --build build && ./build/main from the project root."
+  (interactive)
+  (let ((default-directory (or (locate-dominating-file default-directory "CMakeLists.txt")
+                               default-directory)))
+    (compile "cmake --build build && ./build/main")))
+
+(global-set-key (kbd "C-c r") #'my/cmake-build-and-run)
 
 ;; =============================================================================
 ;; Better Defaults
