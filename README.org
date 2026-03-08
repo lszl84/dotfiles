@@ -1,91 +1,189 @@
 #+TITLE: Dotfiles
-#+DESCRIPTION: Configuration files for Linux
+#+DESCRIPTION: Configuration files for Linux (dwm / X11)
 
 * Overview
 
-Personal dotfiles for a Linux setup with dwm (X11) or Hyprland (Wayland).
+Personal dotfiles for a Linux desktop built around dwm on X11. Everything is
+managed with GNU Stow — each top-level directory is a stow package that
+symlinks into ~$HOME~.
 
 * Contents
 
-** bash
-
-Shell configuration for Bash:
-- Colored output for ~ls~ and ~grep~
-- Minimal prompt showing current directory
-- PATH additions for ~.local/bin~, VSCodium, and opencode
-
 ** dwm
 
-Tiling window manager (dwm 6.5) with a complete desktop environment:
-- Compiled from source via ~dwm-build~ with custom ~config.h~
+Tiling window manager (dwm 6.5) with a complete desktop environment.
+
+~dwm-build~ downloads dwm and st from suckless.org, applies patches via Python
+scripts, copies in ~dwm-config.h~ / ~st-config.h~, and installs binaries to
+~~/.local/bin/~.
+
+Applied dwm patches:
+- *gaps* — window gaps (14px at 2x)
+- *status2d* — colored status bar segments (~^c#RRGGBB^~)
+- *lock* — built-in PAM screen locker (fullscreen black window, keyboard grab, color feedback)
+- *vtblack* — black overlay on VT switch to prevent flash
+
+Applied st patches:
+- *scrollback* — 2000-line history with Shift+PageUp/Down
+- *scrollback-mouse* — Shift+scroll wheel
+- *anysize* — dynamic border centering for arbitrary window sizes
+
+Key features:
 - HiDPI (192 DPI / 2x) scaling for 3120x2080 display
 - st terminal with Modus Vivendi colors
 - rofi launcher, PipeWire volume keys, brightnessctl
-- Picom compositor: 83% transparency on st/Emacs, dual-kawase blur, rounded corners, inactive window dimming
-- Screen locking via ~xss-lock~ + ~i3lock~
-- Idle lock (10 min) and suspend (25 min) with fullscreen inhibition
-- Status bar: updates, volume, battery, uptime, clock
-- GTK 3/4 dark theme settings
+- Picom compositor: 75% opacity on st/Emacs, dual-kawase blur, 22px rounded corners, 35% inactive dimming
+- Built-in PAM screen locker triggered via ~xss-lock~ (no i3lock)
+- Idle lock at 20 min, suspend 30s after lock
+- Status bar: package updates, volume, battery (with color), uptime, clock
+- GTK 3/4 dark theme via xsettingsd + gsettings
+- Wallpaper via feh
 
 See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
 
-** hyprland
+** bash
 
-Hyprland Wayland compositor setup for Arch Linux:
-- Master layout, HiDPI 2x scaling, rounded corners, blur, inactive dimming
-- foot terminal (server mode), fuzzel launcher, waybar
-- hyprlock + hypridle for screen locking and idle management
-- Lock on Super+L, idle lock at 2 min, DPMS off at 3 min, suspend at 4 min
-- swaybg wallpaper, PipeWire volume keys, brightnessctl
-- CapsLock triggers [[https://github.com/lszl84/live-whisper][live-whisper]] speech-to-text overlay
-- Low battery indicator: red dot overlay (screen shader) when <15%, discharging, and waybar hidden
-
-Packages:
-
-#+begin_src bash
-sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar swaybg brightnessctl
-#+end_src
+Shell configuration:
+- Colored output for ~ls~ and ~grep~
+- Minimal prompt showing current directory
+- PATH additions for ~~/.local/bin~
+- ~ffgrab~ alias for hardware-accelerated screen recording (VAAPI)
+- ~cco~ alias for ~claude --continue~
 
 ** emacs-easy
 
-A clean Emacs setup optimized for usability:
+A clean Emacs setup:
 - CUA keybindings (Ctrl+C/X/V/Z work as expected)
-- Modus Vivendi dark theme with custom ~#212121~ background
-- Minimal UI (no menu bar, toolbar, scrollbars, or mode line)
+- Modus Vivendi dark theme with ~#000000~ background
+- Custom modeline: rounded pill indicator with modified dot, buffer/mode/position
+- Magit with quick-push (~C-c p~)
+- ~C-c r~ — cmake build and run (~cmake --build build && ./build/main~)
+- Auto-close compilation buffer on success
+- Org mode with clock persistence
 - Emacs server for fast ~emacsclient~ usage
-- Better defaults: UTF-8, auto-revert, save-place, recent files
-
-** fastfetch
-
-System information display with a compact logo showing:
-- OS, kernel, uptime, packages
-- Shell, desktop environment
-- CPU, GPU, memory, swap, disk
-- Local IP, battery status
-
-** ffmpeg
-
-Handy snippets for video conversion (e.g., high-quality GIF encoding).
-
-** gdb
-
-GDB debugger config enabling ~debuginfod~ for automatic debug symbol downloads.
 
 ** touchegg
 
-Touchpad gesture daemon:
-- Three-finger swipe left/right for workspace switching
+Touchpad gesture daemon for three-finger swipe workspace switching:
+- Swipe left → next tag (natural direction)
+- Swipe right → previous tag
+
+Uses ~SEND_KEYS~ (~Ctrl+Alt+Left/Right~) rather than ~CHANGE_DESKTOP~ for
+reliability.
+
+** fastfetch
+
+System info display with compact logo: OS, kernel, uptime, packages, shell, DE,
+CPU, GPU, memory, swap, disk, local IP, battery.
+
+** ffmpeg
+
+Audio/video utility scripts:
+- ~ffnorm.sh~ — loudness normalization with limiter, EQ, and LUFS measurement
+- ~ffrecord.sh~ — auto-incrementing WAV recording from PulseAudio
+- ~ffstreamsilent.sh~ — VAAPI-accelerated screen streaming to RTMP (silent audio)
+- ~ffgrab~ (bash alias) — VAAPI-accelerated screen + audio recording
+
+** gdb
+
+GDB config enabling ~debuginfod~ for automatic debug symbol downloads.
 
 * Installation
 
-Symlink or copy the contents of each directory to your home folder:
+** Dependencies
+
+*** Arch Linux
 
 #+begin_src bash
+# Core
+sudo pacman -S xorg xorg-xinit lightdm lightdm-gtk-greeter stow git
+
+# dwm build deps
+sudo pacman -S base-devel libx11 libxft libxinerama python
+
+# Desktop
+sudo pacman -S picom rofi feh xss-lock brightnessctl
+
+# Audio
+sudo pacman -S pipewire pipewire-pulse wireplumber
+
+# Fonts
+sudo pacman -S adwaita-fonts ttf-jetbrains-mono-nerd
+
+# Touchpad gestures
+sudo pacman -S touchegg
+
+# Emacs
+sudo pacman -S emacs
+
+# Optional
+sudo pacman -S fastfetch ffmpeg gdb
+#+end_src
+
+*** Debian 13 (Trixie)
+
+#+begin_src bash
+# Core
+sudo apt install xorg lightdm stow git
+
+# dwm build deps
+sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev python3
+
+# Desktop
+sudo apt install picom rofi feh xss-lock brightnessctl
+
+# Audio
+sudo apt install pipewire pipewire-pulse wireplumber
+
+# Fonts (Adwaita Mono: install manually from https://github.com/nicholasgasior/adwaita-fonts)
+sudo apt install fonts-jetbrains-mono
+
+# PAM dev (needed for dwm lock patch)
+sudo apt install libpam0g-dev
+
+# Touchpad gestures
+sudo apt install touchegg
+
+# Emacs
+sudo apt install emacs
+
+# Optional
+sudo apt install fastfetch ffmpeg gdb
+#+end_src
+
+** Setup
+
+#+begin_src bash
+cd ~/dotfiles
+
+# Symlink configs
 stow bash
+stow dwm
 stow emacs-easy
-stow dwm         # X11
-stow hyprland    # Wayland
 stow touchegg
 stow fastfetch
-# etc.
+stow gdb
+stow ffmpeg
+
+# Build and install dwm + st
+dwm-build
+
+# Enable touchegg daemon
+sudo systemctl enable --now touchegg
+
+# Enable LightDM
+sudo systemctl enable lightdm
+#+end_src
+
+The ~dwm-build~ script handles everything: downloading sources, applying
+patches, compiling, installing to ~~/.local/bin/~, and creating the
+~/etc/pam.d/dwm~ config for the built-in locker. After a reboot, select "dwm"
+from the LightDM session menu.
+
+** Touchpad (Xorg)
+
+For natural scrolling, tap-to-click, and clickfinger:
+
+#+begin_src bash
+sudo cp ~/dotfiles/40-touchpad.conf /etc/X11/xorg.conf.d/
 #+end_src
