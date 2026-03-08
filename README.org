@@ -15,7 +15,7 @@ Tiling window manager (dwm 6.5) with a complete desktop environment.
 
 ~dwm-build~ downloads dwm and st from suckless.org, applies patches via Python
 scripts, copies in ~dwm-config.h~ / ~st-config.h~, and installs binaries to
-~~/.local/bin/~.
+=$HOME/.local/bin/=.
 
 Applied dwm patches:
 - *gaps* — window gaps (14px at 2x)
@@ -46,7 +46,7 @@ See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
 Shell configuration:
 - Colored output for ~ls~ and ~grep~
 - Minimal prompt showing current directory
-- PATH additions for ~~/.local/bin~
+- PATH additions for =$HOME/.local/bin=
 - ~ffgrab~ alias for hardware-accelerated screen recording (VAAPI)
 - ~cco~ alias for ~claude --continue~
 
@@ -90,13 +90,11 @@ GDB config enabling ~debuginfod~ for automatic debug symbol downloads.
 
 * Installation
 
-** Dependencies
-
-*** Arch Linux
+** Dependencies (Arch Linux)
 
 #+begin_src bash
 # Core
-sudo pacman -S xorg xorg-xinit lightdm lightdm-gtk-greeter stow git
+sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
 
 # dwm build deps
 sudo pacman -S base-devel libx11 libxft libxinerama python
@@ -116,39 +114,11 @@ sudo pacman -S touchegg
 # Emacs
 sudo pacman -S emacs
 
+# Hardware video encoding (VAAPI — for ffgrab/ffstreamsilent)
+sudo pacman -S intel-media-driver libva-intel-driver
+
 # Optional
 sudo pacman -S fastfetch ffmpeg gdb
-#+end_src
-
-*** Debian 13 (Trixie)
-
-#+begin_src bash
-# Core
-sudo apt install xorg lightdm stow git
-
-# dwm build deps
-sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev python3
-
-# Desktop
-sudo apt install picom rofi feh xss-lock brightnessctl
-
-# Audio
-sudo apt install pipewire pipewire-pulse wireplumber
-
-# Fonts (Adwaita Mono: install manually from https://github.com/nicholasgasior/adwaita-fonts)
-sudo apt install fonts-jetbrains-mono
-
-# PAM dev (needed for dwm lock patch)
-sudo apt install libpam0g-dev
-
-# Touchpad gestures
-sudo apt install touchegg
-
-# Emacs
-sudo apt install emacs
-
-# Optional
-sudo apt install fastfetch ffmpeg gdb
 #+end_src
 
 ** Setup
@@ -176,8 +146,8 @@ sudo systemctl enable lightdm
 #+end_src
 
 The ~dwm-build~ script handles everything: downloading sources, applying
-patches, compiling, installing to ~~/.local/bin/~, and creating the
-~/etc/pam.d/dwm~ config for the built-in locker. After a reboot, select "dwm"
+patches, compiling, installing to =$HOME/.local/bin/=, and creating the
+=/etc/pam.d/dwm= config for the built-in locker. After a reboot, select "dwm"
 from the LightDM session menu.
 
 ** Touchpad (Xorg)
