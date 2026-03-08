@@ -35,7 +35,8 @@ Key features:
 - Picom compositor: 75% opacity on st/Emacs, dual-kawase blur, 22px rounded corners, 35% inactive dimming
 - Built-in PAM screen locker triggered via ~xss-lock~ (no i3lock)
 - Idle lock at 20 min, suspend 30s after lock
-- Status bar: package updates, volume, battery (with color), uptime, clock
+- Status bar: volume, battery (with color), uptime (red warning after 14 days), clock
+- Polkit agent (polkit-gnome) for GUI privilege prompts
 - GTK 3/4 dark theme via xsettingsd + gsettings
 - Wallpaper via feh
 
@@ -100,7 +101,7 @@ sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
 sudo pacman -S base-devel libx11 libxft libxinerama python
 
 # Desktop
-sudo pacman -S picom rofi feh xss-lock brightnessctl
+sudo pacman -S picom rofi feh xss-lock brightnessctl polkit-gnome
 
 # Audio
 sudo pacman -S pipewire pipewire-pulse wireplumber

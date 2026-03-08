@@ -35,6 +35,9 @@ export ADW_DISABLE_PORTAL=1
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null || true
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark 2>/dev/null || true
 
+# Polkit agent (GTK — handles password prompts for GUI apps)
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
 # Wallpaper (same as Cinnamon)
 feh --bg-fill ~/Wallpapers/aksenapati_blanket.jpg &
 

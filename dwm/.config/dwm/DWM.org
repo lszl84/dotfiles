@@ -1,5 +1,5 @@
 #+TITLE: dwm Configuration
-#+DESCRIPTION: dwm setup for LMDE 7 with HiDPI, alongside Cinnamon
+#+DESCRIPTION: dwm setup for Arch Linux with HiDPI
 
 * Overview
 
@@ -40,12 +40,11 @@ and installed to =~/.local/=.
 
 * Status Bar
 
-Format: =[N updates | ]vol XX% | bat XX% (Xh Xm left) | up Xd | HH:MM=
+Format: =vol XX% | bat XX% (Xh Xm left) | up Xd | Day, DD, HH:MM=
 
-- *APT updates*: count of pending upgrades (hidden if 0)
 - *Volume*: percentage or "mute" (via wpctl or amixer)
 - *Battery*: capacity percentage + time remaining, with status2d color coding
-- *Uptime*: days since boot
+- *Uptime*: days since boot (red "update & reboot!" warning after 14 days)
 - *Time*: 24-hour format
 
 Refreshes every 5 seconds via =dwm-status=. Instant volume updates via
@@ -131,9 +130,8 @@ dwm and st are built from vanilla tarballs with these patches applied by =dwm-bu
 
 #+begin_src bash
 # Install dependencies
-sudo apt install xss-lock brightnessctl rofi xsettingsd picom \
-    libx11-dev libxft-dev libxinerama-dev libharfbuzz-dev libpam0g-dev \
-    x11-xserver-utils feh touchegg
+sudo pacman -S xss-lock brightnessctl rofi xsettingsd picom \
+    libx11 libxft libxinerama harfbuzz pam xorg-xsetroot feh touchegg polkit-gnome
 
 # Stow the configs
 cd ~/dotfiles && stow dwm touchegg
