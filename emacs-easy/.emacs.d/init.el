@@ -166,6 +166,54 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; Auto-refresh package archive on first install
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; =============================================================================
+;; File Tree (treemacs)
+;; =============================================================================
+
+(use-package nerd-icons
+  :custom
+  (nerd-icons-color-icons nil)
+  :config
+  (unless (member "Symbols Nerd Font Mono" (font-family-list))
+    (nerd-icons-install-fonts t)))
+
+(use-package treemacs-nerd-icons
+  :after treemacs
+  :init
+  (setq treemacs-nerd-icons-tab "  ")
+  :config
+  (treemacs-load-theme "nerd-icons")
+  ;; Remove root icon
+  (treemacs-create-theme "nerd-icons-clean"
+    :extends "nerd-icons"
+    :config
+    (treemacs-create-icon :icon "" :extensions (root-open root-closed)))
+  (treemacs-load-theme "nerd-icons-clean"))
+
+(use-package treemacs
+  :bind ("C-c t" . treemacs)
+  :config
+  (setq treemacs-width 30
+        treemacs-is-never-other-window t
+        treemacs-no-png-images t
+        treemacs-indentation 1
+        treemacs-indentation-string "  ")
+  (treemacs-follow-mode 1)
+  (treemacs-fringe-indicator-mode 'always)
+  (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action)
+  (add-hook 'treemacs-mode-hook
+            (lambda ()
+              (setq-local face-remapping-alist
+                          '((default :family "Adwaita Sans" :height 100)))
+              (setq-local mode-line-format nil)))
+  (set-face-attribute 'treemacs-root-face nil
+                      :foreground "#ffffff" :weight 'bold
+                      :height 1.0 :underline nil))
+
 ;; =============================================================================
 ;; Magit
 ;; =============================================================================
