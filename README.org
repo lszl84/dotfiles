@@ -18,7 +18,6 @@ scripts, copies in ~dwm-config.h~ / ~st-config.h~, and installs binaries to
 =$HOME/.local/bin/=.
 
 Applied dwm patches:
-- *gaps* — window gaps (14px at 2x)
 - *status2d* — colored status bar segments (~^c#RRGGBB^~)
 - *lock* — built-in PAM screen locker (fullscreen black window, keyboard grab, color feedback)
 - *vtblack* — black overlay on VT switch to prevent flash
@@ -32,13 +31,12 @@ Key features:
 - HiDPI (192 DPI / 2x) scaling for 3120x2080 display
 - st terminal with Modus Vivendi colors
 - rofi launcher, PipeWire volume keys, brightnessctl
-- Picom compositor: 75% opacity on st/Emacs, dual-kawase blur, 22px rounded corners, 35% inactive dimming
+- Picom compositor: vsync, 35% inactive dimming
 - Built-in PAM screen locker triggered via ~xss-lock~ (no i3lock)
 - Idle lock at 20 min, suspend 30s after lock
-- Status bar: volume, battery (with color), uptime (red warning after 14 days), clock
+- Status bar: volume, battery (with color + low battery notification), uptime (red warning after 14 days), clock
 - Polkit agent (polkit-gnome) for GUI privilege prompts
 - GTK 3/4 dark theme via xsettingsd + gsettings
-- Wallpaper via feh
 
 See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
 
@@ -101,7 +99,7 @@ sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
 sudo pacman -S base-devel libx11 libxft libxinerama python
 
 # Desktop
-sudo pacman -S picom rofi feh xss-lock brightnessctl polkit-gnome
+sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome
 
 # Audio
 sudo pacman -S pipewire pipewire-pulse wireplumber

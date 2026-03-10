@@ -118,7 +118,7 @@ static const char *colorname[] = {
 	[255] = 0,
 
 	/* special colors */
-	[256] = "#000000", /* background */
+	[256] = "#141414", /* background */
 	[257] = "#ffffff", /* foreground */
 	[258] = "#ffffff", /* cursor     */
 };

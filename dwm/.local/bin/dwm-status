@@ -9,6 +9,7 @@ for pid in $(pgrep -f dwm-status); do
 done
 
 last_vol=""
+bat_warned=0
 
 # USR1 interrupts 'wait' below, causing an immediate refresh
 trap 'true' USR1
@@ -81,6 +82,14 @@ while true; do
 
         if [[ "$bat_status" == "Charging" || "$bat_cap" -lt 10 ]]; then
             status+="^d^"
+        fi
+
+        # Low battery notification (once per discharge cycle)
+        if [[ "$bat_cap" -lt 10 && "$bat_status" != "Charging" && "$bat_warned" -eq 0 ]]; then
+            notify-send -u critical "Battery Low" "Battery at ${bat_cap}%"
+            bat_warned=1
+        elif [[ "$bat_cap" -ge 10 || "$bat_status" == "Charging" ]]; then
+            bat_warned=0
         fi
 
         status+=" • "
