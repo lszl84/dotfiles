@@ -70,9 +70,13 @@ replacements = [
     ('\t\t} else if (ev->x < x + TEXTW(selmon->ltsymbol))\n\t\t\tclick = ClkLtSymbol;\n\t\telse if',
      '\t\t} else if'),
 
-    # togglefloating(): restore border when becoming floating
+    # togglefloating(): handle border and centering when toggling floating state - resize to 80% of screen
     ('\tif (selmon->sel->isfloating)\n\t\tresize(selmon->sel, selmon->sel->x, selmon->sel->y,\n\t\t\tselmon->sel->w, selmon->sel->h, 0);',
-     '\tif (selmon->sel->isfloating) {\n\t\tselmon->sel->bw = borderpx;\n\t\tresize(selmon->sel, selmon->sel->x, selmon->sel->y,\n\t\t\tselmon->sel->w, selmon->sel->h, 0);\n\t}'),
+     '\tif (selmon->sel->isfloating) {\n\t\t/* Resize to 80% of screen */\n\t\tint neww = (int)(selmon->ww * 0.8);\n\t\tint newh = (int)(selmon->wh * 0.8);\n\t\t/* Center on screen */\n\t\tselmon->sel->x = selmon->wx + (selmon->ww - neww) / 2;\n\t\tselmon->sel->y = selmon->wy + (selmon->wh - newh) / 2;\n\t\tselmon->sel->bw = borderpx;\n\t\tresize(selmon->sel, selmon->sel->x, selmon->sel->y, neww, newh, 0);\n\t} else {\n\t\t/* Switching back to tiled: remove border */\n\t\tselmon->sel->bw = 0;\n\t\tresize(selmon->sel, selmon->sel->x, selmon->sel->y, selmon->sel->w, selmon->sel->h, 0);\n\t}'),
+
+    # manage(): zero border for non-floating windows immediately and update X window
+    ('\tattach(c);',
+     '\tif (!c->isfloating) {\n\t\tc->bw = 0;\n\t\tXConfigureWindow(dpy, c->win, CWBorderWidth, &(XWindowChanges){.border_width = 0});\n\t}\n\tattach(c);'),
 
     # manage(): center floating windows on screen
     ('\tif (c->isfloating)\n\t\tXRaiseWindow(dpy, c->win);',
