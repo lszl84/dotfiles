@@ -27,6 +27,9 @@ xinput set-prop "GXTP7863:00 27C6:01E0 Touchpad" "libinput Tapping Enabled" 0 2>
 # Bluetooth mouse: max speed
 xinput set-prop "Rival 3 Wireless Gen 2" "libinput Accel Speed" 1.0 2>/dev/null || true
 
+# Touchpad: max speed
+xinput set-prop "GXTP7863:00 27C6:01E0 Touchpad" "libinput Accel Speed" 1.0 2>/dev/null || true
+
 # Idle: lock at 20min (xss-lock → dwm-lock), suspend 30s after lock
 xset s 1200 0
 
