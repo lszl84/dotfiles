@@ -3,9 +3,9 @@
     monitor = 0
     follow = mouse
     width = 350
-    height = 150
+    height = (0, 150)
     origin = top-right
-    offset = 10x50
+    offset = (10, 50)
     scale = 0
     notification_limit = 5
     progress_bar = true
@@ -19,7 +19,7 @@
     padding = 12
     horizontal_padding = 12
     text_icon_padding = 12
-    frame_width = 0
+    frame_width = 2
     separator_color = frame
     sort = yes
     idle_threshold = 120
@@ -63,20 +63,21 @@
     mouse_right_click = close_all
 
 [urgency_low]
-    background = "#151920"
-    foreground = "#888888"
+    background = "#242e3d"
+    foreground = "#a0a8b0"
+    frame_color = "#242e3d"
     timeout = 10
 
 [urgency_normal]
-    background = "#151920"
+    background = "#242e3d"
     foreground = "#bbc2cf"
+    frame_color = "#242e3d"
     timeout = 10
 
 [urgency_critical]
-    background = "#151920"
+    background = "#242e3d"
     foreground = "#ff5f59"
     frame_color = "#ff5f59"
-    frame_width = 2
     timeout = 0
 
 [fullscreen_delay_everything]
