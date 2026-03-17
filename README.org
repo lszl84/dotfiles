@@ -37,6 +37,7 @@ Key features:
 - Status bar: volume, battery (with color + low battery notification), uptime (red warning after 14 days), clock
 - Polkit agent (polkit-gnome) for GUI privilege prompts
 - GTK 3/4 dark theme via xsettingsd + gsettings
+- Dunst notifications (dark theme, top-right, rounded corners)
 
 See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
 
@@ -151,6 +152,7 @@ cd ~/dotfiles
 
 # Symlink configs
 stow bash
+stow dunst
 stow dwm
 stow emacs-easy
 stow touchegg
