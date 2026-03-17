@@ -99,7 +99,7 @@ sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
 sudo pacman -S base-devel libx11 libxft libxinerama python
 
 # Desktop
-sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome
+sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome xorg-xsetroot
 
 # Audio
 sudo pacman -S pipewire pipewire-pulse wireplumber
@@ -118,6 +118,27 @@ sudo pacman -S intel-media-driver libva-intel-driver
 
 # Optional
 sudo pacman -S fastfetch ffmpeg gdb
+#+end_src
+
+*** Debian/Ubuntu equivalent
+
+#+begin_src bash
+# Core
+sudo apt-get install xorg xinit x11-xserver-utils
+
+# dwm build deps
+sudo apt-get install build-essential libx11-dev libxft-dev libxinerama-dev python3
+
+# Desktop
+sudo apt-get install picom rofi xss-lock brightnessctl policykit-1-gnome
+
+# Audio
+sudo apt-get install pipewire pipewire-pulse wireplumber
+
+# Fonts
+sudo apt-get install fonts-adwaita fonts-jetbrains-mono-nerd
+
+# Note: touchegg may need manual install from https://github.com/JoseExposito/touchegg
 #+end_src
 
 ** Setup

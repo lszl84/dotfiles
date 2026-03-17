@@ -49,50 +49,74 @@ while true; do
     fi
 
     # Battery (green = charging, red = below 10%, default otherwise)
-    bat_cap=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
-    if [[ -n "$bat_cap" ]]; then
-        bat_status=$(cat /sys/class/power_supply/BAT0/status 2>/dev/null)
-
-        if [[ "$bat_status" == "Charging" ]]; then
-            status+="^c#00ff00^"
-        elif [[ "$bat_cap" -lt 10 ]]; then
-            status+="^c#ff0000^"
+    # Try BAT0, BAT1, or any BAT* directory
+    bat_path=""
+    for bat in /sys/class/power_supply/BAT*/capacity; do
+        if [[ -f "$bat" ]]; then
+            bat_path="${bat%/capacity}"
+            break
         fi
+    done
+    
+    if [[ -n "$bat_path" ]]; then
+        bat_cap=$(cat "$bat_path/capacity" 2>/dev/null)
+        if [[ -n "$bat_cap" ]]; then
+            bat_status=$(cat "$bat_path/status" 2>/dev/null)
 
-        status+="bat ${bat_cap}%"
-
-        # Time remaining (from energy_now and power_now)
-        energy_now=$(cat /sys/class/power_supply/BAT0/energy_now 2>/dev/null)
-        power_now=$(cat /sys/class/power_supply/BAT0/power_now 2>/dev/null)
-        if [[ -n "$power_now" && "$power_now" -gt 0 ]]; then
-            if [[ "$bat_status" == "Discharging" ]]; then
-                mins=$(( energy_now * 60 / power_now ))
-            elif [[ "$bat_status" == "Charging" ]]; then
-                energy_full=$(cat /sys/class/power_supply/BAT0/energy_full 2>/dev/null)
-                mins=$(( (energy_full - energy_now) * 60 / power_now ))
-            else
-                mins=0
+            if [[ "$bat_status" == "Charging" ]]; then
+                status+="^c#00ff00^"
+            elif [[ "$bat_cap" -lt 10 ]]; then
+                status+="^c#ff0000^"
             fi
-            if [[ "$mins" -gt 0 ]]; then
-                hours=$(( mins / 60 ))
-                remaining_mins=$(( mins % 60 ))
-                status+=" (${hours}h ${remaining_mins}m left)"
+
+            status+="bat ${bat_cap}%"
+
+            # Time remaining (from energy_now and power_now, or charge_now and current_now)
+            energy_now=$(cat "$bat_path/energy_now" 2>/dev/null)
+            power_now=$(cat "$bat_path/power_now" 2>/dev/null)
+            
+            # Fallback to charge_now/current_now if energy/power not available
+            if [[ -z "$energy_now" ]]; then
+                charge_now=$(cat "$bat_path/charge_now" 2>/dev/null)
+                current_now=$(cat "$bat_path/current_now" 2>/dev/null)
+                if [[ -n "$charge_now" && -n "$current_now" && "$current_now" -gt 0 ]]; then
+                    energy_now="$charge_now"
+                    power_now="$current_now"
+                fi
             fi
-        fi
+            
+            if [[ -n "$power_now" && "$power_now" -gt 0 ]]; then
+                if [[ "$bat_status" == "Discharging" ]]; then
+                    mins=$(( energy_now * 60 / power_now ))
+                elif [[ "$bat_status" == "Charging" ]]; then
+                    energy_full=$(cat "$bat_path/energy_full" 2>/dev/null || cat "$bat_path/charge_full" 2>/dev/null)
+                    if [[ -n "$energy_full" ]]; then
+                        mins=$(( (energy_full - energy_now) * 60 / power_now ))
+                    fi
+                else
+                    mins=0
+                fi
+                if [[ "${mins:-0}" -gt 0 ]]; then
+                    hours=$(( mins / 60 ))
+                    remaining_mins=$(( mins % 60 ))
+                    status+=" (${hours}h ${remaining_mins}m left)"
+                fi
+            fi
 
-        if [[ "$bat_status" == "Charging" || "$bat_cap" -lt 10 ]]; then
-            status+="^d^"
-        fi
+            if [[ "$bat_status" == "Charging" || "$bat_cap" -lt 10 ]]; then
+                status+="^d^"
+            fi
 
-        # Low battery notification (once per discharge cycle)
-        if [[ "$bat_cap" -lt 10 && "$bat_status" != "Charging" && "$bat_warned" -eq 0 ]]; then
-            notify-send -u critical "Battery Low" "Battery at ${bat_cap}%"
-            bat_warned=1
-        elif [[ "$bat_cap" -ge 10 || "$bat_status" == "Charging" ]]; then
-            bat_warned=0
-        fi
+            # Low battery notification (once per discharge cycle)
+            if [[ "$bat_cap" -lt 10 && "$bat_status" != "Charging" && "$bat_warned" -eq 0 ]]; then
+                notify-send -u critical "Battery Low" "Battery at ${bat_cap}%"
+                bat_warned=1
+            elif [[ "$bat_cap" -ge 10 || "$bat_status" == "Charging" ]]; then
+                bat_warned=0
+            fi
 
-        status+=" • "
+            status+=" • "
+        fi
     fi
 
     # Uptime (warn if >14 days — kernel updates need reboot)
