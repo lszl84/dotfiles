@@ -1,46 +1,113 @@
-! Fluxbox overlay for HiDPI scaling
-! This overrides theme settings for better visibility on 2x displays
+! Modern Minimal Fluxbox Theme for HiDPI
+! Dark blue-gray scheme matching Modus Vivendi
 
-! Toolbar dimensions (scaled 2x)
-toolbar.height: 48
-toolbar.button.width: 64
-
-! Window decorations (scaled 2x)
+! Window decorations
 window.title.height: 48
-window.label.active.textColor: #ffffff
-window.label.active.color: #242e3d
-window.label.inactive.textColor: #888888
-window.label.inactive.color: #1a1a1a
-
-! Window border
-border.width: 4
-border.color: #242e3d
-
-! Handle (resize area at bottom)
+window.borderWidth: 4
+window.bevelWidth: 2
 handle.width: 8
-titlebar.handleWidth: 8
 
-! Buttons
+! Title bar colors - dark background
+window.label.active.textColor: #bbc2cf
+window.label.active.color: #1a1f29
+window.label.active.colorTo: #1a1f29
+
+window.label.inactive.textColor: #5a6370
+window.label.inactive.color: #151920
+window.label.inactive.colorTo: #151920
+
+! Window border - subtle blue-gray
+border.color: #2a3441
+window.borderColor: #2a3441
+
+! Title bar buttons (flat modern look)
 window.button.focus: flat
-window.button.focus.color: #242e3d
-window.button.focus.picColor: #ffffff
-window.button.unfocus: flat
-window.button.unfocus.color: #1a1a1a
-window.button.unfocus.picColor: #888888
-window.button.pressed: sunken
-window.button.pressed.color: #1a1a1a
+window.button.focus.color: #1a1f29
+window.button.focus.colorTo: #1a1f29
+window.button.focus.picColor: #bbc2cf
 
-! Menu
-menu.title.height: 40
-menu.frame.height: 36
-menu.bevelWidth: 2
-menu.itemHeight: 36
-menu.hilite.color: #3548cf
+window.button.unfocus: flat
+window.button.unfocus.color: #151920
+window.button.unfocus.colorTo: #151920
+window.button.unfocus.picColor: #5a6370
+
+window.button.pressed: flat
+window.button.pressed.color: #2a3441
+window.button.pressed.colorTo: #2a3441
+window.button.pressed.picColor: #ffffff
+
+! Handle (bottom resize grip)
+handle.color: #1a1f29
+handle.colorTo: #1a1f29
+
+! Grip (corner resize handle)
+grip.color: #2a3441
+
+! Toolbar - minimal dark
+toolbar.height: 40
+toolbar.bevelWidth: 0
+toolbar.borderWidth: 0
+
+toolbar.color: #0f1419
+toolbar.colorTo: #0f1419
+
+! Toolbar clock
+toolbar.clock.color: #0f1419
+toolbar.clock.colorTo: #0f1419
+toolbar.clock.textColor: #bbc2cf
+
+! Toolbar iconbar (taskbar)
+toolbar.iconbar.empty.color: #0f1419
+toolbar.iconbar.empty.colorTo: #0f1419
+toolbar.iconbar.empty.textColor: #5a6370
+
+toolbar.iconbar.focused.color: #2a3441
+toolbar.iconbar.focused.colorTo: #2a3441
+toolbar.iconbar.focused.textColor: #bbc2cf
+
+toolbar.iconbar.unfocused.color: #0f1419
+toolbar.iconbar.unfocused.colorTo: #0f1419
+toolbar.iconbar.unfocused.textColor: #5a6370
+
+! Toolbar buttons
+toolbar.button.color: #0f1419
+toolbar.button.colorTo: #0f1419
+toolbar.button.picColor: #5a6370
+toolbar.button.pressed.color: #2a3441
+toolbar.button.pressed.colorTo: #2a3441
+toolbar.button.pressed.picColor: #bbc2cf
+
+! Menu - modern dark
+menu.title.height: 36
+menu.title.color: #2a3441
+menu.title.colorTo: #2a3441
+menu.title.textColor: #bbc2cf
+menu.title.justify: center
+
+menu.frame.height: 32
+menu.frame.color: #1a1f29
+menu.frame.colorTo: #1a1f29
+menu.frame.textColor: #bbc2cf
+menu.frame.disableColor: #5a6370
+menu.frame.justify: left
+
+menu.hilite.color: #3d4a5c
+menu.hilite.colorTo: #3d4a5c
 menu.hilite.textColor: #ffffff
-menu.textColor: #ffffff
-menu.frame.color: #242e3d
-menu.title.color: #3548cf
+
+menu.bevelWidth: 1
+menu.borderColor: #2a3441
+menu.borderWidth: 1
 
 ! Tab
+tab.color: #1a1f29
+tab.colorTo: #1a1f29
+tab.textColor: #bbc2cf
+tab.borderColor: #2a3441
+tab.borderWidth: 1
 tab.height: 32
-tab.placement: TopLeft
+
+! Background (root window)
+! background: centered
+! background.color: #0f1419
+! background.colorTo: #0f1419

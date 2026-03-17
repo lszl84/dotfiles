@@ -1,3 +1,31 @@
+! fluxbox-update_configs added '(workspace=[current])' to (Next|Prev)(Window|Group)
+! check lines marked by 'FBCV13' if they are correctly updated
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Mouse1 :MacroCmd {Focus} {Raise} {ActivateTab}
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Move1 :StartMoving
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+OnWindowBorder Move1 :StartMoving
+
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Mouse2 :StartTabbing
+
+!mouse actions added by fluxbox-update_configs
+OnTitlebar Double Mouse1 :Shade
+OnTitlebar Mouse3 :WindowMenu
+
+!mouse actions added by fluxbox-update_configs
+OnWindow Mod4 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindow Mod4 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing BottomRight}
+
+!mouse actions added by fluxbox-update_configs
+OnDesktop Mouse1 :HideMenus
+OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse3 :RootMenu
+OnDesktop Mouse4 :NextWorkspace
+OnDesktop Mouse5 :PrevWorkspace
+
 ! Fluxbox keys configuration
 ! Mod4 = Super/Windows key
 ! Matches dwm keybindings where possible
@@ -18,8 +46,8 @@ Mod4 t :Maximize
 Mod4 f :Fullscreen
 
 ! Window navigation (Super+Tab)
-Mod4 Tab :NextWindow {groups} (workspace=[current])
-Mod4 Shift Tab :PrevWindow {groups} (workspace=[current])
+Mod4 Tab :NextWindow {groups} (workspace=[current])  (workspace=[current]) !! FBCV13 !!
+Mod4 Shift Tab :PrevWindow {groups} (workspace=[current])  (workspace=[current]) !! FBCV13 !!
 
 ! Workspace switching (Super+1-4)
 Mod4 1 :Workspace 1
@@ -74,3 +102,7 @@ OnDesktop Mouse5 :NextWorkspace
 
 ! Root menu (right click on desktop)
 OnDesktop Mouse3 :RootMenu
+
+
+
+

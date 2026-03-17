@@ -13,20 +13,29 @@ session.screen0.menuFont: JetBrainsMono Nerd Font-12
 session.screen0.windowFont: JetBrainsMono Nerd Font-12
 session.screen0.iconFont: JetBrainsMono Nerd Font-12
 
-! Tab settings (scaled for HiDPI)
+! Tab settings (disabled for cleaner look)
 session.screen0.tabs.enabled: false
 session.screen0.tab.placement: TopLeft
 session.screen0.tab.width: 160
 session.screen0.tab.height: 32
 
-! Toolbar settings
+! Toolbar - minimal modern look (just clock and system tray)
 session.screen0.toolbar.enabled: true
-session.screen0.toolbar.height: 48
+session.screen0.toolbar.height: 40
 session.screen0.toolbar.widthPercent: 100
-session.screen0.toolbar.tools: prevworkspace, workspacename, nextworkspace, iconbar, systemtray, clock
+session.screen0.toolbar.tools: iconbar, systemtray, clock
 session.screen0.toolbar.placement: BottomCenter
 session.screen0.toolbar.onTop: false
-session.screen0.toolbar.autoHide: false
+session.screen0.toolbar.autoHide: true
+session.screen0.toolbar.autoHideDelay: 500
+
+! Slit (disabled)
+session.screen0.slit.placement: RightBottom
+session.screen0.slit.direction: Vertical
+
+! Iconbar mode - show windows from all workspaces
+session.screen0.iconbar.mode: {static groups} (all)
+session.screen0.iconbar.usePixmap: true
 
 ! Window behavior
 session.screen0.focusModel: ClickToFocus
@@ -34,8 +43,6 @@ session.screen0.focusNewWindows: true
 session.screen0.raiseOnFocus: true
 session.screen0.clickRaises: true
 session.screen0.focusLastWindow: true
-
-! Transparency (works with picom)
 session.screen0.opaqueMove: false
 session.screen0.fullMaximization: false
 
@@ -53,3 +60,4 @@ session.modKey: Mod4
 session.keyFile: ~/.fluxbox/keys
 
 ! Use xsettingsd for GTK scaling (already in .xinitrc)
+session.configVersion: 13
