@@ -41,6 +41,9 @@ command -v gsettings >/dev/null 2>&1 && gsettings set org.gnome.desktop.interfac
 # Polkit agent (GTK — handles password prompts for GUI apps)
 [[ -x /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 ]] && /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
+# Notification daemon
+command -v dunst >/dev/null 2>&1 && dunst &
+
 # Status bar
 [[ -x ~/.local/bin/dwm-status ]] && ~/.local/bin/dwm-status &
 
