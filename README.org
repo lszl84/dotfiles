@@ -207,13 +207,10 @@ sudo tee /etc/vconsole.conf << 'EOF'
 FONT=ter-132n
 EOF
 
-# Add font to initramfs for LUKS password prompt
-sudo sed -i 's/^FILES=()/FILES=(\/usr\/share\/kbd\/consolefonts\/ter-132n.psf.gz)/' /etc/mkinitcpio.conf
-
-# Regenerate initramfs
+# Regenerate initramfs to include font for LUKS password prompt
 sudo mkinitcpio -P
 #+end_src
 
 Available sizes: ~ter-116n~ (11x22), ~ter-124n~ (12x24), ~ter-132n~ (16x32), ~ter-140n~ (16x40). Run ~showconsolefont~ to preview.
 
-Note: TTY font takes effect immediately on next VT switch or boot. The ~vconsole.conf~ is read by ~systemd-vconsole-setup~ during boot. The initramfs change ensures the font is available for LUKS password prompts.
+Note: TTY font takes effect immediately on next VT switch or boot. The ~vconsole.conf~ is read by ~systemd-vconsole-setup~ during boot. ~mkinitcpio -P~ rebuilds initramfs so the font is available at the LUKS password prompt.
