@@ -34,8 +34,7 @@ xset s 1200 0
 # dwm-lock sets _DWM_LOCK property → dwm lock() paints black OverrideRedirect window
 command -v xss-lock >/dev/null 2>&1 && xss-lock -l -- ~/.local/bin/dwm-lock &
 
-# Dark theme: xsettingsd handles GTK3, gsettings + ADW_DISABLE_PORTAL handles GTK4/libadwaita
-export ADW_DISABLE_PORTAL=1
+# Dark theme: xsettingsd handles GTK3, gsettings handles GTK4/libadwaita
 command -v gsettings >/dev/null 2>&1 && gsettings set org.gnome.desktop.interface color-scheme prefer-dark 2>/dev/null || true
 command -v gsettings >/dev/null 2>&1 && gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark 2>/dev/null || true
 
@@ -44,6 +43,10 @@ command -v gsettings >/dev/null 2>&1 && gsettings set org.gnome.desktop.interfac
 
 # Status bar
 [[ -x ~/.local/bin/dwm-status ]] && ~/.local/bin/dwm-status &
+
+# Desktop portal (for Firefox/libadwaita dark mode detection)
+[[ -x /usr/lib/xdg-desktop-portal-gtk ]] && /usr/lib/xdg-desktop-portal-gtk &
+[[ -x /usr/lib/xdg-desktop-portal ]] && /usr/lib/xdg-desktop-portal &
 
 # Start dwm
 exec ~/.local/bin/dwm

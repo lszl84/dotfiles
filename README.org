@@ -99,7 +99,10 @@ sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
 sudo pacman -S base-devel libx11 libxft libxinerama python
 
 # Desktop
-sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome xorg-xsetroot
+sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome xorg-xsetroot xsettingsd gsettings-desktop-schemas
+
+# Desktop portal (required for Firefox/libadwaita to detect dark mode)
+sudo pacman -S xdg-desktop-portal xdg-desktop-portal-gtk
 
 # Audio
 sudo pacman -S pipewire pipewire-pulse wireplumber
@@ -163,6 +166,16 @@ sudo systemctl enable --now touchegg
 
 # Enable LightDM
 sudo systemctl enable lightdm
+#+end_src
+
+*** Desktop Portal (Firefox dark mode)
+
+Firefox and other libadwaita apps use XDG Desktop Portal to detect the system dark mode. Install the packages above, then add to your =~/.xinitrc= before starting dwm:
+
+#+begin_src bash
+# Start desktop portal for Firefox/libadwaita dark mode detection
+/usr/lib/xdg-desktop-portal-gtk &
+/usr/lib/xdg-desktop-portal &
 #+end_src
 
 The ~dwm-build~ script handles everything: downloading sources, applying
