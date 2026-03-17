@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+
+  <theme>
+    <name>Clearlooks</name>
+    <titleLayout>NLIMC</titleLayout>
+    <!-- Window title: N=Icon L=Label I=Max M=Iconify C=Close -->
+    
+    <keepBorder>yes</keepBorder>
+    <animateIconify>yes</animateIconify>
+    
+    <font place="ActiveWindow">
+      <name>JetBrainsMono Nerd Font</name>
+      <size>12</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    
+    <font place="InactiveWindow">
+      <name>JetBrainsMono Nerd Font</name>
+      <size>12</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    
+    <font place="MenuHeader">
+      <name>JetBrainsMono Nerd Font</name>
+      <size>12</size>
+      <weight>Bold</weight>
+      <slant>Normal</slant>
+    </font>
+    
+    <font place="MenuItem">
+      <name>JetBrainsMono Nerd Font</name>
+      <size>12</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+    
+    <font place="ActiveOnScreenDisplay">
+      <name>JetBrainsMono Nerd Font</name>
+      <size>12</size>
+      <weight>Bold</weight>
+      <slant>Normal</slant>
+    </font>
+    
+    <font place="InactiveOnScreenDisplay">
+      <name>JetBrainsMono Nerd Font</name>
+      <size>12</size>
+      <weight>Normal</weight>
+      <slant>Normal</slant>
+    </font>
+  </theme>
+
+  <desktops>
+    <number>4</number>
+    <firstdesk>1</firstdesk>
+    <names>
+      <name>1</name>
+      <name>2</name>
+      <name>3</name>
+      <name>4</name>
+    </names>
+    <popupTime>875</popupTime>
+  </desktops>
+
+  <resize>
+    <drawContents>yes</drawContents>
+    <popupShow>Nonpixel</popupShow>
+    <popupPosition>Center</popupPosition>
+    <popupFixedPosition>
+      <x>10</x>
+      <y>10</y>
+    </popupFixedPosition>
+  </resize>
+
+  <margins>
+    <top>0</top>
+    <bottom>0</bottom>
+    <left>0</left>
+    <right>0</right>
+  </margins>
+
+  <dock>
+    <position>TopLeft</position>
+    <floatingX>0</floatingX>
+    <floatingY>0</floatingY>
+    <noStrut>no</noStrut>
+    <stacking>Above</stacking>
+    <direction>Vertical</direction>
+    <autoHide>no</autoHide>
+    <hideDelay>300</hideDelay>
+    <showDelay>300</showDelay>
+    <moveButton>Middle</moveButton>
+  </dock>
+
+  <keyboard>
+    <chainQuitKey>C-g</chainQuitKey>
+    
+    <!-- Keybindings for window tiling -->
+    <keybind key="W-Return">
+      <action name="Execute">
+        <command>st</command>
+      </action>
+    </keybind>
+    
+    <keybind key="W-Space">
+      <action name="Execute">
+        <command>rofi -show drun</command>
+      </action>
+    </keybind>
+    
+    <keybind key="W-Left">
+      <action name="GoToDesktop">
+        <to>left</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    
+    <keybind key="W-Right">
+      <action name="GoToDesktop">
+        <to>right</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-Left">
+      <action name="SendToDesktop">
+        <to>left</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-Right">
+      <action name="SendToDesktop">
+        <to>right</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    
+    <keybind key="W-1">
+      <action name="GoToDesktop">
+        <to>1</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-2">
+      <action name="GoToDesktop">
+        <to>2</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-3">
+      <action name="GoToDesktop">
+        <to>3</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-4">
+      <action name="GoToDesktop">
+        <to>4</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-1">
+      <action name="SendToDesktop">
+        <to>1</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-2">
+      <action name="SendToDesktop">
+        <to>2</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-3">
+      <action name="SendToDesktop">
+        <to>3</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-4">
+      <action name="SendToDesktop">
+        <to>4</to>
+      </action>
+    </keybind>
+    
+    <keybind key="W-t">
+      <action name="ToggleMaximize"/>
+    </keybind>
+    
+    <keybind key="W-m">
+      <action name="ToggleMaximize">
+        <direction>vertical</direction>
+      </action>
+    </keybind>
+    
+    <keybind key="W-f">
+      <action name="ToggleFullscreen"/>
+    </keybind>
+    
+    <keybind key="W-q">
+      <action name="Close"/>
+    </keybind>
+    
+    <keybind key="W-Tab">
+      <action name="NextWindow">
+        <allDesktops>yes</allDesktops>
+      </action>
+    </keybind>
+    
+    <keybind key="W-S-Tab">
+      <action name="PreviousWindow">
+        <allDesktops>yes</allDesktops>
+      </action>
+    </keybind>
+    
+    <!-- Lock screen -->
+    <keybind key="W-l">
+      <action name="Execute">
+        <command>~/.local/bin/dwm-lock</command>
+      </action>
+    </keybind>
+    
+    <!-- Volume keys -->
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute">
+        <command>wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+</command>
+      </action>
+    </keybind>
+    
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute">
+        <command>wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-</command>
+      </action>
+    </keybind>
+    
+    <keybind key="XF86AudioMute">
+      <action name="Execute">
+        <command>wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle</command>
+      </action>
+    </keybind>
+    
+    <!-- Brightness keys -->
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute">
+        <command>brightnessctl set +10%</command>
+      </action>
+    </keybind>
+    
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute">
+        <command>brightnessctl set 10%-</command>
+      </action>
+    </keybind>
+  </keyboard>
+
+  <mouse>
+    <dragThreshold>8</dragThreshold>
+    <!-- Number of pixels the mouse must move before a drag starts -->
+    
+    <doubleClickTime>200</doubleClickTime>
+    <!-- In milliseconds (1000 = 1 second) -->
+    
+    <screenEdgeWarpTime>400</screenEdgeWarpTime>
+    <!-- Time before changing desktops when pointer is at screen edge -->
+    
+    <screenEdgeWarpMouse>false</screenEdgeWarpMouse>
+    <!-- Warp pointer to new desktop when changing desktops -->
+    
+    <context name="Frame">
+      <mousebind button="A-Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+        <action name="Drag">
+          <quadrant>Current</quadrant>
+        </action>
+      </mousebind>
+      <mousebind button="A-Left" action="Click">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="A-Left" action="Drag">
+        <action name="Move"/>
+      </mousebind>
+      
+      <mousebind button="A-Right" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+        <action name="Resize"/>
+      </mousebind>
+      <mousebind button="A-Right" action="Click">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="A-Right" action="Drag">
+        <action name="Resize"/>
+      </mousebind>
+      
+      <mousebind button="A-Middle" action="Press">
+        <action name="Lower"/>
+        <action name="FocusToBottom"/>
+        <action name="Unfocus"/>
+      </mousebind>
+      <mousebind button="A-Up" action="Click">
+        <action name="GoToDesktop">
+          <to>previous</to>
+        </action>
+      </mousebind>
+      <mousebind button="A-Down" action="Click">
+        <action name="GoToDesktop">
+          <to>next</to>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Titlebar">
+      <mousebind button="Left" action="Drag">
+        <action name="Move"/>
+      </mousebind>
+      <mousebind button="Left" action="DoubleClick">
+        <action name="ToggleMaximize"/>
+      </mousebind>
+      
+      <mousebind button="Right" action="Click">
+        <action name="ShowMenu">
+          <menu>client-menu</menu>
+        </action>
+      </mousebind>
+      <mousebind button="Middle" action="Press">
+        <action name="Lower"/>
+        <action name="FocusToBottom"/>
+        <action name="Unfocus"/>
+      </mousebind>
+      <mousebind button="Up" action="Click">
+        <action name="Shade"/>
+        <action name="FocusToBottom"/>
+        <action name="Lower"/>
+        <action name="Unfocus"/>
+      </mousebind>
+      <mousebind button="Down" action="Click">
+        <action name="Unshade"/>
+        <action name="Raise"/>
+      </mousebind>
+    </context>
+    
+    <context name="Top">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>top</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Left">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>left</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Right">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>right</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Bottom">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>bottom</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="TRCorner"
+             handle="Right" edge="Top">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>topright</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="TLCorner"
+             handle="Left" edge="Top">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>topleft</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="BRCorner"
+             handle="Right" edge="Bottom">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>bottomright</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="BLCorner"
+             handle="Left" edge="Bottom">
+      <mousebind button="Left" action="Drag">
+        <action name="Resize">
+          <edge>bottomleft</edge>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Client">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="Right" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+    </context>
+    
+    <context name="Icon">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+        <action name="ShowMenu">
+          <menu>client-menu</menu>
+        </action>
+      </mousebind>
+      <mousebind button="Right" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+        <action name="ShowMenu">
+          <menu>client-menu</menu>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="AllDesktops">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+      </mousebind>
+      <mousebind button="Left" action="Click">
+        <action name="ToggleOmnipresent"/>
+      </mousebind>
+    </context>
+    
+    <context name="Shade">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="Left" action="Click">
+        <action name="ToggleShade"/>
+      </mousebind>
+    </context>
+    
+    <context name="Iconify">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="Left" action="Click">
+        <action name="Iconify"/>
+      </mousebind>
+    </context>
+    
+    <context name="Maximize">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+      </mousebind>
+      <mousebind button="Middle" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+      </mousebind>
+      <mousebind button="Right" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+      </mousebind>
+      <mousebind button="Left" action="Click">
+        <action name="ToggleMaximize">
+          <direction>both</direction>
+        </action>
+      </mousebind>
+      <mousebind button="Middle" action="Click">
+        <action name="ToggleMaximize">
+          <direction>vertical</direction>
+        </action>
+      </mousebind>
+      <mousebind button="Right" action="Click">
+        <action name="ToggleMaximize">
+          <direction>horizontal</direction>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Close">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+        <action name="Unshade"/>
+      </mousebind>
+      <mousebind button="Left" action="Click">
+        <action name="Close"/>
+      </mousebind>
+    </context>
+    
+    <context name="Desktop">
+      <mousebind button="Left" action="Press">
+        <action name="Focus"/>
+        <action name="Raise"/>
+      </mousebind>
+      <mousebind button="Left" action="Click">
+        <action name="ShowMenu">
+          <menu>root-menu</menu>
+        </action>
+      </mousebind>
+      <mousebind button="Middle" action="Press">
+        <action name="ShowMenu">
+          <menu>root-menu</menu>
+        </action>
+      </mousebind>
+      <mousebind button="Up" action="Click">
+        <action name="GoToDesktop">
+          <to>previous</to>
+        </action>
+      </mousebind>
+      <mousebind button="Down" action="Click">
+        <action name="GoToDesktop">
+          <to>next</to>
+        </action>
+      </mousebind>
+    </context>
+    
+    <context name="Root">
+      <!-- Menus -->
+      <mousebind button="Middle" action="Press">
+        <action name="ShowMenu">
+          <menu>root-menu</menu>
+        </action>
+      </mousebind>
+    </context>
+  </mouse>
+
+  <menu>
+    <!-- You can specify more than one menu file in here and they're all loaded,
+       just separate them with spaces. -->
+    <file>menu.xml</file>
+    <hideDelay>200</hideDelay>
+    <!-- If you press a key while over a menu item, and that key matches a
+       subsequent menu item's access key, the subsequent menu item will be
+       selected instead of the current one. If you don't like this behavior,
+       set this to true to disable the feature. -->
+    <middle>no</middle>
+    <submenuShow>200</submenuShow>
+    <submenuHide>200</submenuHide>
+    <applicationIcons>yes</applicationIcons>
+    <manageDesktops>yes</manageDesktops>
+  </menu>
+
+  <applications>
+    <!-- Match applications and set their properties -->
+    
+    <!-- Example: Force all URxvt windows to be floating -->
+    <!--
+    <application name="urxvt">
+      <decor>yes</decor>
+      <focus>yes</focus>
+      <position>
+        <x>center</x>
+        <y>center</y>
+      </position>
+    </application>
+    -->
+  </applications>
+
+</openbox_config>

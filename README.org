@@ -155,6 +155,7 @@ stow bash
 stow dunst
 stow dwm
 stow emacs-easy
+stow openbox
 stow touchegg
 stow fastfetch
 stow gdb
@@ -297,3 +298,64 @@ sudo mkinitcpio -P
 - ~dd~ copies block-level: LUKS, LVM, ext4, all preserved exactly
 - The ~-r~ flag in ~lvextend~ auto-resizes filesystems while mounted
 - Can resize root (/) and home live while booted from the new disk
+
+** Alternative Window Manager (Openbox)
+
+For screencasts or when you need classic window decorations (title bars, X button, minimize):
+
+*** Install Openbox
+
+#+begin_src bash
+sudo pacman -S openbox
+#+end_src
+
+*** Stow the config
+
+#+begin_src bash
+cd ~/dotfiles
+stow openbox
+#+end_src
+
+*** Switch to Openbox
+
+#+begin_src bash
+# Toggle from dwm to Openbox
+switch-wm openbox
+
+# Or toggle back to dwm
+switch-wm dwm
+
+# Then restart X session
+startx
+#+end_src
+
+*** Using switch-wm script
+
+The ~switch-wm~ script toggles your window manager:
+
+- ~switch-wm~ — toggles between dwm and Openbox automatically
+- ~switch-wm dwm~ — switch to dwm explicitly
+- ~switch-wm openbox~ — switch to Openbox explicitly
+
+*** Openbox vs dwm differences
+
+| Feature | dwm | Openbox |
+|---------|-----|---------|
+| Tiling | Dynamic | Manual (stacking) |
+| Title bars | None | Yes (with X, minimize, maximize) |
+| Config | C header | XML (~/.config/openbox/rc.xml) |
+| Look | Minimal | Classic window manager |
+| Learning | Steep | Easy |
+
+Both use the same:
+- HiDPI settings (Xft.dpi, GTK scaling)
+- Keybindings (Super+Return, Super+Space, Super+1-4 for workspaces)
+- Dunst notifications
+- Picom compositor
+- Status bar
+
+*** Tips
+
+- Keep both configs stowed, switch as needed
+- Openbox is great for screencasts showing "normal" window behavior
+- dwm remains the daily driver for efficiency
