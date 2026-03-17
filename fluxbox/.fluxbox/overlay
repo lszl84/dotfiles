@@ -1,0 +1,46 @@
+! Fluxbox overlay for HiDPI scaling
+! This overrides theme settings for better visibility on 2x displays
+
+! Toolbar dimensions (scaled 2x)
+toolbar.height: 48
+toolbar.button.width: 64
+
+! Window decorations (scaled 2x)
+window.title.height: 48
+window.label.active.textColor: #ffffff
+window.label.active.color: #242e3d
+window.label.inactive.textColor: #888888
+window.label.inactive.color: #1a1a1a
+
+! Window border
+border.width: 4
+border.color: #242e3d
+
+! Handle (resize area at bottom)
+handle.width: 8
+titlebar.handleWidth: 8
+
+! Buttons
+window.button.focus: flat
+window.button.focus.color: #242e3d
+window.button.focus.picColor: #ffffff
+window.button.unfocus: flat
+window.button.unfocus.color: #1a1a1a
+window.button.unfocus.picColor: #888888
+window.button.pressed: sunken
+window.button.pressed.color: #1a1a1a
+
+! Menu
+menu.title.height: 40
+menu.frame.height: 36
+menu.bevelWidth: 2
+menu.itemHeight: 36
+menu.hilite.color: #3548cf
+menu.hilite.textColor: #ffffff
+menu.textColor: #ffffff
+menu.frame.color: #242e3d
+menu.title.color: #3548cf
+
+! Tab
+tab.height: 32
+tab.placement: TopLeft

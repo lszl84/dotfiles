@@ -1,0 +1,55 @@
+session.screen0.workspaces: 4
+session.screen0.workspaceNames: 1,2,3,4
+
+! HiDPI Settings - Title bar and decorations scaled 2x
+session.screen0.titlebar.height: 48
+session.screen0.bevelWidth: 2
+session.screen0.borderWidth: 4
+session.screen0.handleWidth: 8
+
+! Font settings for HiDPI
+session.screen0.workspaceFont: JetBrainsMono Nerd Font-12
+session.screen0.menuFont: JetBrainsMono Nerd Font-12
+session.screen0.windowFont: JetBrainsMono Nerd Font-12
+session.screen0.iconFont: JetBrainsMono Nerd Font-12
+
+! Tab settings (scaled for HiDPI)
+session.screen0.tabs.enabled: false
+session.screen0.tab.placement: TopLeft
+session.screen0.tab.width: 160
+session.screen0.tab.height: 32
+
+! Toolbar settings
+session.screen0.toolbar.enabled: true
+session.screen0.toolbar.height: 48
+session.screen0.toolbar.widthPercent: 100
+session.screen0.toolbar.tools: prevworkspace, workspacename, nextworkspace, iconbar, systemtray, clock
+session.screen0.toolbar.placement: BottomCenter
+session.screen0.toolbar.onTop: false
+session.screen0.toolbar.autoHide: false
+
+! Window behavior
+session.screen0.focusModel: ClickToFocus
+session.screen0.focusNewWindows: true
+session.screen0.raiseOnFocus: true
+session.screen0.clickRaises: true
+session.screen0.focusLastWindow: true
+
+! Transparency (works with picom)
+session.screen0.opaqueMove: false
+session.screen0.fullMaximization: false
+
+! Menu
+session.menuFile: ~/.fluxbox/menu
+session.menuSearch: item
+
+! Misc
+session.styleOverlay: ~/.fluxbox/overlay
+session.slitlistFile: ~/.fluxbox/slitlist
+session.appsFile: ~/.fluxbox/apps
+
+! Modifiers
+session.modKey: Mod4
+session.keyFile: ~/.fluxbox/keys
+
+! Use xsettingsd for GTK scaling (already in .xinitrc)

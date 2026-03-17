@@ -155,7 +155,7 @@ stow bash
 stow dunst
 stow dwm
 stow emacs-easy
-stow openbox
+stow fluxbox
 stow touchegg
 stow fastfetch
 stow gdb
@@ -299,28 +299,40 @@ sudo mkinitcpio -P
 - The ~-r~ flag in ~lvextend~ auto-resizes filesystems while mounted
 - Can resize root (/) and home live while booted from the new disk
 
-** Alternative Window Manager (Openbox)
+** Alternative Window Manager (Fluxbox)
 
-For screencasts or when you need classic window decorations (title bars, X button, minimize):
+For screencasts or when you need classic window decorations (title bars, X button, minimize) with proper 2x HiDPI scaling:
 
-*** Install Openbox
+*** Install Fluxbox
 
 #+begin_src bash
-sudo pacman -S openbox
+sudo pacman -S fluxbox
 #+end_src
 
 *** Stow the config
 
 #+begin_src bash
 cd ~/dotfiles
-stow openbox
+stow fluxbox
 #+end_src
 
-*** Switch to Openbox
+*** HiDPI Settings
+
+Fluxbox is configured with 2x scaling:
+
+- Title bar height: 48px (instead of default 24px)
+- Toolbar height: 48px
+- Window borders: 4px
+- Fonts: JetBrainsMono Nerd Font at 12pt
+- Handle width: 8px
+
+Settings are in ~.fluxbox/init~ and ~.fluxbox/overlay~.
+
+*** Switch to Fluxbox
 
 #+begin_src bash
-# Toggle from dwm to Openbox
-switch-wm openbox
+# Toggle from dwm to Fluxbox
+switch-wm fluxbox
 
 # Or toggle back to dwm
 switch-wm dwm
@@ -333,29 +345,49 @@ startx
 
 The ~switch-wm~ script toggles your window manager:
 
-- ~switch-wm~ — toggles between dwm and Openbox automatically
+- ~switch-wm~ — toggles between dwm and Fluxbox automatically
 - ~switch-wm dwm~ — switch to dwm explicitly
-- ~switch-wm openbox~ — switch to Openbox explicitly
+- ~switch-wm fluxbox~ — switch to Fluxbox explicitly
 
-*** Openbox vs dwm differences
+*** Fluxbox vs dwm differences
 
-| Feature | dwm | Openbox |
+| Feature | dwm | Fluxbox |
 |---------|-----|---------|
 | Tiling | Dynamic | Manual (stacking) |
-| Title bars | None | Yes (with X, minimize, maximize) |
-| Config | C header | XML (~/.config/openbox/rc.xml) |
+| Title bars | None | Yes (with X, minimize, maximize) - 2x scaled |
+| Config | C header | Plain text (~/.fluxbox/init) |
 | Look | Minimal | Classic window manager |
+| HiDPI Decorations | N/A | 48px title bars, 48px toolbar |
 | Learning | Steep | Easy |
 
 Both use the same:
-- HiDPI settings (Xft.dpi, GTK scaling)
+- HiDPI settings (Xft.dpi: 192, GTK scaling via xsettingsd)
 - Keybindings (Super+Return, Super+Space, Super+1-4 for workspaces)
 - Dunst notifications
 - Picom compositor
-- Status bar
+- Screen locker (xss-lock + dwm-lock)
+
+*** Fluxbox Keybindings
+
+Most match dwm:
+
+| Key | Action |
+|-----|--------|
+| Super+Return | Terminal (st) |
+| Super+Space | Rofi launcher |
+| Super+q | Close window |
+| Super+t | Toggle maximize |
+| Super+f | Toggle fullscreen |
+| Super+Tab | Next window |
+| Super+1-4 | Switch to workspace |
+| Super+Shift+1-4 | Move window to workspace |
+| Super+Left/Right | Previous/next workspace |
+| Super+l | Lock screen |
+| Super+Shift+Delete | Exit Fluxbox |
 
 *** Tips
 
 - Keep both configs stowed, switch as needed
-- Openbox is great for screencasts showing "normal" window behavior
+- Fluxbox is great for screencasts showing "normal" window behavior with readable 2x scaled decorations
 - dwm remains the daily driver for efficiency
+- Fluxbox handles HiDPI window decorations better than Openbox

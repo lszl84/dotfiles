@@ -1,6 +1,6 @@
 #!/bin/bash
-# ~/.xinitrc-openbox — Alternative session for classic window decorations
-# Usage: switch-wm openbox && startx
+# ~/.xinitrc-fluxbox — Alternative session with classic window decorations
+# Usage: switch-wm fluxbox && startx
 # To go back: switch-wm dwm && startx
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -20,9 +20,6 @@ export XCURSOR_SIZE=36
 
 # Notification daemon
 command -v dunst >/dev/null 2>&1 && dunst &
-
-# Status bar (if available)
-[[ -x ~/.local/bin/dwm-status ]] && ~/.local/bin/dwm-status &
 
 # Desktop portal (for Firefox/libadwaita dark mode detection)
 [[ -x /usr/lib/xdg-desktop-portal-gtk ]] && /usr/lib/xdg-desktop-portal-gtk &
@@ -45,5 +42,5 @@ xset s 1200 0
 # Screen locker
 command -v xss-lock >/dev/null 2>&1 && xss-lock -l -- ~/.local/bin/dwm-lock &
 
-# Start Openbox
-exec openbox-session
+# Start Fluxbox
+exec fluxbox

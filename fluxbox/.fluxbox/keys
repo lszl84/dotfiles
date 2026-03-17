@@ -1,0 +1,76 @@
+! Fluxbox keys configuration
+! Mod4 = Super/Windows key
+! Matches dwm keybindings where possible
+
+! Launch terminal (Super+Return)
+Mod4 Return :Exec st
+
+! Launch rofi (Super+Space)
+Mod4 space :Exec rofi -show drun
+
+! Close window (Super+q)
+Mod4 q :Close
+
+! Toggle maximize (Super+t)
+Mod4 t :Maximize
+
+! Toggle fullscreen (Super+f)
+Mod4 f :Fullscreen
+
+! Window navigation (Super+Tab)
+Mod4 Tab :NextWindow {groups} (workspace=[current])
+Mod4 Shift Tab :PrevWindow {groups} (workspace=[current])
+
+! Workspace switching (Super+1-4)
+Mod4 1 :Workspace 1
+Mod4 2 :Workspace 2
+Mod4 3 :Workspace 3
+Mod4 4 :Workspace 4
+
+! Move window to workspace (Super+Shift+1-4)
+Mod4 Shift 1 :SendToWorkspace 1
+Mod4 Shift 2 :SendToWorkspace 2
+Mod4 Shift 3 :SendToWorkspace 3
+Mod4 Shift 4 :SendToWorkspace 4
+
+! Directional workspace switching (Super+Left/Right)
+Mod4 Left :PrevWorkspace
+Mod4 Right :NextWorkspace
+
+! Move window and follow to next/prev workspace
+Mod4 Shift Left :TakeToPrevWorkspace
+Mod4 Shift Right :TakeToNextWorkspace
+
+! Lock screen (Super+l)
+Mod4 l :Exec ~/.local/bin/dwm-lock
+
+! Restart fluxbox (Super+Shift+r)
+Mod4 Shift r :Restart
+
+! Exit fluxbox (Super+Shift+BackSpace)
+Mod4 Shift Delete :Exit
+
+! Volume keys
+XF86AudioRaiseVolume :Exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+XF86AudioLowerVolume :Exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+XF86AudioMute :Exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+! Brightness keys
+XF86MonBrightnessUp :Exec brightnessctl set +10%
+XF86MonBrightnessDown :Exec brightnessctl set 10%-
+
+! Mouse bindings on titlebar
+OnTitlebar Mouse1 :StartMoving
+OnTitlebar Mouse2 :StartResizing BottomRight
+OnTitlebar Mouse3 :Raise
+
+! Click on window to focus
+OnWindow Mod1 Mouse1 :StartMoving
+OnWindow Mod1 Mouse3 :StartResizing BottomRight
+
+! Scroll on desktop to change workspace
+OnDesktop Mouse4 :PrevWorkspace
+OnDesktop Mouse5 :NextWorkspace
+
+! Root menu (right click on desktop)
+OnDesktop Mouse3 :RootMenu
