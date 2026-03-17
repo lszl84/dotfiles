@@ -330,6 +330,8 @@ Settings are in ~.fluxbox/init~ and ~.fluxbox/overlay~.
 
 *** Switch to Fluxbox
 
+The ~switch-wm~ script is installed to =~/.local/bin/~ when you stow bash.
+
 #+begin_src bash
 # Toggle from dwm to Fluxbox
 switch-wm fluxbox
