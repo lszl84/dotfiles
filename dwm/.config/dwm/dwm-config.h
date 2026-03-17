@@ -103,6 +103,11 @@ static const char *lockcmd[] = { "loginctl", "lock-session", NULL };
 static const char *bright_up[]   = { "brightnessctl", "set", "+10%", NULL };
 static const char *bright_down[] = { "brightnessctl", "set", "10%-", NULL };
 
+/* screenshot commands */
+static const char *scrotcmd[]       = { "scrot", "%Y-%m-%d-%H%M%S.png", "-e", "mv $f ~/Screenshots/", NULL };
+static const char *scrotareacmd[]   = { "scrot", "-s", "%Y-%m-%d-%H%M%S_area.png", "-e", "mv $f ~/Screenshots/", NULL };
+static const char *scrotwindowcmd[] = { "scrot", "-u", "%Y-%m-%d-%H%M%S_window.png", "-e", "mv $f ~/Screenshots/", NULL };
+
 #include <X11/XF86keysym.h>
 
 static const Key keys[] = {
@@ -146,6 +151,11 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_AudioMute,          spawn,          VOL_CMD("set-mute @DEFAULT_AUDIO_SINK@ toggle") },
 	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          {.v = bright_up } },
 	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          {.v = bright_down } },
+
+	/* screenshot keys */
+	{ 0,                            XK_Print,                  spawn,          {.v = scrotcmd } },
+	{ ShiftMask,                    XK_Print,                  spawn,          {.v = scrotareacmd } },
+	{ MODKEY,                       XK_Print,                  spawn,          {.v = scrotwindowcmd } },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
