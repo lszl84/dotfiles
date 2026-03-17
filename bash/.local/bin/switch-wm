@@ -1,21 +1,19 @@
 #!/bin/bash
-# ~/bin/switch-wm - Toggle between dwm and fluxbox
-# Usage: switch-wm [dwm|fluxbox]
+# ~/bin/switch-wm - Toggle between dwm and xfce
+# Usage: switch-wm [dwm|xfce]
 # Or just: switch-wm (toggles automatically)
 
 XINITRC="$HOME/.xinitrc"
 
 # Function to switch to dwm
 switch_to_dwm() {
-    if grep -q "exec fluxbox" "$XINITRC" 2>/dev/null || \
-       grep -q "exec startfluxbox" "$XINITRC" 2>/dev/null; then
+    if grep -q "exec startxfce4" "$XINITRC" 2>/dev/null; then
         
         # Backup current xinitrc
         cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)"
         
         # Switch to dwm
-        sed -i 's|exec startfluxbox|exec ~/.local/bin/dwm|' "$XINITRC"
-        sed -i 's|exec fluxbox|exec ~/.local/bin/dwm|' "$XINITRC"
+        sed -i 's|exec startxfce4|exec ~/.local/bin/dwm|' "$XINITRC"
         
         echo "Switched to dwm. Run 'startx' to apply."
         notify-send "WM Switch" "Switched to dwm. Run 'startx' to apply." 2>/dev/null || true
@@ -24,37 +22,37 @@ switch_to_dwm() {
     fi
 }
 
-# Function to switch to fluxbox
-switch_to_fluxbox() {
+# Function to switch to xfce
+switch_to_xfce() {
     if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
         
         # Backup current xinitrc
         cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)"
         
-        # Switch to fluxbox
-        sed -i 's|exec ~/.local/bin/dwm|exec fluxbox|' "$XINITRC"
+        # Switch to xfce
+        sed -i 's|exec ~/.local/bin/dwm|exec startxfce4|' "$XINITRC"
         
-        echo "Switched to Fluxbox. Run 'startx' to apply."
-        notify-send "WM Switch" "Switched to Fluxbox. Run 'startx' to apply." 2>/dev/null || true
+        echo "Switched to XFCE. Run 'startx' to apply."
+        notify-send "WM Switch" "Switched to XFCE. Run 'startx' to apply." 2>/dev/null || true
     else
-        echo "Already using Fluxbox or other WM"
+        echo "Already using XFCE or other WM"
     fi
 }
 
 # Check argument or auto-toggle
 if [ "$1" = "dwm" ]; then
     switch_to_dwm
-elif [ "$1" = "fluxbox" ]; then
-    switch_to_fluxbox
+elif [ "$1" = "xfce" ]; then
+    switch_to_xfce
 elif [ -z "$1" ]; then
     # Auto-toggle based on current setting
     if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
-        switch_to_fluxbox
+        switch_to_xfce
     else
         switch_to_dwm
     fi
 else
-    echo "Usage: $0 [dwm|fluxbox]"
+    echo "Usage: $0 [dwm|xfce]"
     echo "Or run without arguments to toggle"
     exit 1
 fi

@@ -155,7 +155,6 @@ stow bash
 stow dunst
 stow dwm
 stow emacs-easy
-stow fluxbox
 stow touchegg
 stow fastfetch
 stow gdb
@@ -299,42 +298,33 @@ sudo mkinitcpio -P
 - The ~-r~ flag in ~lvextend~ auto-resizes filesystems while mounted
 - Can resize root (/) and home live while booted from the new disk
 
-** Alternative Window Manager (Fluxbox)
+** Alternative Desktop Environment (XFCE)
 
-For screencasts or when you need classic window decorations (title bars, X button, minimize) with proper 2x HiDPI scaling:
+For screencasts or when you need a full desktop environment with modern window decorations and proper HiDPI:
 
-*** Install Fluxbox
+*** Install XFCE
 
 #+begin_src bash
-sudo pacman -S fluxbox
+sudo pacman -S xfce4 xfce4-goodies xfce4-terminal
 #+end_src
 
-*** Stow the config
+*** Configure HiDPI for XFCE
+
+After starting XFCE, open Settings → Appearance and set:
+
+- Window Scaling: 2x (HiDPI)
+- Default font: JetBrains Mono Nerd Font, 12pt
+- Icon theme: Adwaita
+
+Then open Settings → Window Manager and set:
+- Style: Default (or any modern theme)
+- Button layout: Title, Minimize, Maximize, Close
+
+*** Switch to XFCE
 
 #+begin_src bash
-cd ~/dotfiles
-stow fluxbox
-#+end_src
-
-*** HiDPI Settings
-
-Fluxbox is configured with 2x scaling:
-
-- Title bar height: 48px (instead of default 24px)
-- Toolbar height: 48px
-- Window borders: 4px
-- Fonts: JetBrainsMono Nerd Font at 12pt
-- Handle width: 8px
-
-Settings are in ~.fluxbox/init~ and ~.fluxbox/overlay~.
-
-*** Switch to Fluxbox
-
-The ~switch-wm~ script is installed to =~/.local/bin/~ when you stow bash.
-
-#+begin_src bash
-# Toggle from dwm to Fluxbox
-switch-wm fluxbox
+# Toggle from dwm to XFCE
+switch-wm xfce
 
 # Or toggle back to dwm
 switch-wm dwm
@@ -345,51 +335,25 @@ startx
 
 *** Using switch-wm script
 
-The ~switch-wm~ script toggles your window manager:
+The ~switch-wm~ script is installed to =~/.local/bin/~ when you stow bash:
 
-- ~switch-wm~ — toggles between dwm and Fluxbox automatically
+- ~switch-wm~ — toggles between dwm and XFCE automatically
 - ~switch-wm dwm~ — switch to dwm explicitly
-- ~switch-wm fluxbox~ — switch to Fluxbox explicitly
+- ~switch-wm xfce~ — switch to XFCE explicitly
 
-*** Fluxbox vs dwm differences
+*** XFCE vs dwm
 
-| Feature | dwm | Fluxbox |
-|---------|-----|---------|
-| Tiling | Dynamic | Manual (stacking) |
-| Title bars | None | Yes (with X, minimize, maximize) - 2x scaled |
-| Config | C header | Plain text (~/.fluxbox/init) |
-| Look | Minimal | Classic window manager |
-| HiDPI Decorations | N/A | 48px title bars, 48px toolbar |
-| Learning | Steep | Easy |
-
-Both use the same:
-- HiDPI settings (Xft.dpi: 192, GTK scaling via xsettingsd)
-- Keybindings (Super+Return, Super+Space, Super+1-4 for workspaces)
-- Dunst notifications
-- Picom compositor
-- Screen locker (xss-lock + dwm-lock)
-
-*** Fluxbox Keybindings
-
-Most match dwm:
-
-| Key | Action |
-|-----|--------|
-| Super+Return | Terminal (st) |
-| Super+Space | Rofi launcher |
-| Super+q | Close window |
-| Super+t | Toggle maximize |
-| Super+f | Toggle fullscreen |
-| Super+Tab | Next window |
-| Super+1-4 | Switch to workspace |
-| Super+Shift+1-4 | Move window to workspace |
-| Super+Left/Right | Previous/next workspace |
-| Super+l | Lock screen |
-| Super+Shift+Delete | Exit Fluxbox |
+| Feature | dwm | XFCE |
+|---------|-----|------|
+| Tiling | Dynamic | Manual (tiling plugin available) |
+| Title bars | None | Yes (modern, proper HiDPI) |
+| Look | Minimal | Traditional desktop |
+| HiDPI | Via Xft/XSETTINGS | Native 2x scaling support |
+| Resource use | Very low | Low-moderate |
 
 *** Tips
 
-- Keep both configs stowed, switch as needed
-- Fluxbox is great for screencasts showing "normal" window behavior with readable 2x scaled decorations
-- dwm remains the daily driver for efficiency
-- Fluxbox handles HiDPI window decorations better than Openbox
+- Use dwm for daily work (efficiency)
+- Use XFCE for screencasts (familiar look, window decorations)
+- Both use your existing: dunst, picom, HiDPI settings
+- XFCE has proper window manager with 2x scaled decorations
