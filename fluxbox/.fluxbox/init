@@ -19,15 +19,8 @@ session.screen0.tab.placement: TopLeft
 session.screen0.tab.width: 160
 session.screen0.tab.height: 32
 
-! Toolbar - minimal modern look (just clock and system tray)
-session.screen0.toolbar.enabled: true
-session.screen0.toolbar.height: 40
-session.screen0.toolbar.widthPercent: 100
-session.screen0.toolbar.tools: iconbar, systemtray, clock
-session.screen0.toolbar.placement: BottomCenter
-session.screen0.toolbar.onTop: false
-session.screen0.toolbar.autoHide: true
-session.screen0.toolbar.autoHideDelay: 500
+! Toolbar - DISABLED completely
+session.screen0.toolbar.enabled: false
 
 ! Slit (disabled)
 session.screen0.slit.placement: RightBottom
