@@ -266,15 +266,10 @@ If whole disk was cloned, the bootloader should work. If just the LUKS partition
 #+begin_src bash
 # Mount the new system
 sudo mount /dev/ArchinstallVg/root /mnt
-sudo mount /dev/nvme1n1p1 /mnt/boot  # If you have separate /boot
+sudo mount /dev/nvme1n1p1 /mnt/boot
 
-# Reinstall GRUB/systemd-boot
-# For systemd-boot:
+# Reinstall systemd-boot
 sudo arch-chroot /mnt bootctl install
-
-# For GRUB:
-# sudo arch-chroot /mnt grub-install /dev/nvme1n1
-# sudo arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 #+end_src
 
 *** Update fstab/crypttab (if needed)
