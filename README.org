@@ -261,6 +261,46 @@ sudo lvextend -r -l +100%FREE /dev/ArchinstallVg/home
 # sudo lvextend -r -l +100%FREE /dev/ArchinstallVg/home
 #+end_src
 
+*** IMPORTANT: Resize LUKS Partition (for larger disks)
+
+If you cloned to a disk larger than the original (e.g., 4TB), the LUKS partition will still be the original size (~476GB). You must resize the physical partition first:
+
+**** From Arch Live USB:
+
+#+begin_src bash
+# 1. Boot from Arch Live USB
+# 2. Open the LUKS container
+sudo cryptsetup open /dev/nvme0n1p2 cryptlvm
+
+# 3. Resize the physical partition to fill the disk
+# Using parted (non-interactive):
+sudo parted /dev/nvme0n1 resizepart 2 100%
+
+# Or using gparted (GUI - easier):
+# sudo gparted /dev/nvme0n1
+# Right-click partition → Resize/Move → Drag to fill disk → Apply
+
+# 4. Resize LUKS to match new partition size
+sudo cryptsetup resize cryptlvm
+
+# 5. Resize LVM physical volume
+sudo pvresize /dev/mapper/cryptlvm
+
+# 6. Now extend home to use all free space (~3.5TB on 4TB disk)
+sudo lvextend -r -l +100%FREE /dev/ArchinstallVg/home
+
+# 7. Verify the resize
+lsblk
+# Should show: cryptlvm = 3.6T, ArchinstallVg-home = ~3.5T
+#+end_src
+
+**** Common Issue:
+
+If you only run ~lvextend~ without resizing the partition first:
+- ~lvextend~ reports "New size matches existing size"
+- ~lsblk~ shows cryptlvm still at ~476GB
+- Solution: You skipped step 3 (resize partition). Boot Live USB and follow steps above.
+
 *** Bootloader Setup
 
 If whole disk was cloned, the bootloader should work. If just the LUKS partition was cloned:
