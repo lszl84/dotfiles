@@ -33,6 +33,7 @@ static const Rule rules[] = {
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "firefox",  NULL,       NULL,       0,             0,           -1 },
 	{ "VibeCut",  NULL,       NULL,       0,            1,           -1 },
+	{ "wxapp",    NULL,       NULL,       0,            1,           -1 },  /* All wxWidgets apps float */
 };
 
 /* layout(s) */
