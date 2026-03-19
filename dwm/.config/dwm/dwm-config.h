@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows (floating only) */
+static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappx     = 0;        /* no gaps */
 static const int showbar            = 0;        /* 0 means no bar */
@@ -13,12 +13,13 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#333333";
-static const char col_bordersel[]   = "#ffffff";
+static const char col_bordersel[]   = "#2a3441";  /* Adwaita-gray for floating windows */
+static const char col_borderfloat[] = "#2a3441";  /* Adwaita-gray border */
 static const char *colors[][3]      = {
 	/*                 fg         bg         border   */
-	[SchemeNorm]   = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]    = { col_gray4, col_cyan,  col_bordersel },
-	[SchemeTitle]  = { col_gray4, col_gray1, col_gray2 },
+	[SchemeNorm]   = { col_gray3, col_gray1, col_borderfloat },
+	[SchemeSel]    = { col_gray4, col_cyan,  col_borderfloat },
+	[SchemeTitle]  = { col_gray4, col_gray1, col_borderfloat },
 };
 
 /* tagging */
