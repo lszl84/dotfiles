@@ -36,7 +36,7 @@ Key features:
 - Idle lock at 20 min, suspend 30s after lock
 - Status bar: volume, battery (with color + low battery notification), uptime (red warning after 14 days), clock
 - Polkit agent (polkit-gnome) for GUI privilege prompts
-- GTK 3/4 dark theme via xsettingsd + gsettings
+- GTK 3/4 dark theme via xsettingsd + gsettings (xsettingsd REQUIRED for HiDPI GTK scaling)
 - Dunst notifications (dark theme, top-right, rounded corners)
 
 See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
@@ -99,7 +99,7 @@ sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
 # dwm build deps
 sudo pacman -S base-devel libx11 libxft libxinerama python
 
-# Desktop
+# Desktop (xsettingsd is REQUIRED for GTK HiDPI scaling - do not skip!)
 sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome xorg-xsetroot xsettingsd gsettings-desktop-schemas dunst
 
 # Desktop portal (required for Firefox/libadwaita to detect dark mode)
