@@ -2,9 +2,14 @@
     "layer": "top",
     "position": "top",
     "height": 30,
-    "modules-left": ["wlr/taskbar"],
+    "exclusive": true,
+    "ipc": true,
+    "modules-left": ["tags"],
     "modules-center": [],
     "modules-right": ["pulseaudio", "battery", "custom/uptime", "clock"],
+    "tags": {
+        "num-tags": 4
+    },
     "pulseaudio": {
         "format": "vol {volume}%",
         "format-muted": "vol mute",
@@ -29,9 +34,5 @@
     "clock": {
         "format": "{:%a, %-d, %H:%M}",
         "tooltip-format": "{:%Y-%m-%d}"
-    },
-    "wlr/taskbar": {
-        "format": "{name}",
-        "on-click": "activate"
     }
 }
