@@ -23,8 +23,9 @@
     },
 
     "battery": {
-        "format": "Bat {capacity}% ·",
-        "format-charging": "Bat {capacity}%+ ·",
+        "format": "Bat {capacity}% ({time}) ·",
+        "format-charging": "Bat {capacity}%+ ({time}) ·",
+        "format-time": "{H}:{m}",
         "interval": 30,
         "states": {
             "warning": 10
