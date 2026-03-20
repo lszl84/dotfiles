@@ -1,0 +1,67 @@
+/* Waybar style matching dwm bar - minimal dark look */
+* {
+    font-family: "Adwaita Mono", monospace;
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #000000;
+    color: #bbbbbb;
+}
+
+/* Module separators */
+#pulseaudio,
+#battery,
+#custom-uptime,
+#clock {
+    padding: 0 8px;
+}
+
+/* Separator dots like dwm: "vol 50% • bat 80% • up 3d • Mon, 20, 14:30" */
+#pulseaudio::after,
+#battery::after,
+#custom-uptime::after {
+    content: " •";
+    color: #bbbbbb;
+}
+
+/* Battery colors matching dwm-status */
+#battery.charging {
+    color: #00ff00;
+}
+
+#battery.critical {
+    color: #ff0000;
+}
+
+/* Uptime warning (>14 days) */
+#custom-uptime.warning {
+    color: #ff0000;
+}
+
+/* Active tag/workspace */
+#tags button.focused {
+    background-color: #333333;
+    color: #eeeeee;
+}
+
+#tags button {
+    background-color: #000000;
+    color: #bbbbbb;
+    padding: 0 4px;
+}
+
+/* Taskbar */
+#taskbar button {
+    background-color: #000000;
+    color: #bbbbbb;
+    padding: 0 4px;
+}
+
+#taskbar button.active {
+    background-color: #333333;
+    color: #eeeeee;
+}
