@@ -3,12 +3,16 @@
     "position": "top",
     "height": 30,
     "exclusive": true,
-    "ipc": true,
-    "modules-left": ["tags"],
+    "modules-left": ["dwl/tags", "dwl/window"],
     "modules-center": [],
     "modules-right": ["pulseaudio", "battery", "custom/uptime", "clock"],
-    "tags": {
-        "num-tags": 4
+    "dwl/tags": {
+        "num-tags": 4,
+        "tag-labels": ["1", "2", "3", "4"]
+    },
+    "dwl/window": {
+        "format": "{title}",
+        "max-length": 50
     },
     "pulseaudio": {
         "format": "vol {volume}%",

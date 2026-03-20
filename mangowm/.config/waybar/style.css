@@ -12,20 +12,13 @@ window#waybar {
     color: #bbbbbb;
 }
 
-/* Module separators */
+/* Modules */
 #pulseaudio,
 #battery,
 #custom-uptime,
-#clock {
+#clock,
+#window {
     padding: 0 8px;
-}
-
-/* Separator dots like dwm: "vol 50% • bat 80% • up 3d • Mon, 20, 14:30" */
-#pulseaudio::after,
-#battery::after,
-#custom-uptime::after {
-    content: " •";
-    color: #bbbbbb;
 }
 
 /* Battery colors matching dwm-status */
@@ -37,31 +30,28 @@ window#waybar {
     color: #ff0000;
 }
 
-/* Uptime warning (>14 days) */
-#custom-uptime.warning {
-    color: #ff0000;
+/* Tags */
+#tags button {
+    background-color: #000000;
+    color: #bbbbbb;
+    padding: 0 6px;
+    border: none;
 }
 
-/* Active tag/workspace */
 #tags button.focused {
     background-color: #333333;
     color: #eeeeee;
 }
 
-#tags button {
-    background-color: #000000;
-    color: #bbbbbb;
-    padding: 0 4px;
+#tags button.occupied {
+    color: #eeeeee;
 }
 
-/* Taskbar */
-#taskbar button {
-    background-color: #000000;
-    color: #bbbbbb;
-    padding: 0 4px;
+#tags button.urgent {
+    color: #ff0000;
 }
 
-#taskbar button.active {
-    background-color: #333333;
+/* Window title */
+#window {
     color: #eeeeee;
 }
