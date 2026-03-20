@@ -12,6 +12,9 @@ export XCURSOR_SIZE=36
 # Load Xresources (Xft.dpi: 192)
 [[ -f ~/.config/dwm/xresources ]] && xrdb -merge ~/.config/dwm/xresources
 
+# Fractional scaling: 2x GTK / 1.14 xrandr = ~1.75x effective
+xrandr --output eDP-1 --scale 1.14x1.14 2>/dev/null || true
+
 # GTK/xsettings daemon
 [[ -f ~/.config/dwm/xsettingsd.conf ]] && xsettingsd -c ~/.config/dwm/xsettingsd.conf &
 
