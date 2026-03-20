@@ -1,0 +1,46 @@
+/* waybar style — matching dwm bar appearance */
+
+* {
+    font-family: "Adwaita Mono", monospace;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #000000;
+    color: #bbbbbb;
+}
+
+#workspaces button {
+    padding: 0 6px;
+    color: #bbbbbb;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+#workspaces button.active {
+    color: #eeeeee;
+    background-color: #333333;
+}
+
+#window {
+    color: #eeeeee;
+    padding: 0 8px;
+}
+
+#pulseaudio,
+#battery,
+#custom-uptime,
+#clock {
+    padding: 0 4px;
+    color: #bbbbbb;
+}
+
+#battery.charging {
+    color: #44bc44;
+}
+
+#battery.warning:not(.charging) {
+    color: #ff5f59;
+}

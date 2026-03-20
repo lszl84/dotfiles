@@ -149,93 +149,49 @@ sudo apt-get install fonts-adwaita fonts-jetbrains-mono-nerd
 
 #+begin_src bash
 cd ~/dotfiles
-stow mangowm
-
-# Validate config
-mango -c ~/.config/mango/config.conf -p
+stow hyprland
 #+end_src
 
 *** Config highlights
 
-The mangowm config matches your dwm setup exactly:
+The Hyprland config matches your dwm setup:
 
 - Zero gaps, zero borders (dwm-style)
-- Dim inactive windows (90% opacity like picom)
-- Master-stack layout (mfact=0.55, nmaster=1)
-- Tags 1-4 (same as dwm)
-- All dwm keybindings: Super+Return (st), Super+Space (fuzzel), Super+BackSpace (kill), etc.
-- Rounded corners for firefox/thunderbird, sharp for st
-- Floating rules: Gimp, VibeCut, wxapp
-- Autostart: dunst, xsettingsd, keyring, status bar, screen lock
+- Dim inactive windows (35% like picom)
+- Master layout (mfact=0.55, nmaster=1)
+- Workspaces 1-4 (same as dwm tags)
+- All dwm keybindings: Super+Return (foot), Super+Space (fuzzel), Super+BackSpace (kill), etc.
+- Autostart: waybar, hypridle, dunst, battery watch
+- Lock screen: hyprlock (Super+L)
+- Three-finger swipe for workspace switching
 
-*** Switch to MangoWM
+*** Hyprland vs dwm
 
-| Feature | dwm | MangoWM |
-|---------|-----|---------|
-| Tiling | Dynamic | Dynamic (master-stack) |
-| Tags | 1-4 | 1-4 (same as dwm) |
+| Feature | dwm | Hyprland |
+|---------|-----|----------|
+| Tiling | Dynamic | Dynamic (master) |
+| Workspaces | Tags 1-4 | Workspaces 1-4 |
 | Fractional scaling | xrandr hack (GPU heavy) | Native (zero GPU overhead) |
-| Rounded corners | Via picom (all windows) | Per-window class |
 | Battery/heat | High (xrandr scaling) | Low (native scaling) |
 | Protocol | X11 | Wayland |
 
-*** Config highlights (~/.config/mango/config.conf)
-
-- Zero gaps, zero borders (dwm-style)
-- Dim inactive windows (like picom)
-- Rounded corners for firefox/thunderbird only
-- Sharp corners for st terminal
-- Native 1.5x scaling support
-- Same keybindings as dwm
-
-*** Switch to MangoWM
+*** Switch to Hyprland
 
 #+begin_src bash
-# Toggle to MangoWM
-switch-wm mangowm
-
-# Or toggle back to dwm
-switch-wm dwm
-
-# For MangoWM: run directly from TTY (NOT startx - MangoWM is Wayland)
-mango
-
-# For dwm/XFCE: restart X session
-startx
+# From TTY (NOT startx - Hyprland is Wayland)
+Hyprland
 #+end_src
 
-*** Using switch-wm script
+*** Install Hyprland
 
-The ~switch-wm~ script updates ~/.xinitrc for X11 WMs and prints instructions for Wayland:
-
-- ~switch-wm~ — cycles: dwm → mangowm → xfce → dwm
-- ~switch-wm dwm~ — switch to dwm (run via startx)
-- ~switch-wm mangowm~ — switch to MangoWM (run ~mango~ directly from TTY)
-- ~switch-wm xfce~ — switch to XFCE (run via startx)
-
-*** IMPORTANT: How to launch each WM
-
-| WM | Type | How to launch |
-|----|------|---------------|
-| dwm | X11 | ~startx~ from TTY |
-| MangoWM | Wayland | ~mango~ directly from TTY (NOT startx) |
-| XFCE | X11 | ~startx~ from TTY |
-
-After running ~switch-wm~:
-- For dwm/XFCE: Run ~startx~
-- For MangoWM: Logout to TTY and run ~mango~
-
-*** Why MangoWM over dwm?
-
-- Native fractional scaling (1.5x, 1.75x) without xrandr GPU overhead
-- Better battery life and cooler operation
-- Per-class rounded corners (firefox rounded, st sharp)
-- Same dwm workflow and muscle memory
+#+begin_src bash
+sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipboard swaybg dunst
+#+end_src
 
 *** Tips
 
 - Use dwm for maximum stability and minimal dependencies
-- Use MangoWM for native fractional scaling without GPU overhead
+- Use Hyprland for native fractional scaling without GPU overhead
 - Use XFCE for screencasts or when you need classic window decorations
 - All three use: dunst, st, fuzzel/rofi, keyring
 
