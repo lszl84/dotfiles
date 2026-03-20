@@ -217,6 +217,22 @@ export SSH_AUTH_SOCK
 
 This is already included in the dwm ~.xinitrc= provided in this repo.
 
+**** Troubleshooting
+
+If ~seahorse~ shows no keyrings or "The password ring was not unlocked":
+
+1. The keyring is unlocked but seahorse was started before it - restart seahorse:
+   #+begin_src bash
+   killall seahorse && seahorse &
+   #+end_src
+
+2. Or start seahorse AFTER the keyring daemon has started in your X session.
+
+3. Check if keyring is running:
+   #+begin_src bash
+   pgrep gnome-keyring
+   #+end_src
+
 **** Using Seahorse GUI
 
 Launch the graphical keyring manager to browse and manage stored passwords:
