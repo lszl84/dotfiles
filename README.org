@@ -185,7 +185,7 @@ Hyprland
 *** Install Hyprland
 
 #+begin_src bash
-sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipboard swaybg dunst
+sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipboard swaybg dunst gvfs
 #+end_src
 
 *** Tips
