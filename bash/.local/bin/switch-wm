@@ -1,71 +1,46 @@
 #!/bin/bash
-# ~/bin/switch-wm - Toggle between dwm, mangowm, and xfce
-# Usage: switch-wm [dwm|mangowm|xfce]
+# ~/bin/switch-wm - Toggle between dwm, hyprland, and xfce
+# Usage: switch-wm [dwm|hyprland|xfce]
 # Or just: switch-wm (cycles through them)
 
 XINITRC="$HOME/.xinitrc"
+WM_FILE="$HOME/.config/current-wm"
 
 # Get current WM
 get_current_wm() {
-    if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
+    if [ -f "$WM_FILE" ]; then
+        cat "$WM_FILE"
+    elif grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
         echo "dwm"
     elif grep -q "exec startxfce4" "$XINITRC" 2>/dev/null; then
         echo "xfce"
     else
-        # Check if mangowm marker exists
-        if [ -f ~/.config/mango/config.conf ] && \
-           [ -f ~/.config/mango/.active ] 2>/dev/null; then
-            echo "mangowm"
-        else
-            echo "dwm"
-        fi
+        echo "dwm"
     fi
-}
-
-# Backup xinitrc
-backup_xinitrc() {
-    cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
 }
 
 # Switch to dwm
 switch_to_dwm() {
-    backup_xinitrc
-    # Remove mangowm marker
-    rm -f ~/.config/mango/.active 2>/dev/null
-    # Set xinitrc to dwm
-    sed -i 's|^exec |exec ~/.local/bin/dwm #|' "$XINITRC" 2>/dev/null || \
-    echo "exec ~/.local/bin/dwm" >> "$XINITRC"
+    echo "dwm" > "$WM_FILE"
+    # Ensure xinitrc has dwm
+    sed -i 's|^exec startxfce4|exec ~/.local/bin/dwm|' "$XINITRC" 2>/dev/null
     echo "Switched to dwm."
     echo "Run: startx"
-    notify-send "WM Switch" "Switched to dwm. Run: startx" 2>/dev/null || true
 }
 
-# Switch to mangowm  
-switch_to_mangowm() {
-    # For Wayland compositor - just create a marker file
-    touch ~/.config/mango/.active 2>/dev/null
-    echo "Switched to MangoWM."
-    echo ""
-    echo "╔══════════════════════════════════════════════════════════╗"
-    echo "║  IMPORTANT: MangoWM is Wayland (NOT X11)                 ║"
-    echo "╠══════════════════════════════════════════════════════════╣"
-    echo "║  Run: mango (directly from TTY)                          ║"
-    echo "║  DO NOT use 'startx' - that only works for X11 WMs      ║"
-    echo "╚══════════════════════════════════════════════════════════╝"
-    echo ""
-    notify-send "WM Switch" "MangoWM: Run 'mango' from TTY (not startx)" 2>/dev/null || true
+# Switch to hyprland
+switch_to_hyprland() {
+    echo "hyprland" > "$WM_FILE"
+    echo "Switched to Hyprland."
+    echo "Run: start-hyprland (from TTY, NOT startx)"
 }
 
 # Switch to xfce
 switch_to_xfce() {
-    backup_xinitrc
-    # Remove mangowm marker
-    rm -f ~/.config/mango/.active 2>/dev/null
-    sed -i 's|^exec |exec startxfce4 #|' "$XINITRC" 2>/dev/null || \
-    echo "exec startxfce4" >> "$XINITRC"
+    echo "xfce" > "$WM_FILE"
+    sed -i 's|^exec ~/.local/bin/dwm|exec startxfce4|' "$XINITRC" 2>/dev/null
     echo "Switched to XFCE."
     echo "Run: startx"
-    notify-send "WM Switch" "Switched to XFCE. Run: startx" 2>/dev/null || true
 }
 
 # Main logic
@@ -75,36 +50,36 @@ case "$1" in
     dwm)
         switch_to_dwm
         ;;
-    mangowm|mango)
-        switch_to_mangowm
+    hyprland|hypr)
+        switch_to_hyprland
         ;;
     xfce)
         switch_to_xfce
         ;;
     "")
-        # Auto-toggle: dwm -> mangowm -> xfce -> dwm
+        # Auto-toggle: dwm -> hyprland -> xfce -> dwm
         case "$current" in
             dwm)
-                switch_to_mangowm
+                switch_to_hyprland
                 ;;
-            mangowm)
+            hyprland)
                 switch_to_xfce
                 ;;
-            xfce)
+            xfce|*)
                 switch_to_dwm
                 ;;
         esac
         ;;
     *)
-        echo "Usage: $0 [dwm|mangowm|xfce]"
-        echo "Or run without arguments to cycle through them"
+        echo "Usage: $0 [dwm|hyprland|xfce]"
+        echo "Or run without arguments to cycle"
         echo ""
-        echo "Current WM: $current"
+        echo "Current: $current"
         echo ""
         echo "HOW TO LAUNCH:"
-        echo "  dwm     -> startx    (from TTY, X11)"
-        echo "  mangowm -> mango     (direct from TTY, Wayland - NOT startx!)"
-        echo "  xfce    -> startx    (from TTY, X11)"
+        echo "  dwm      -> startx          (X11)"
+        echo "  hyprland -> start-hyprland   (Wayland)"
+        echo "  xfce     -> startx           (X11)"
         exit 1
         ;;
 esac

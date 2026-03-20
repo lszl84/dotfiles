@@ -4,6 +4,10 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec startx
+if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    wm=$(cat ~/.config/current-wm 2>/dev/null || echo "dwm")
+    case "$wm" in
+        hyprland) exec start-hyprland ;;
+        *)        exec startx ;;
+    esac
 fi
