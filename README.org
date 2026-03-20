@@ -204,15 +204,18 @@ auth       optional     pam_gnome_keyring.so
 session    optional     pam_gnome_keyring.so auto_start
 #+end_src
 
-**** Start Keyring in .xinitrc
+**** Start Keyring in .xinitrc (REQUIRED for startx users)
 
-Add to your =~/.xinitrc= before starting dwm:
+The PAM configuration above only works with display managers (LightDM, GDM, etc.).
+If you use ~startx~ (like this dwm setup), you MUST add this to your =~/.xinitrc=:
 
 #+begin_src bash
-# Start GNOME Keyring daemon
+# Start GNOME Keyring daemon (REQUIRED for secret-tool and seahorse with startx)
 eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 #+end_src
+
+This is already included in the dwm ~.xinitrc= provided in this repo.
 
 **** Using Seahorse GUI
 

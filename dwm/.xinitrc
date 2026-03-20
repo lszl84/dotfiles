@@ -15,6 +15,10 @@ export XCURSOR_SIZE=36
 # Fractional scaling: 2x GTK / 1.14 xrandr = ~1.75x effective
 xrandr --output eDP-1 --scale 1.14x1.14 2>/dev/null || true
 
+# Start GNOME Keyring daemon (required for secret-tool and seahorse to work with startx)
+eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+
 # GTK/xsettings daemon
 [[ -f ~/.config/dwm/xsettingsd.conf ]] && xsettingsd -c ~/.config/dwm/xsettingsd.conf &
 
