@@ -197,18 +197,33 @@ switch-wm mangowm
 # Or toggle back to dwm
 switch-wm dwm
 
-# Then restart X session
+# For MangoWM: run directly from TTY (NOT startx - MangoWM is Wayland)
+mango
+
+# For dwm/XFCE: restart X session
 startx
 #+end_src
 
 *** Using switch-wm script
 
-The updated ~switch-wm~ script handles all three WMs:
+The ~switch-wm~ script updates ~/.xinitrc for X11 WMs and prints instructions for Wayland:
 
 - ~switch-wm~ — cycles: dwm → mangowm → xfce → dwm
-- ~switch-wm dwm~ — switch to dwm explicitly
-- ~switch-wm mangowm~ — switch to MangoWM explicitly
-- ~switch-wm xfce~ — switch to XFCE explicitly
+- ~switch-wm dwm~ — switch to dwm (run via startx)
+- ~switch-wm mangowm~ — switch to MangoWM (run ~mango~ directly from TTY)
+- ~switch-wm xfce~ — switch to XFCE (run via startx)
+
+*** IMPORTANT: How to launch each WM
+
+| WM | Type | How to launch |
+|----|------|---------------|
+| dwm | X11 | ~startx~ from TTY |
+| MangoWM | Wayland | ~mango~ directly from TTY (NOT startx) |
+| XFCE | X11 | ~startx~ from TTY |
+
+After running ~switch-wm~:
+- For dwm/XFCE: Run ~startx~
+- For MangoWM: Logout to TTY and run ~mango~
 
 *** Why MangoWM over dwm?
 

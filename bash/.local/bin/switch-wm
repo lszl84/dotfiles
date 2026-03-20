@@ -9,46 +9,63 @@ XINITRC="$HOME/.xinitrc"
 get_current_wm() {
     if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
         echo "dwm"
-    elif grep -q "exec mango" "$XINITRC" 2>/dev/null || \
-         grep -q "exec mangowm" "$XINITRC" 2>/dev/null; then
-        echo "mangowm"
     elif grep -q "exec startxfce4" "$XINITRC" 2>/dev/null; then
         echo "xfce"
     else
-        echo "unknown"
+        # Check if mangowm marker exists
+        if [ -f ~/.config/mango/config.conf ] && \
+           [ -f ~/.config/mango/.active ] 2>/dev/null; then
+            echo "mangowm"
+        else
+            echo "dwm"
+        fi
     fi
 }
 
 # Backup xinitrc
 backup_xinitrc() {
-    cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)"
+    cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)" 2>/dev/null || true
 }
 
 # Switch to dwm
 switch_to_dwm() {
     backup_xinitrc
-    sed -i 's|exec mango.*|exec ~/.local/bin/dwm|' "$XINITRC"
-    sed -i 's|exec startxfce4|exec ~/.local/bin/dwm|' "$XINITRC"
-    echo "Switched to dwm. Run 'startx' to apply."
-    notify-send "WM Switch" "Switched to dwm. Run 'startx' to apply." 2>/dev/null || true
+    # Remove mangowm marker
+    rm -f ~/.config/mango/.active 2>/dev/null
+    # Set xinitrc to dwm
+    sed -i 's|^exec |exec ~/.local/bin/dwm #|' "$XINITRC" 2>/dev/null || \
+    echo "exec ~/.local/bin/dwm" >> "$XINITRC"
+    echo "Switched to dwm."
+    echo "Run: startx"
+    notify-send "WM Switch" "Switched to dwm. Run: startx" 2>/dev/null || true
 }
 
-# Switch to mangowm
+# Switch to mangowm  
 switch_to_mangowm() {
-    backup_xinitrc
-    sed -i 's|exec ~/.local/bin/dwm|exec mango|' "$XINITRC"
-    sed -i 's|exec startxfce4|exec mango|' "$XINITRC"
-    echo "Switched to MangoWM. Run 'startx' to apply."
-    notify-send "WM Switch" "Switched to MangoWM. Run 'startx' to apply." 2>/dev/null || true
+    # For Wayland compositor - just create a marker file
+    touch ~/.config/mango/.active 2>/dev/null
+    echo "Switched to MangoWM."
+    echo ""
+    echo "╔══════════════════════════════════════════════════════════╗"
+    echo "║  IMPORTANT: MangoWM is Wayland (NOT X11)                 ║"
+    echo "╠══════════════════════════════════════════════════════════╣"
+    echo "║  Run: mango (directly from TTY)                          ║"
+    echo "║  DO NOT use 'startx' - that only works for X11 WMs      ║"
+    echo "╚══════════════════════════════════════════════════════════╝"
+    echo ""
+    notify-send "WM Switch" "MangoWM: Run 'mango' from TTY (not startx)" 2>/dev/null || true
 }
 
 # Switch to xfce
 switch_to_xfce() {
     backup_xinitrc
-    sed -i 's|exec ~/.local/bin/dwm|exec startxfce4|' "$XINITRC"
-    sed -i 's|exec mango|exec startxfce4|' "$XINITRC"
-    echo "Switched to XFCE. Run 'startx' to apply."
-    notify-send "WM Switch" "Switched to XFCE. Run 'startx' to apply." 2>/dev/null || true
+    # Remove mangowm marker
+    rm -f ~/.config/mango/.active 2>/dev/null
+    sed -i 's|^exec |exec startxfce4 #|' "$XINITRC" 2>/dev/null || \
+    echo "exec startxfce4" >> "$XINITRC"
+    echo "Switched to XFCE."
+    echo "Run: startx"
+    notify-send "WM Switch" "Switched to XFCE. Run: startx" 2>/dev/null || true
 }
 
 # Main logic
@@ -73,7 +90,7 @@ case "$1" in
             mangowm)
                 switch_to_xfce
                 ;;
-            xfce|unknown)
+            xfce)
                 switch_to_dwm
                 ;;
         esac
@@ -83,6 +100,11 @@ case "$1" in
         echo "Or run without arguments to cycle through them"
         echo ""
         echo "Current WM: $current"
+        echo ""
+        echo "HOW TO LAUNCH:"
+        echo "  dwm     -> startx    (from TTY, X11)"
+        echo "  mangowm -> mango     (direct from TTY, Wayland - NOT startx!)"
+        echo "  xfce    -> startx    (from TTY, X11)"
         exit 1
         ;;
 esac
