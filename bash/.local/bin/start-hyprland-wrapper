@@ -1,0 +1,8 @@
+#!/bin/bash
+# start-hyprland-wrapper — Launch Hyprland with GNOME Keyring unlock
+# Similar to .xinitrc pattern for X11
+
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+
+exec /usr/bin/Hyprland "$@"
