@@ -409,28 +409,47 @@ sudo mkinitcpio -P
 - The ~-r~ flag in ~lvextend~ auto-resizes filesystems while mounted
 - Can resize root (/) and home live while booted from the new disk
 
-** Alternative Wayland Compositor (MangoWM)
+** Alternative Wayland Compositor (MangoWM) - MANUAL SETUP ONLY
 
 For native fractional scaling without GPU overhead, rounded corners per window class, and better battery life:
 
 MangoWM is "dwm but Wayland" - built from dwl with dwm-style tags, master-stack layout, and native Wayland fractional scaling.
 
-*** Install MangoWM
+*** Install MangoWM (MANUAL - no dotfiles config yet)
 
 #+begin_src bash
 # 1. Install MangoWM and dependencies
 yay -S mangowm-git
 sudo pacman -S swaylock swayidle fuzzel foot grim slurp waybar wl-clipboard
 
-# 2. Copy default config (NOT from dotfiles - I had wrong format)
+# 2. Copy default config (official one, not from dotfiles)
 mkdir -p ~/.config/mango
 cp /etc/mango/config.conf ~/.config/mango/config.conf
 
-# 3. Edit with proper MangoWM key=value syntax
-# See: https://mangowm.github.io/docs/
+# 3. Edit manually with MangoWM syntax (key=value format)
+# See docs: https://mangowm.github.io/docs/
+nano ~/.config/mango/config.conf
 
 # 4. Validate before starting
 mango -c ~/.config/mango/config.conf -p
+
+# 5. Start MangoWM
+mango
+#+end_src
+
+*** Why no dotfiles config?
+
+MangoWM uses unique `key=value` syntax that differs from Hyprland/dwm.
+I haven't learned the proper format yet to provide a working config.
+Use the official default config and edit manually.
+
+*** Why MangoWM over dwm?
+
+- Native fractional scaling (1.5x, 1.75x) without xrandr GPU overhead
+- Better battery life and cooler operation
+- Same dwm workflow and muscle memory
+
+** Alternative Desktop Environment (XFCE)
 #+end_src
 
 *** Stow the config (NOTE: Config format is different!)
