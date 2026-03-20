@@ -180,6 +180,57 @@ Firefox and other libadwaita apps use XDG Desktop Portal to detect the system da
 /usr/lib/xdg-desktop-portal &
 #+end_src
 
+*** GNOME Keyring (Password/Key Storage)
+
+For secure password and SSH key storage with automatic unlock at login:
+
+#+begin_src bash
+# Install keyring daemon and GUI manager
+sudo pacman -S gnome-keyring seahorse
+#+end_src
+
+**** PAM Setup (Auto-unlock with login password)
+
+Add to PAM configuration to automatically unlock keyring when you log in:
+
+#+begin_src bash
+# Edit /etc/pam.d/login
+sudo nano /etc/pam.d/login
+#+end_src
+
+Add these lines to the file:
+#+begin_src
+auth       optional     pam_gnome_keyring.so
+session    optional     pam_gnome_keyring.so auto_start
+#+end_src
+
+**** Start Keyring in .xinitrc
+
+Add to your =~/.xinitrc= before starting dwm:
+
+#+begin_src bash
+# Start GNOME Keyring daemon
+eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+#+end_src
+
+**** Using Seahorse GUI
+
+Launch the graphical keyring manager to browse and manage stored passwords:
+
+#+begin_src bash
+seahorse
+#+end_src
+
+Or use command line:
+#+begin_src bash
+# Store a password
+secret-tool store --label="My Password" service myapp username me
+
+# Retrieve a password
+secret-tool lookup service myapp username me
+#+end_src
+
 The ~dwm-build~ script handles everything: downloading sources, applying
 patches, compiling, installing to =$HOME/.local/bin/=, and creating the
 =/etc/pam.d/dwm= config for the built-in locker. After a reboot, select "dwm"
