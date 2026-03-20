@@ -418,16 +418,69 @@ MangoWM is "dwm but Wayland" - built from dwl with dwm-style tags, master-stack 
 *** Install MangoWM
 
 #+begin_src bash
-# From AUR (requires yay or manual build)
+# 1. Install MangoWM and dependencies
 yay -S mangowm-git
+sudo pacman -S swaylock swayidle fuzzel foot grim slurp waybar wl-clipboard
+
+# 2. Copy default config (NOT from dotfiles - I had wrong format)
+mkdir -p ~/.config/mango
+cp /etc/mango/config.conf ~/.config/mango/config.conf
+
+# 3. Edit with proper MangoWM key=value syntax
+# See: https://mangowm.github.io/docs/
+
+# 4. Validate before starting
+mango -c ~/.config/mango/config.conf -p
 #+end_src
 
-*** Stow the config
+*** Stow the config (NOTE: Config format is different!)
+
+WARNING: MangoWM uses a completely different config format than Hyprland/dwm.
+Do NOT use the mangowm stow package - it contained wrong config syntax.
+
+**** Correct Setup:
 
 #+begin_src bash
-cd ~/dotfiles
-stow mangowm
+# 1. Install MangoWM
+yay -S mangowm-git
+
+# 2. Copy the REAL default config (do not stow our broken one)
+mkdir -p ~/.config/mango
+cp /etc/mango/config.conf ~/.config/mango/config.conf
+
+# 3. Edit with proper MangoWM syntax
+nano ~/.config/mango/config.conf
 #+end_src
+
+**** Config Syntax (MangoWM uses key=value, NOT Hyprland syntax)
+
+MangoWM config format examples:
+#+begin_src
+# Monitor with fractional scaling
+monitorrule=name:eDP-1,scale:1.5,width:2880,height:1800
+
+# Keybindings use different syntax
+bind=ALT,Return,exec,foot
+bind=ALT,Space,exec,fuzzel
+bind=ALT,Q,kill
+bind=SUPER,M,exec,pkill mango
+
+# Floating rules
+windowrule=float,class:^(Gimp)$
+windowrule=float,class:^(VibeCut)$
+
+# Autostart
+exec-once=dunst &
+exec-once=swayidle -w timeout 1200 'swaylock -f -c 000000' &
+#+end_src
+
+**** Validate config before launching:
+
+#+begin_src bash
+mango -c ~/.config/mango/config.conf -p
+#+end_src
+
+This checks for errors without starting the compositor.
 
 *** Key features
 
@@ -477,6 +530,14 @@ The updated ~switch-wm~ script handles all three WMs:
 - Better battery life and cooler operation
 - Per-class rounded corners (firefox rounded, st sharp)
 - Same dwm workflow and muscle memory
+
+*** IMPORTANT: Config Syntax is Different
+
+MangoWM does NOT use dwm/Hyprland config syntax. You must learn their format:
+- https://mangowm.github.io/docs/configuration/basics/
+- https://mangowm.github.io/docs/configuration/keybindings/
+
+My attempt at a pre-made config was WRONG. Use the official `/etc/mango/config.conf`.
 
 *** Tips
 
