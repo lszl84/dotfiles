@@ -1,58 +1,88 @@
 #!/bin/bash
-# ~/bin/switch-wm - Toggle between dwm and xfce
-# Usage: switch-wm [dwm|xfce]
-# Or just: switch-wm (toggles automatically)
+# ~/bin/switch-wm - Toggle between dwm, mangowm, and xfce
+# Usage: switch-wm [dwm|mangowm|xfce]
+# Or just: switch-wm (cycles through them)
 
 XINITRC="$HOME/.xinitrc"
 
-# Function to switch to dwm
+# Get current WM
+get_current_wm() {
+    if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
+        echo "dwm"
+    elif grep -q "exec mango" "$XINITRC" 2>/dev/null || \
+         grep -q "exec mangowm" "$XINITRC" 2>/dev/null; then
+        echo "mangowm"
+    elif grep -q "exec startxfce4" "$XINITRC" 2>/dev/null; then
+        echo "xfce"
+    else
+        echo "unknown"
+    fi
+}
+
+# Backup xinitrc
+backup_xinitrc() {
+    cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)"
+}
+
+# Switch to dwm
 switch_to_dwm() {
-    if grep -q "exec startxfce4" "$XINITRC" 2>/dev/null; then
-        
-        # Backup current xinitrc
-        cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)"
-        
-        # Switch to dwm
-        sed -i 's|exec startxfce4|exec ~/.local/bin/dwm|' "$XINITRC"
-        
-        echo "Switched to dwm. Run 'startx' to apply."
-        notify-send "WM Switch" "Switched to dwm. Run 'startx' to apply." 2>/dev/null || true
-    else
-        echo "Already using dwm"
-    fi
+    backup_xinitrc
+    sed -i 's|exec mango.*|exec ~/.local/bin/dwm|' "$XINITRC"
+    sed -i 's|exec startxfce4|exec ~/.local/bin/dwm|' "$XINITRC"
+    echo "Switched to dwm. Run 'startx' to apply."
+    notify-send "WM Switch" "Switched to dwm. Run 'startx' to apply." 2>/dev/null || true
 }
 
-# Function to switch to xfce
+# Switch to mangowm
+switch_to_mangowm() {
+    backup_xinitrc
+    sed -i 's|exec ~/.local/bin/dwm|exec mango|' "$XINITRC"
+    sed -i 's|exec startxfce4|exec mango|' "$XINITRC"
+    echo "Switched to MangoWM. Run 'startx' to apply."
+    notify-send "WM Switch" "Switched to MangoWM. Run 'startx' to apply." 2>/dev/null || true
+}
+
+# Switch to xfce
 switch_to_xfce() {
-    if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
-        
-        # Backup current xinitrc
-        cp "$XINITRC" "$XINITRC.backup.$(date +%Y%m%d_%H%M%S)"
-        
-        # Switch to xfce
-        sed -i 's|exec ~/.local/bin/dwm|exec startxfce4|' "$XINITRC"
-        
-        echo "Switched to XFCE. Run 'startx' to apply."
-        notify-send "WM Switch" "Switched to XFCE. Run 'startx' to apply." 2>/dev/null || true
-    else
-        echo "Already using XFCE or other WM"
-    fi
+    backup_xinitrc
+    sed -i 's|exec ~/.local/bin/dwm|exec startxfce4|' "$XINITRC"
+    sed -i 's|exec mango|exec startxfce4|' "$XINITRC"
+    echo "Switched to XFCE. Run 'startx' to apply."
+    notify-send "WM Switch" "Switched to XFCE. Run 'startx' to apply." 2>/dev/null || true
 }
 
-# Check argument or auto-toggle
-if [ "$1" = "dwm" ]; then
-    switch_to_dwm
-elif [ "$1" = "xfce" ]; then
-    switch_to_xfce
-elif [ -z "$1" ]; then
-    # Auto-toggle based on current setting
-    if grep -q "exec ~/.local/bin/dwm" "$XINITRC" 2>/dev/null; then
-        switch_to_xfce
-    else
+# Main logic
+current=$(get_current_wm)
+
+case "$1" in
+    dwm)
         switch_to_dwm
-    fi
-else
-    echo "Usage: $0 [dwm|xfce]"
-    echo "Or run without arguments to toggle"
-    exit 1
-fi
+        ;;
+    mangowm|mango)
+        switch_to_mangowm
+        ;;
+    xfce)
+        switch_to_xfce
+        ;;
+    "")
+        # Auto-toggle: dwm -> mangowm -> xfce -> dwm
+        case "$current" in
+            dwm)
+                switch_to_mangowm
+                ;;
+            mangowm)
+                switch_to_xfce
+                ;;
+            xfce|unknown)
+                switch_to_dwm
+                ;;
+        esac
+        ;;
+    *)
+        echo "Usage: $0 [dwm|mangowm|xfce]"
+        echo "Or run without arguments to cycle through them"
+        echo ""
+        echo "Current WM: $current"
+        exit 1
+        ;;
+esac

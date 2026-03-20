@@ -155,6 +155,7 @@ stow bash
 stow dunst
 stow dwm
 stow emacs-easy
+stow mangowm
 stow touchegg
 stow fastfetch
 stow gdb
@@ -407,6 +408,82 @@ sudo mkinitcpio -P
 - ~dd~ copies block-level: LUKS, LVM, ext4, all preserved exactly
 - The ~-r~ flag in ~lvextend~ auto-resizes filesystems while mounted
 - Can resize root (/) and home live while booted from the new disk
+
+** Alternative Wayland Compositor (MangoWM)
+
+For native fractional scaling without GPU overhead, rounded corners per window class, and better battery life:
+
+MangoWM is "dwm but Wayland" - built from dwl with dwm-style tags, master-stack layout, and native Wayland fractional scaling.
+
+*** Install MangoWM
+
+#+begin_src bash
+# From AUR (requires yay or manual build)
+yay -S mangowm-git
+#+end_src
+
+*** Stow the config
+
+#+begin_src bash
+cd ~/dotfiles
+stow mangowm
+#+end_src
+
+*** Key features
+
+| Feature | dwm | MangoWM |
+|---------|-----|---------|
+| Tiling | Dynamic | Dynamic (master-stack) |
+| Tags | 1-4 | 1-4 (same as dwm) |
+| Fractional scaling | xrandr hack (GPU heavy) | Native (zero GPU overhead) |
+| Rounded corners | Via picom (all windows) | Per-window class |
+| Battery/heat | High (xrandr scaling) | Low (native scaling) |
+| Protocol | X11 | Wayland |
+
+*** Config highlights (~/.config/mango/config.conf)
+
+- Zero gaps, zero borders (dwm-style)
+- Dim inactive windows (like picom)
+- Rounded corners for firefox/thunderbird only
+- Sharp corners for st terminal
+- Native 1.5x scaling support
+- Same keybindings as dwm
+
+*** Switch to MangoWM
+
+#+begin_src bash
+# Toggle to MangoWM
+switch-wm mangowm
+
+# Or toggle back to dwm
+switch-wm dwm
+
+# Then restart X session
+startx
+#+end_src
+
+*** Using switch-wm script
+
+The updated ~switch-wm~ script handles all three WMs:
+
+- ~switch-wm~ — cycles: dwm → mangowm → xfce → dwm
+- ~switch-wm dwm~ — switch to dwm explicitly
+- ~switch-wm mangowm~ — switch to MangoWM explicitly
+- ~switch-wm xfce~ — switch to XFCE explicitly
+
+*** Why MangoWM over dwm?
+
+- Native fractional scaling (1.5x, 1.75x) without xrandr GPU overhead
+- Better battery life and cooler operation
+- Per-class rounded corners (firefox rounded, st sharp)
+- Same dwm workflow and muscle memory
+
+*** Tips
+
+- Use dwm for maximum stability and minimal dependencies
+- Use MangoWM for fractional scaling and better battery
+- Use XFCE for screencasts or when you need classic window decorations
+- All three use: dunst, st, rofi, xss-lock, keyring
 
 ** Alternative Desktop Environment (XFCE)
 
