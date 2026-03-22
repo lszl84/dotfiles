@@ -161,22 +161,6 @@ borders, zero gaps.
 - Lock: Automatically after 20min idle, suspend 30s after lock
 - GTK theme: adw-gtk3-dark (libadwaita-style)
 
-* Troubleshooting
-
-** Keyring not unlocking
-
-The keyring is set to passwordless (unencrypted). This is intentional for
-convenience — security comes from LUKS disk encryption. If you want an
-encrypted keyring that auto-unlocks, you'll need a display manager (SDDM)
-or TTY autologin with systemd service.
-
-** Screen recording fails
-
-Make sure ~intel-media-driver~ is installed for hardware encoding:
-#+begin_src bash
-sudo pacman -S intel-media-driver
-#+end_src
-
 ** GTK apps look wrong
 
 Run manually or restart Hyprland:
