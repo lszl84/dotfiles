@@ -9,5 +9,5 @@ if [ -n "$PID" ]; then
 else
     # Start recording
     mkdir -p ~/Videos
-    wf-recorder -c h264_vaapi -g "$(slurp)" -f ~/Videos/recording_$(date +%Y%m%d_%H%M%S).mp4 &
+    wf-recorder --no-dmabuf -c h264_vaapi -g "$(slurp)" -f ~/Videos/recording_$(date +%Y%m%d_%H%M%S).mp4 &
 fi
