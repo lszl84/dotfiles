@@ -185,7 +185,7 @@ Hyprland
 *** Install Hyprland
 
 #+begin_src bash
-sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipboard swaybg dunst gvfs
+sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipboard swaybg dunst gvfs gpu-screen-recorder
 #+end_src
 
 *** Tips
@@ -194,6 +194,7 @@ sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipb
 - Use Hyprland for native fractional scaling without GPU overhead
 - Use XFCE for screencasts or when you need classic window decorations
 - All three use: dunst, st, fuzzel/rofi, keyring
+- Screen recording: Super+r (gpu-screen-recorder with Intel Arc hardware encoding)
 
 ** Alternative Desktop Environment (XFCE)
 

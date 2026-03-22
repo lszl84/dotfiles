@@ -1,13 +1,19 @@
 #!/bin/bash
-# Toggle screen recording with wf-recorder
+# Toggle screen recording with gpu-screen-recorder (hardware encoding)
 
-PID=$(pgrep -x wf-recorder)
+PID=$(pgrep -f gpu-screen-recorder)
 
 if [ -n "$PID" ]; then
-    # Stop recording
-    kill "$PID"
+    # Stop recording gracefully (SIGINT allows proper MP4 finalization)
+    kill -INT "$PID"
+    wait "$PID" 2>/dev/null
 else
-    # Start recording
+    # Start recording with region selection
     mkdir -p ~/Videos
-    wf-recorder --no-dmabuf -c h264_vaapi -g "$(slurp)" -f ~/Videos/recording_$(date +%Y%m%d_%H%M%S).mp4 &
+    SLURP_OUT=$(slurp)
+    if [ -n "$SLURP_OUT" ]; then
+        # Convert slurp format "X,Y WxH" to gsr format "WxH+X+Y"
+        REGION=$(echo "$SLURP_OUT" | awk '{split($1,xy,","); print $2 "+" xy[1] "+" xy[2]}')
+        gpu-screen-recorder -w "$REGION" -encoder gpu -o ~/Videos/recording_$(date +%Y%m%d_%H%M%S).mp4 &
+    fi
 fi
