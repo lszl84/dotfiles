@@ -1,45 +1,31 @@
 #+TITLE: Dotfiles
-#+DESCRIPTION: Configuration files for Linux (dwm / X11)
+#+DESCRIPTION: Hyprland Wayland dotfiles with dwm-style workflow
 
 * Overview
 
-Personal dotfiles for a Linux desktop built around dwm on X11. Everything is
-managed with GNU Stow — each top-level directory is a stow package that
+Personal dotfiles for Hyprland on Wayland. Designed to replicate the dwm
+experience (zero gaps, zero borders, master layout) while gaining native
+fractional scaling and lower GPU overhead.
+
+Managed with GNU Stow — each top-level directory is a stow package that
 symlinks into ~$HOME~.
 
 * Contents
 
-** dwm
+** hyprland
 
-Tiling window manager (dwm 6.5) with a complete desktop environment.
+Wayland compositor configured for a minimal, efficient workflow:
 
-~dwm-build~ downloads dwm and st from suckless.org, applies patches via Python
-scripts, copies in ~dwm-config.h~ / ~st-config.h~, and installs binaries to
-=$HOME/.local/bin/=.
-
-Applied dwm patches:
-- *status2d* — colored status bar segments (~^c#RRGGBB^~)
-- *lock* — built-in PAM screen locker (fullscreen black window, keyboard grab, color feedback)
-- *vtblack* — black overlay on VT switch to prevent flash
-
-Applied st patches:
-- *scrollback* — 2000-line history with Shift+PageUp/Down
-- *scrollback-mouse* — Shift+scroll wheel
-- *anysize* — dynamic border centering for arbitrary window sizes
-
-Key features:
-- HiDPI (192 DPI / 2x) scaling for 3120x2080 display
-- st terminal with Modus Vivendi colors
-- rofi launcher, PipeWire volume keys, brightnessctl
-- Picom compositor: vsync, 35% inactive dimming
-- Built-in PAM screen locker triggered via ~xss-lock~ (no i3lock)
-- Idle lock at 20 min, suspend 30s after lock
-- Status bar: volume, battery (with color + low battery notification), uptime (red warning after 14 days), clock
-- Polkit agent (polkit-gnome) for GUI privilege prompts
-- GTK 3/4 dark theme via xsettingsd + gsettings (xsettingsd REQUIRED for HiDPI GTK scaling)
-- Dunst notifications (dark theme, top-right, rounded corners)
-
-See [[dwm/.config/dwm/DWM.org][DWM.org]] for full documentation.
+- Zero gaps, zero borders (dwm-style tiling)
+- Master layout (mfact=0.55, nmaster=1)
+- Dim inactive windows (35%)
+- Native fractional scaling (1.8x for 2880x1800) - no GPU overhead
+- All dwm keybindings: Super+Return (foot), Super+Space (fuzzel), Super+BackSpace (kill)
+- Workspaces 1-4 with three-finger swipe switching
+- hyprlock screen lock + hypridle (lock at 20min, suspend 30s later)
+- waybar status: volume, battery with time remaining, uptime, clock
+- gvfs for USB automount in Thunar
+- GNOME Keyring auto-unlock (passwordless, LUKS-protected)
 
 ** bash
 
@@ -47,42 +33,23 @@ Shell configuration:
 - Colored output for ~ls~ and ~grep~
 - Minimal prompt showing current directory
 - PATH additions for =$HOME/.local/bin=
-- ~ffgrab~ alias for hardware-accelerated screen recording (VAAPI)
-- ~cco~ alias for ~claude --continue~
+- ~toggle-record~ alias for Super+r screen recording (gpu-screen-recorder)
 
 ** emacs-easy
 
-A clean Emacs setup:
+Clean Emacs setup:
 - CUA keybindings (Ctrl+C/X/V/Z work as expected)
 - Modus Vivendi dark theme with ~#000000~ background
-- Custom modeline: rounded pill indicator with modified dot, buffer/mode/position
+- Custom modeline: rounded pill indicator with modified dot
 - Magit with quick-push (~C-c p~)
-- ~C-c r~ — cmake build and run (~cmake --build build && ./build/main~)
+- ~C-c r~ — cmake build and run
 - Auto-close compilation buffer on success
 - Org mode with clock persistence
 - Emacs server for fast ~emacsclient~ usage
 
-** touchegg
-
-Touchpad gesture daemon for three-finger swipe workspace switching:
-- Swipe left → next tag (natural direction)
-- Swipe right → previous tag
-
-Uses ~SEND_KEYS~ (~Ctrl+Alt+Left/Right~) rather than ~CHANGE_DESKTOP~ for
-reliability.
-
 ** fastfetch
 
-System info display with compact logo: OS, kernel, uptime, packages, shell, DE,
-CPU, GPU, memory, swap, disk, local IP, battery.
-
-** ffmpeg
-
-Audio/video utility scripts:
-- ~ffnorm.sh~ — loudness normalization with limiter, EQ, and LUFS measurement
-- ~ffrecord.sh~ — auto-incrementing WAV recording from PulseAudio
-- ~ffstreamsilent.sh~ — VAAPI-accelerated screen streaming to RTMP (silent audio)
-- ~ffgrab~ (bash alias) — VAAPI-accelerated screen + audio recording
+System info display with compact logo.
 
 ** gdb
 
@@ -93,56 +60,32 @@ GDB config enabling ~debuginfod~ for automatic debug symbol downloads.
 ** Dependencies (Arch Linux)
 
 #+begin_src bash
-# Core
-sudo pacman -S xorg xorg-xinit lightdm lightdm-slick-greeter stow git
+# Hyprland core
+sudo pacman -S hyprland hyprlock hypridle
 
-# dwm build deps
-sudo pacman -S base-devel libx11 libxft libxinerama python
+# Terminal, launcher, status bar
+sudo pacman -S foot fuzzel waybar
 
-# Desktop (xsettingsd is REQUIRED for GTK HiDPI scaling - do not skip!)
-sudo pacman -S picom rofi xss-lock brightnessctl polkit-gnome xorg-xsetroot xsettingsd gsettings-desktop-schemas dunst
+# Utilities
+sudo pacman -S grim slurp wl-clipboard dunst gvfs
 
-# Desktop portal (required for Firefox/libadwaita to detect dark mode)
-sudo pacman -S xdg-desktop-portal xdg-desktop-portal-gtk
+# File manager (with USB automount)
+sudo pacman -S thunar
 
-# Audio
-sudo pacman -S pipewire pipewire-pulse wireplumber
+# Screen recording (hardware encoding)
+sudo pacman -S gpu-screen-recorder
 
-# Fonts (bitmap for TTY, vector for X11)
-sudo pacman -S adwaita-fonts ttf-jetbrains-mono-nerd terminus-font
+# Secrets/SSH
+sudo pacman -S gnome-keyring
 
-# Touchpad gestures
-sudo pacman -S touchegg
-
-# Emacs
-sudo pacman -S emacs
-
-# Hardware video encoding (VAAPI — for ffgrab/ffstreamsilent)
-sudo pacman -S intel-media-driver libva-intel-driver
-
-# Optional
-sudo pacman -S fastfetch ffmpeg gdb
-#+end_src
-
-*** Debian/Ubuntu equivalent
-
-#+begin_src bash
-# Core
-sudo apt-get install xorg xinit x11-xserver-utils
-
-# dwm build deps
-sudo apt-get install build-essential libx11-dev libxft-dev libxinerama-dev python3
-
-# Desktop
-sudo apt-get install picom rofi xss-lock brightnessctl policykit-1-gnome
-
-# Audio
-sudo apt-get install pipewire pipewire-pulse wireplumber
+# GTK theme
+sudo pacman -S adw-gtk-theme
 
 # Fonts
-sudo apt-get install fonts-adwaita fonts-jetbrains-mono-nerd
+sudo pacman -S adwaita-fonts ttf-jetbrains-mono-nerd
 
-# Note: touchegg may need manual install from https://github.com/JoseExposito/touchegg
+# Optional
+sudo pacman -S fastfetch gdb stow git
 #+end_src
 
 ** Setup
@@ -150,108 +93,113 @@ sudo apt-get install fonts-adwaita fonts-jetbrains-mono-nerd
 #+begin_src bash
 cd ~/dotfiles
 stow hyprland
+stow bash
+stow emacs-easy  # optional
 #+end_src
 
-*** Config highlights
+** First Login
 
-The Hyprland config matches your dwm setup:
+From TTY1, simply login — Hyprland starts automatically.
 
-- Zero gaps, zero borders (dwm-style)
-- Dim inactive windows (35% like picom)
-- Master layout (mfact=0.55, nmaster=1)
-- Workspaces 1-4 (same as dwm tags)
-- All dwm keybindings: Super+Return (foot), Super+Space (fuzzel), Super+BackSpace (kill), etc.
-- Autostart: waybar, hypridle, dunst, battery watch
-- Lock screen: hyprlock (Super+L)
-- Three-finger swipe for workspace switching
+* Configuration Highlights
 
-*** Hyprland vs dwm
+** Keybindings
 
-| Feature | dwm | Hyprland |
-|---------|-----|----------|
-| Tiling | Dynamic | Dynamic (master) |
-| Workspaces | Tags 1-4 | Workspaces 1-4 |
-| Fractional scaling | xrandr hack (GPU heavy) | Native (zero GPU overhead) |
-| Battery/heat | High (xrandr scaling) | Low (native scaling) |
-| Protocol | X11 | Wayland |
+All dwm-style bindings work:
 
-*** Switch to Hyprland
+| Key | Action |
+|-----|--------|
+| Super+Return | Open foot terminal |
+| Super+Space | Open fuzzel launcher |
+| Super+BackSpace | Kill focused window |
+| Super+Tab | Last workspace |
+| Super+Left/Right | Previous/next workspace |
+| Super+1/2/3/4 | Switch to workspace |
+| Super+Shift+Left/Right | Move window to adjacent workspace |
+| Super+Shift+Space | Toggle floating |
+| Super+Shift+BackSpace | Force kill window |
+| Super+J/K | Focus next/previous window |
+| Super+Shift+J/K | Swap window with next/previous |
+| Super+H/L | Decrease/increase master size |
+| Super+T | Set master layout |
+| Super+F | Toggle float script |
+| Super+M | Fullscreen |
+| Super+B | Toggle waybar |
+| Super+R | Toggle screen recording |
+| Super+L | Lock screen (hyprlock) |
 
+** Window Rules
+
+Floating by default:
+- GIMP
+- VibeCut
+- wxWidgets apps (class "main")
+
+All floating windows have 8px rounded corners. Tiled windows have zero
+borders, zero gaps.
+
+** Autostart
+
+- emacs --daemon
+- ssh-agent
+- foot --server
+- waybar
+- hypridle
+- battery-watch.sh (red tint when battery < 15%)
+- gsettings (GTK theme: adw-gtk3-dark, dark mode)
+
+** Monitor Configuration
+
+- eDP-1: 2880x1800 @ 120Hz, scale 1.8
+- DP-2: external monitor, auto-detect
+
+* Tips
+
+- Screen recording: Super+r (select region, press again to stop)
+- USB drives: Plug in → auto-mounts in Thunar
+- Terminal: foot client (fast startup via server mode)
+- Lock: Automatically after 20min idle, suspend 30s after lock
+- GTK theme: adw-gtk3-dark (libadwaita-style)
+
+* Migration from X11/dwm
+
+If you're coming from dwm on X11:
+
+1. Remove X11 packages (optional):
+   #+begin_src bash
+   sudo pacman -Rns xorg-xinit picom xss-lock xsettingsd touchegg
+   #+end_src
+
+2. Install Hyprland packages (see Dependencies above)
+
+3. Most keybindings work identically
+
+4. Benefits:
+   - Native fractional scaling (no xrandr GPU overhead)
+   - Better battery life
+   - Modern Wayland protocols
+   - Screen recording works seamlessly
+
+* Troubleshooting
+
+** Keyring not unlocking
+
+The keyring is set to passwordless (unencrypted). This is intentional for
+convenience — security comes from LUKS disk encryption. If you want an
+encrypted keyring that auto-unlocks, you'll need a display manager (SDDM)
+or TTY autologin with systemd service.
+
+** Screen recording fails
+
+Make sure ~intel-media-driver~ is installed for hardware encoding:
 #+begin_src bash
-# From TTY (NOT startx - Hyprland is Wayland)
-Hyprland
+sudo pacman -S intel-media-driver
 #+end_src
 
-*** Install Hyprland
+** GTK apps look wrong
 
+Run manually or restart Hyprland:
 #+begin_src bash
-sudo pacman -S hyprland hyprlock hypridle foot fuzzel waybar grim slurp wl-clipboard swaybg dunst gvfs gpu-screen-recorder
+gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 #+end_src
-
-*** Tips
-
-- Use dwm for maximum stability and minimal dependencies
-- Use Hyprland for native fractional scaling without GPU overhead
-- Use XFCE for screencasts or when you need classic window decorations
-- All three use: dunst, st, fuzzel/rofi, keyring
-- Screen recording: Super+r (gpu-screen-recorder with Intel Arc hardware encoding)
-
-** Alternative Desktop Environment (XFCE)
-
-For screencasts or when you need a full desktop environment with modern window decorations and proper HiDPI:
-
-*** Install XFCE
-
-#+begin_src bash
-sudo pacman -S xfce4 xfce4-goodies xfce4-terminal
-#+end_src
-
-*** Configure HiDPI for XFCE
-
-After starting XFCE, open Settings → Appearance and set:
-
-- Window Scaling: 2x (HiDPI)
-- Default font: JetBrains Mono Nerd Font, 12pt
-- Icon theme: Adwaita
-
-Then open Settings → Window Manager and set:
-- Style: Default (or any modern theme)
-- Button layout: Title, Minimize, Maximize, Close
-
-*** Switch to XFCE
-
-#+begin_src bash
-# Toggle from dwm to XFCE
-switch-wm xfce
-
-# Or toggle back to dwm
-switch-wm dwm
-
-# Then restart X session
-startx
-#+end_src
-
-*** Using switch-wm script
-
-The ~switch-wm~ script is installed to =~/.local/bin/~ when you stow bash:
-
-- ~switch-wm~ — toggles between dwm and XFCE automatically
-- ~switch-wm dwm~ — switch to dwm explicitly
-- ~switch-wm xfce~ — switch to XFCE explicitly
-
-*** XFCE vs dwm
-
-| Feature | dwm | XFCE |
-|---------|-----|------|
-| Tiling | Dynamic | Manual (tiling plugin available) |
-| Title bars | None | Yes (modern, proper HiDPI) |
-| Look | Minimal | Traditional desktop |
-| HiDPI | Via Xft/XSETTINGS | Native 2x scaling support |
-| Resource use | Very low | Low-moderate |
-
-*** Tips
-
-- Use dwm for daily work (efficiency)
-- Use XFCE for screencasts (familiar look, window decorations)
-- Both use your existing: dunst, picom, HiDPI settings
-- XFCE has proper window manager with 2x scaled decorations
