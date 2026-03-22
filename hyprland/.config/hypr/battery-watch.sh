@@ -3,7 +3,7 @@
 
 BAT=/sys/class/power_supply/BAT0
 SHADER=~/.config/hypr/low-battery-tint.glsl
-THRESHOLD=15
+THRESHOLD=8
 ACTIVE=false
 
 while true; do
