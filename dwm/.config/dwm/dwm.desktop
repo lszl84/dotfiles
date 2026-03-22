@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=dwm
-Comment=dwm window manager
-Exec=/home/luke/.local/bin/dwm-start
-Type=Application
