@@ -145,7 +145,7 @@ borders, zero gaps.
 - foot --server
 - waybar
 - hypridle
-- battery-watch.sh (red tint when battery < 15%)
+- battery-watch.sh (red tint when battery < 8%)
 - gsettings (GTK theme: adw-gtk3-dark, dark mode)
 
 ** Monitor Configuration
