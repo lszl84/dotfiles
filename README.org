@@ -161,25 +161,6 @@ borders, zero gaps.
 - Lock: Automatically after 20min idle, suspend 30s after lock
 - GTK theme: adw-gtk3-dark (libadwaita-style)
 
-* Migration from X11/dwm
-
-If you're coming from dwm on X11:
-
-1. Remove X11 packages (optional):
-   #+begin_src bash
-   sudo pacman -Rns xorg-xinit picom xss-lock xsettingsd touchegg
-   #+end_src
-
-2. Install Hyprland packages (see Dependencies above)
-
-3. Most keybindings work identically
-
-4. Benefits:
-   - Native fractional scaling (no xrandr GPU overhead)
-   - Better battery life
-   - Modern Wayland protocols
-   - Screen recording works seamlessly
-
 * Troubleshooting
 
 ** Keyring not unlocking
