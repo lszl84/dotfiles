@@ -1,0 +1,15 @@
+#!/bin/bash
+# Toggle screen recording with wf-recorder
+
+PID=$(pgrep -x wf-recorder)
+
+if [ -n "$PID" ]; then
+    # Stop recording
+    kill "$PID"
+    notify-send "Recording stopped"
+else
+    # Start recording
+    mkdir -p ~/Videos
+    wf-recorder -g "$(slurp)" -f ~/Videos/recording_$(date +%Y%m%d_%H%M%S).mp4 &
+    notify-send "Recording started"
+fi
