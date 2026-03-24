@@ -78,8 +78,7 @@ sudo pacman -S gpu-screen-recorder
 # Secrets/SSH
 sudo pacman -S gnome-keyring
 
-# GTK theme
-sudo pacman -S adw-gtk-theme
+# GTK theme (Adwaita-dark comes with gtk3/gtk4)
 
 # Fonts
 sudo pacman -S adwaita-fonts ttf-jetbrains-mono-nerd
@@ -146,7 +145,7 @@ borders, zero gaps.
 - waybar
 - hypridle
 - battery-watch.sh (red tint when battery < 8%)
-- gsettings (GTK theme: adw-gtk3-dark, dark mode)
+- gsettings (GTK theme: Adwaita-dark, dark mode)
 
 ** Monitor Configuration
 
@@ -159,13 +158,13 @@ borders, zero gaps.
 - USB drives: Plug in → auto-mounts in Thunar
 - Terminal: foot client (fast startup via server mode)
 - Lock: Automatically after 20min idle, suspend 30s after lock
-- GTK theme: adw-gtk3-dark (libadwaita-style)
+- GTK theme: Adwaita-dark (classic dark theme)
 - Voice input: Super+v or Copilot key (requires [[https://github.com/lszl84/live-whisper][live-whisper]])
 
 ** GTK apps look wrong
 
 Run manually or restart Hyprland:
 #+begin_src bash
-gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
+gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 #+end_src
