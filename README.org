@@ -160,6 +160,7 @@ borders, zero gaps.
 - Terminal: foot client (fast startup via server mode)
 - Lock: Automatically after 20min idle, suspend 30s after lock
 - GTK theme: adw-gtk3-dark (libadwaita-style)
+- Voice input: Super+v or Copilot key (requires [[https://github.com/lszl84/live-whisper][live-whisper]])
 
 ** GTK apps look wrong
 
