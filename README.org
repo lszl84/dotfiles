@@ -78,7 +78,8 @@ sudo pacman -S gpu-screen-recorder
 # Secrets/SSH
 sudo pacman -S gnome-keyring
 
-# GTK theme (Adwaita-dark comes with gtk3/gtk4)
+# GTK theme (Adwaita-dark)
+sudo pacman -S gnome-themes-extra
 
 # Fonts
 sudo pacman -S adwaita-fonts ttf-jetbrains-mono-nerd
