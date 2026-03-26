@@ -54,13 +54,13 @@
 ;; Load Modus Vivendi theme (built into Emacs 28+)
 (load-theme 'modus-vivendi t)
 
-;; Darker modeline and black fringes
+;; Dark gray modeline and black fringes
 (set-face-attribute 'mode-line nil
-                    :background "#1a1a1a" :foreground "#eeeeee"
-                    :box '(:line-width 1 :color "#2a2a2a"))
+                    :background "#252525" :foreground "#eeeeee"
+                    :box '(:line-width 1 :color "#353535"))
 (set-face-attribute 'mode-line-inactive nil
-                    :background "#111111" :foreground "#666666"
-                    :box '(:line-width 1 :color "#1a1a1a"))
+                    :background "#1a1a1a" :foreground "#666666"
+                    :box '(:line-width 1 :color "#252525"))
 (set-face-background 'fringe "#000000")
 
 ;; Don't highlight trailing whitespace
