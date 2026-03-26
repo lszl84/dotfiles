@@ -51,12 +51,11 @@
 ;; Modus Vivendi Theme (Dark)
 ;; =============================================================================
 
-;; Load wheatgrass theme (built into Emacs)
-(load-theme 'wheatgrass t)
+;; Load Modus Vivendi Tinted theme (built into Emacs 28+)
+(load-theme 'modus-vivendi-tinted t)
 
-;; Override background and fringe colors
-(set-face-background 'default "#000000")
-(set-face-background 'fringe "#000000")
+;; Make fringe/gutter match the background
+(set-face-attribute 'fringe nil :background nil)
 
 ;; Don't highlight trailing whitespace
 (setq-default show-trailing-whitespace nil)
