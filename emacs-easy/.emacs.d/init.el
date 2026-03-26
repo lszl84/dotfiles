@@ -35,33 +35,6 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-;; Mode line: leading pill with modified dot, full bar, rounded right cap
-(defun my/mode-line ()
-  (let* ((nf "JetBrainsMono Nerd Font")
-         (bar "#1a1a1a")
-         (pill "#333333")
-         ;; Leading pill: ●/space in colored pill
-         (dot (if (buffer-modified-p) " ●" "  "))
-         (pill-body (propertize dot 'face `(:foreground "#eeeeee" :background ,pill)))
-         (pill-rc (propertize "\xe0b4" 'face `(:foreground ,pill :background ,bar :family ,nf)))
-         ;; Content — use mode-line % constructs so Emacs keeps them live
-         (buf (buffer-name))
-         (mode (format-mode-line mode-name))
-         (raw-pct (format-mode-line "%p"))
-         (pct (if (string-match-p "^[0-9]" raw-pct) (concat raw-pct "%") raw-pct))
-         (info (format "%s  %s" pct (format-mode-line "%l:%c")))
-         (content (propertize (concat " " buf "   " mode "   " info " ")
-                              'face `(:foreground "#bbbbbb" :background ,bar)))
-         ;; Right cap
-         (rc (propertize "\xe0b4" 'face `(:foreground ,bar :family ,nf)))
-         ;; Padding to fill-column (78 chars total)
-         (used (+ (length dot) 1 1 (length buf) 3 (length mode) 3 (length info) 2))
-         (pad-len (max 0 (- (1+ fill-column) used)))
-         (pad (propertize (make-string pad-len ?\s) 'face `(:background ,bar))))
-    (concat pill-body pill-rc content pad rc)))
-
-(setq-default mode-line-format '(:eval (my/mode-line)))
-
 ;; Show matching parentheses
 (show-paren-mode 1)
 
@@ -94,14 +67,6 @@
 ;; Override background and fringe colors
 (set-face-background 'default "#000000")
 (set-face-background 'fringe "#000000")
-
-;; Mode line faces
-(set-face-attribute 'mode-line nil
-                    :background "#000000" :foreground "#bbbbbb"
-                    :box nil :overline nil :underline nil)
-(set-face-attribute 'mode-line-inactive nil
-                    :background "#000000" :foreground "#595959"
-                    :box nil :overline nil :underline nil)
 
 ;; Don't highlight trailing whitespace
 (setq-default show-trailing-whitespace nil)
