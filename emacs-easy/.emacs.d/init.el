@@ -47,7 +47,12 @@
          ;; Content
          (buf (buffer-name))
           (mode (format-mode-line mode-name))
-          (percent (format-mode-line "%p"))
+          (raw-percent (format-mode-line "%p"))
+          (percent (cond
+                    ((string= raw-percent "Top") "Top")
+                    ((string= raw-percent "Bot") "Bot")
+                    ((string= raw-percent "All") "All")
+                    (t (concat raw-percent "%%"))))
           (pos (format "%s  %d:%d" percent (line-number-at-pos) (current-column)))
          (content (propertize (concat " " buf "   " mode "   " pos " ")
                               'face `(:foreground "#bbbbbb" :background ,bar)))
