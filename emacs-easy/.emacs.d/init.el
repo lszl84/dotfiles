@@ -46,8 +46,9 @@
          (pill-rc (propertize "\xe0b4" 'face `(:foreground ,pill :background ,bar :family ,nf)))
          ;; Content
          (buf (buffer-name))
-         (mode (format-mode-line mode-name))
-         (pos (format "%d:%d" (line-number-at-pos) (current-column)))
+          (mode (format-mode-line mode-name))
+          (percent (format-mode-line '(:eval (if line-number-mode (mode-line-percent-position 'top) ""))))
+          (pos (format "%s  %d:%d" percent (line-number-at-pos) (current-column)))
          (content (propertize (concat " " buf "   " mode "   " pos " ")
                               'face `(:foreground "#bbbbbb" :background ,bar)))
          ;; Right cap
