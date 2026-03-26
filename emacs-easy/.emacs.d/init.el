@@ -47,7 +47,7 @@
          ;; Content
          (buf (buffer-name))
           (mode (format-mode-line mode-name))
-          (percent (format-mode-line '(:eval (if line-number-mode (mode-line-percent-position 'top) ""))))
+          (percent (format-mode-line "%p"))
           (pos (format "%s  %d:%d" percent (line-number-at-pos) (current-column)))
          (content (propertize (concat " " buf "   " mode "   " pos " ")
                               'face `(:foreground "#bbbbbb" :background ,bar)))
