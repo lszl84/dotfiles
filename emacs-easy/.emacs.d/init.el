@@ -51,11 +51,16 @@
 ;; Modus Vivendi Theme (Dark)
 ;; =============================================================================
 
-;; Load Modus Vivendi Tinted theme (built into Emacs 28+)
-(load-theme 'modus-vivendi-tinted t)
+;; Load Modus Vivendi theme (built into Emacs 28+)
+(load-theme 'modus-vivendi t)
 
-;; Make fringe/gutter match the background
-(set-face-attribute 'fringe nil :background nil)
+;; Dark gray modeline
+(set-face-attribute 'mode-line nil
+                    :background "#333333" :foreground "#eeeeee"
+                    :box '(:line-width 1 :color "#444444"))
+(set-face-attribute 'mode-line-inactive nil
+                    :background "#222222" :foreground "#888888"
+                    :box '(:line-width 1 :color "#333333"))
 
 ;; Don't highlight trailing whitespace
 (setq-default show-trailing-whitespace nil)
