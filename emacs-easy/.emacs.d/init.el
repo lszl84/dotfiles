@@ -51,18 +51,8 @@
 ;; Modus Vivendi Theme (Dark)
 ;; =============================================================================
 
-;; Modus themes are built into Emacs 28+
-;; For older versions, you may need to install them
-(require 'modus-themes nil t)
-
-;; Theme customization (before loading)
-(setq modus-themes-italic-constructs t)
-(setq modus-themes-bold-constructs t)
-(setq modus-themes-region '(bg-only))
-(setq modus-themes-org-blocks 'tinted-background)
-
-;; Load the dark theme
-(load-theme 'modus-vivendi t)
+;; Load wheatgrass theme (built into Emacs)
+(load-theme 'wheatgrass t)
 
 ;; Override background and fringe colors
 (set-face-background 'default "#000000")
