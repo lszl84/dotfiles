@@ -1,0 +1,98 @@
+#!/bin/bash
+# Arch Update Advisor - Checks updates and recommends action
+# Run via cron every few hours or daily
+
+LOG_FILE="$HOME/.local/share/arch-update-advisor.log"
+mkdir -p "$(dirname "$LOG_FILE")"
+
+echo "=== Arch Update Check - $(date) ===" >> "$LOG_FILE"
+
+# Get pending updates
+UPDATES=$(checkupdates 2>/dev/null)
+if [ -z "$UPDATES" ]; then
+    echo "No updates available" >> "$LOG_FILE"
+    exit 0
+fi
+
+# Count updates
+UPDATE_COUNT=$(echo "$UPDATES" | wc -l)
+echo "Found $UPDATE_COUNT pending updates" >> "$LOG_FILE"
+
+# Check for critical packages
+CRITICAL=""
+echo "$UPDATES" | grep -qE "^linux " && CRITICAL="$CRITICAL kernel"
+echo "$UPDATES" | grep -qE "^systemd " && CRITICAL="$CRITICAL systemd"
+echo "$UPDATES" | grep -qE "^glibc " && CRITICAL="$CRITICAL glibc"
+echo "$UPDATES" | grep -qE "^openssl " && CRITICAL="$CRITICAL openssl"
+echo "$UPDATES" | grep -qE "^sudo " && CRITICAL="$CRITICAL sudo"
+echo "$UPDATES" | grep -qE "^polkit " && CRITICAL="$CRITICAL polkit"
+echo "$UPDATES" | grep -qE "^openssh " && CRITICAL="$CRITICAL openssh"
+
+# Check Arch Security Advisories
+curl -s https://security.archlinux.org/advisory 2>/dev/null | grep -oE 'ASA-202[0-9]+-[0-9]+' | sort -u | head -5 > /tmp/asa-check.txt
+NEW_ADVISORIES=$(cat /tmp/asa-check.txt)
+
+# Check Arch News for breaking changes
+curl -s https://archlinux.org/news/ 2>/dev/null | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -3 > /tmp/news-check.txt
+RECENT_NEWS=$(cat /tmp/news-check.txt)
+
+# Decision logic
+if [ -n "$CRITICAL" ]; then
+    URGENCY="HIGH"
+    ACTION="Update and reboot recommended"
+    REASON="Critical packages updated: $CRITICAL"
+elif echo "$UPDATES" | grep -qE "^(firefox|chromium|thunderbird) "; then
+    URGENCY="MEDIUM"
+    ACTION="Update recommended (security)"
+    REASON="Browser updates available"
+elif [ "$UPDATE_COUNT" -gt 50 ]; then
+    URGENCY="MEDIUM"
+    ACTION="Update recommended"
+    REASON="Large backlog of updates ($UPDATE_COUNT)"
+else
+    URGENCY="LOW"
+    ACTION="Can wait"
+    REASON="Only routine updates ($UPDATE_COUNT)"
+fi
+
+# Output recommendation
+echo ""
+echo "📦 Arch Linux Update Report"
+echo "==========================="
+echo "Updates: $UPDATE_COUNT packages"
+echo ""
+
+if [ -n "$CRITICAL" ]; then
+    echo "⚠️  CRITICAL UPDATES:"
+    echo "$UPDATES" | grep -E "^(linux|systemd|glibc|openssl|sudo|polkit|openssh) " | head -10
+    echo ""
+fi
+
+echo "🎯 Recommendation: $ACTION"
+echo "📊 Urgency: $URGENCY"
+echo "📝 Reason: $REASON"
+echo ""
+
+if [ -n "$NEW_ADVISORIES" ]; then
+    echo "🔒 Recent Security Advisories:"
+    echo "$NEW_ADVISORIES"
+    echo ""
+fi
+
+# Suggest command
+echo "💡 Suggested command:"
+if echo "$UPDATES" | grep -qE "^linux "; then
+    echo "   sudo pacman -Syu  # Full update + reboot needed"
+else
+    echo "   sudo pacman -Syu --ignore linux  # Update without kernel"
+fi
+echo ""
+
+# Log decision
+echo "Decision: URGENCY=$URGENCY, ACTION=$ACTION" >> "$LOG_FILE"
+echo "" >> "$LOG_FILE"
+
+# Optional: send notification
+if command -v notify-send >/dev/null 2>&1 && [ "$URGENCY" = "HIGH" ]; then
+    notify-send -u critical "Arch Update Required" "$REASON - Run: sudo pacman -Syu"
+fi

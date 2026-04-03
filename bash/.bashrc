@@ -8,6 +8,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias cco='claude --continue'
+alias ccd='claude --continue --dangerously-skip-permissions'
 alias ooc='opencode --continue'
 export PS1='\W\$ '
 
@@ -25,3 +26,4 @@ alias ffgrab='ffmpeg -use_wallclock_as_timestamps 1 \
 
 # opencode
 export PATH=/home/luke/.opencode/bin:$PATH
+. "$HOME/.cargo/env"
