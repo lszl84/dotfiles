@@ -41,7 +41,7 @@ sudo pacman -S labwc kanshi swaybg swaylock swayidle wlopm
 sudo pacman -S foot fuzzel
 
 # Status bar (simpbar)
-# Build and install from https://github.com/lukaszromeek/simpbar
+# Build and install from https://github.com/lszl84/simpbar
 # Or use waybar: sudo pacman -S waybar
 
 # Notifications and screenshots
