@@ -16,11 +16,11 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 
 | Package      | What it configures                              |
 |--------------+-------------------------------------------------|
-| =labwc=      | Compositor, keybinds, autostart, kanshi, scripts |
+| =labwc=      | Compositor, keybinds, autostart, kanshi, theme  |
 | =foot=       | Terminal emulator                               |
 | =fuzzel=     | Application launcher                            |
 | =dunst=      | Notification daemon                             |
-| =waybar=     | Status bar (configs + shared style)             |
+| =waybar=     | Status bar configs + shared style (for hyprland)|
 | =wallpapers= | Desktop wallpapers                              |
 | =bash=       | Shell config, prompt, aliases                   |
 | =emacs-easy= | Emacs with CUA keys, Modus Vivendi theme        |
@@ -40,8 +40,7 @@ sudo pacman -S labwc kanshi swaybg swaylock swayidle wlopm
 # Terminal and launcher
 sudo pacman -S foot fuzzel
 
-# Status bar (simpbar)
-# Build and install from https://github.com/lszl84/simpbar
+# Status bar -- build and install simpbar from https://github.com/lszl84/simpbar
 # Or use waybar: sudo pacman -S waybar
 
 # Notifications and screenshots
@@ -51,7 +50,7 @@ sudo pacman -S dunst grim slurp
 sudo pacman -S pipewire wireplumber brightnessctl
 
 # Fonts
-sudo pacman -S ttf-jetbrains-mono-nerd adwaita-fonts
+sudo pacman -S ttf-jetbrains-mono-nerd adwaita-fonts noto-fonts
 
 # GTK dark theme
 sudo pacman -S gnome-themes-extra
@@ -73,8 +72,11 @@ cd ~
 git clone <your-repo-url> dotfiles
 cd dotfiles
 
-# Core desktop (stow all required packages)
-stow labwc foot fuzzel dunst waybar wallpapers bash
+# Core desktop
+stow labwc foot fuzzel dunst wallpapers bash
+
+# If using waybar (hyprland or as fallback for labwc)
+stow waybar
 
 # Optional
 stow emacs-easy
@@ -109,38 +111,38 @@ fi
 - Drop shadows on floating windows
 - Natural scrolling on touchpad, two-finger click for right-click
 - HiDPI scaling at 1.75x via kanshi (2880x1800 laptop display)
-- Dark theme everywhere (Adwaita-dark)
+- Dark theme (Adwaita-dark) with subtle blue terminal background
 - GNU wildebeest wallpaper
 
 ** Keybindings
 
-| Key               | Action                    |
-|-------------------+---------------------------|
-| Super+Return      | Open terminal (footclient)|
-| Super+Space       | Open launcher (fuzzel)    |
-| Super+BackSpace   | Close window              |
-| Super+Shift+BackSpace | Exit labwc            |
-| Alt+Tab           | Next window               |
-| Alt+Shift+Tab     | Previous window           |
-| Super+M           | Toggle maximize           |
-| Super+F           | Toggle always-on-top      |
-| Super+L           | Lock screen               |
-| Super+1/2/3/4     | Switch workspace          |
-| Super+Shift+1/2/3/4 | Move window to workspace |
-| Super+Left/Right  | Previous/next workspace   |
-| Print             | Screenshot (select region)|
-| Super+V           | Voice input (live-whisper)|
-| Volume/Brightness | Hardware keys work        |
+| Key                    | Action                     |
+|------------------------+----------------------------|
+| Super+Return           | Open terminal (footclient) |
+| Super+Space            | Open launcher (fuzzel)     |
+| Super+BackSpace        | Close window               |
+| Super+Shift+BackSpace  | Exit labwc                 |
+| Alt+Tab                | Next window                |
+| Alt+Shift+Tab          | Previous window            |
+| Super+M                | Toggle maximize            |
+| Super+F                | Toggle always-on-top       |
+| Super+L                | Lock screen                |
+| Super+1/2/3/4          | Switch workspace           |
+| Super+Shift+1/2/3/4    | Move window to workspace   |
+| Super+Left/Right       | Previous/next workspace    |
+| Print                  | Screenshot (select region) |
+| Super+V                | Voice input (live-whisper) |
+| Volume/Brightness keys | Hardware keys work         |
 
 ** Mouse
 
-| Action              | Result      |
-|---------------------+-------------|
-| Super+Left drag     | Move window |
+| Action              | Result        |
+|---------------------+---------------|
+| Super+Left drag     | Move window   |
 | Super+Right drag    | Resize window |
-| 1-finger click      | Left click  |
-| 2-finger click      | Right click |
-| 2-finger scroll     | Natural scroll |
+| 1-finger click      | Left click    |
+| 2-finger click      | Right click   |
+| 2-finger scroll     | Natural scroll|
 
 ** Autostart Services
 
