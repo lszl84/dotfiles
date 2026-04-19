@@ -1,0 +1,12 @@
+#!/bin/bash
+# switch-to-labwc: Switch from hyprland to labwc
+
+# Update symlinks
+rm -f ~/.config/labwc ~/.config/waybar/config.jsonc
+
+# Link labwc configs
+ln -sf ~/dotfiles/labwc/.config/labwc ~/.config/labwc
+ln -sf ~/dotfiles/labwc/.config/waybar/config-labwc.jsonc ~/.config/waybar/config.jsonc
+
+echo "Switched to labwc config."
+echo "Exit hyprland and run 'labwc' to start."

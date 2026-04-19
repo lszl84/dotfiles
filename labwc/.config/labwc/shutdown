@@ -1,0 +1,11 @@
+#!/bin/bash
+# labwc shutdown script
+
+# Kill waybar
+pkill waybar
+
+# Kill foot server
+pkill -f "foot --server"
+
+# Kill swayidle
+pkill swayidle

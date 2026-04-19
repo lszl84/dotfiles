@@ -6,6 +6,6 @@
 
 # Start Hyprland on TTY1 login
 if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec start-hyprland
+    exec labwc #start-hyprland
 fi
 . "$HOME/.cargo/env"

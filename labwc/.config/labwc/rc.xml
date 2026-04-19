@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+  <core>
+    <gap>0</gap>
+    <adaptiveSync>no</adaptiveSync>
+    <reuseOutputMode>no</reuseOutputMode>
+  </core>
+
+  <theme>
+    <cornerRadius>0</cornerRadius>
+    <keepBorder>no</keepBorder>
+    <dropShadows>no</dropShadows>
+    <font place="ActiveWindow">
+      <name>Adwaita Mono</name>
+      <size>10</size>
+    </font>
+    <font place="InactiveWindow">
+      <name>Adwaita Mono</name>
+      <size>10</size>
+    </font>
+    <font place="MenuItem">
+      <name>Adwaita Mono</name>
+      <size>10</size>
+    </font>
+    <font place="OnScreenDisplay">
+      <name>Adwaita Mono</name>
+      <size>10</size>
+    </font>
+  </theme>
+
+  <keyboard>
+    <default />
+    <repeatRate>25</repeatRate>
+    <repeatDelay>600</repeatDelay>
+
+    <!-- Terminal -->
+    <keybind key="W-Return">
+      <action name="Execute" command="footclient" />
+    </keybind>
+
+    <!-- Launcher -->
+    <keybind key="W-space">
+      <action name="Execute" command="fuzzel" />
+    </keybind>
+
+    <!-- Close window -->
+    <keybind key="W-BackSpace">
+      <action name="Close" />
+    </keybind>
+
+    <!-- Exit labwc -->
+    <keybind key="W-S-BackSpace">
+      <action name="Exit" />
+    </keybind>
+
+    <!-- Lock screen -->
+    <keybind key="W-l">
+      <action name="Execute" command="swaylock -f -c 0d1117" />
+    </keybind>
+
+    <!-- Toggle waybar -->
+    <keybind key="W-b">
+      <action name="Execute" command="pkill -SIGUSR1 waybar" />
+    </keybind>
+
+    <!-- Window cycling -->
+    <keybind key="A-Tab">
+      <action name="NextWindow" />
+    </keybind>
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow" />
+    </keybind>
+
+    <!-- Toggle fullscreen -->
+    <keybind key="W-m">
+      <action name="ToggleMaximize" />
+    </keybind>
+
+    <!-- Toggle always on top -->
+    <keybind key="W-f">
+      <action name="ToggleAlwaysOnTop" />
+    </keybind>
+    <keybind key="W-S-space">
+      <action name="ToggleAlwaysOnTop" />
+    </keybind>
+
+    <!-- Screenshot -->
+    <keybind key="Print">
+      <action name="Execute" command="grim -g $(slurp) ~/Screenshots/$(date +%Y%m%d_%H%M%S).png" />
+    </keybind>
+
+    <!-- Media keys -->
+    <keybind key="XF86AudioRaiseVolume">
+      <action name="Execute" command="wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+" />
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+      <action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" />
+    </keybind>
+    <keybind key="XF86AudioMute">
+      <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+    </keybind>
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute" command="brightnessctl set +10%" />
+    </keybind>
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute" command="brightnessctl set 10%-" />
+    </keybind>
+
+    <!-- Voice input -->
+    <keybind key="W-v">
+      <action name="Execute" command="~/.local/bin/live-whisper" />
+    </keybind>
+
+    <!-- Workspace switching -->
+    <keybind key="W-1">
+      <action name="GoToDesktop" to="1" />
+    </keybind>
+    <keybind key="W-2">
+      <action name="GoToDesktop" to="2" />
+    </keybind>
+    <keybind key="W-3">
+      <action name="GoToDesktop" to="3" />
+    </keybind>
+    <keybind key="W-4">
+      <action name="GoToDesktop" to="4" />
+    </keybind>
+    <keybind key="W-S-1">
+      <action name="SendToDesktop" to="1" follow="yes" />
+    </keybind>
+    <keybind key="W-S-2">
+      <action name="SendToDesktop" to="2" follow="yes" />
+    </keybind>
+    <keybind key="W-S-3">
+      <action name="SendToDesktop" to="3" follow="yes" />
+    </keybind>
+    <keybind key="W-S-4">
+      <action name="SendToDesktop" to="4" follow="yes" />
+    </keybind>
+
+    <!-- Next/prev desktop -->
+    <keybind key="W-Left">
+      <action name="GoToDesktop" to="left" wrap="yes" />
+    </keybind>
+    <keybind key="W-Right">
+      <action name="GoToDesktop" to="right" wrap="yes" />
+    </keybind>
+    <keybind key="C-A-Left">
+      <action name="GoToDesktop" to="left" wrap="yes" />
+    </keybind>
+    <keybind key="C-A-Right">
+      <action name="GoToDesktop" to="right" wrap="yes" />
+    </keybind>
+  </keyboard>
+
+  <mouse>
+    <default />
+    <context name="Frame">
+      <mousebind button="W-Left" action="Drag">
+        <action name="Move" />
+      </mousebind>
+      <mousebind button="W-Right" action="Drag">
+        <action name="Resize" />
+      </mousebind>
+    </context>
+  </mouse>
+
+  <libinput>
+    <device category="touchpad">
+      <naturalScroll>yes</naturalScroll>
+      <tap>yes</tap>
+      <tapButtonMap>lrm</tapButtonMap>
+    </device>
+  </libinput>
+
+  <windowRules>
+    <windowRule identifier="*" borderWidth="0" />
+  </windowRules>
+
+  <desktops>
+    <number>4</number>
+    <popupTime>0</popupTime>
+  </desktops>
+</labwc_config>

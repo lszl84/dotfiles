@@ -1,0 +1,32 @@
+#!/bin/bash
+# labwc autostart
+
+# Emacs daemon
+emacs --daemon &
+
+# SSH agent
+ssh-agent -D &
+
+# Terminal server
+foot --server &
+
+# Output management
+kanshi >/dev/null 2>&1 &
+
+# Waybar (labwc version)
+waybar -c ~/.config/waybar/config-labwc.jsonc &
+
+# Idle management (using swayidle instead of hypridle)
+swayidle -w \
+  timeout 1200 'swaylock -f -c 0d1117' \
+  timeout 1350 'wlopm --off \*' \
+  resume 'wlopm --on \*' \
+  timeout 1500 'systemctl suspend' \
+  before-sleep 'swaylock -f -c 0d1117' &
+
+# GTK theme
+gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+
+# Set wallpaper
+swaybg -i ~/.local/share/wallpapers/gnu-wildebeest-4k.jpg &
