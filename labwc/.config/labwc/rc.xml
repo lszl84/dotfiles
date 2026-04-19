@@ -167,8 +167,7 @@
   <libinput>
     <device category="touchpad">
       <naturalScroll>yes</naturalScroll>
-      <tap>yes</tap>
-      <tapButtonMap>lrm</tapButtonMap>
+      <clickMethod>clickfinger</clickMethod>
     </device>
   </libinput>
 
@@ -177,7 +176,12 @@
   </windowRules>
 
   <desktops>
-    <number>4</number>
     <popupTime>0</popupTime>
+    <names>
+      <name>1</name>
+      <name>2</name>
+      <name>3</name>
+      <name>4</name>
+    </names>
   </desktops>
 </labwc_config>

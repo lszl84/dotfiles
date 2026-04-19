@@ -1,171 +1,219 @@
 #+TITLE: Dotfiles
-#+DESCRIPTION: Hyprland Wayland dotfiles with dwm-style workflow
+#+DESCRIPTION: Labwc Wayland desktop on Arch Linux
 
 * Overview
 
-Personal dotfiles for Hyprland on Wayland. Designed to replicate the dwm
-experience (zero gaps, zero borders, master layout) while gaining native
-fractional scaling and lower GPU overhead.
+Personal dotfiles for a minimal [[https://labwc.github.io/][labwc]] desktop on Arch Linux.
+Labwc is a Wayland stacking compositor inspired by Openbox -- lightweight,
+fast, and simple.
 
-Managed with GNU Stow — each top-level directory is a stow package that
-symlinks into ~$HOME~.
+Managed with [[https://www.gnu.org/software/stow/][GNU Stow]]. Each top-level directory is a stow package that
+symlinks into =$HOME=.
 
-* Contents
+* Packages
 
-** hyprland
+| Package      | What it configures                              |
+|--------------+-------------------------------------------------|
+| =labwc=      | Compositor, keybinds, autostart, kanshi, scripts |
+| =waybar=     | Status bar (configs + shared style)             |
+| =foot=       | Terminal emulator                               |
+| =fuzzel=     | Application launcher                            |
+| =dunst=      | Notification daemon                             |
+| =wallpapers= | Desktop wallpapers                              |
+| =bash=       | Shell config, prompt, aliases                   |
+| =emacs-easy= | Emacs with CUA keys, Modus Vivendi theme        |
+| =scripts=    | Utility scripts in =~/.local/bin=               |
+| =fastfetch=  | System info display                             |
+| =gdb=        | GDB with debuginfod                             |
+| =hyprland=   | Hyprland compositor (alternative, not required) |
 
-Wayland compositor configured for a minimal, efficient workflow:
+* Installation on Fresh Arch Linux
 
-- Zero gaps, zero borders (dwm-style tiling)
-- Master layout (mfact=0.55, nmaster=1)
-- Dim inactive windows (35%)
-- Native fractional scaling (1.8x for 2880x1800) - no GPU overhead
-- All dwm keybindings: Super+Return (foot), Super+Space (fuzzel), Super+BackSpace (kill)
-- Workspaces 1-4 with three-finger swipe switching
-- hyprlock screen lock + hypridle (lock at 20min, suspend 30s later)
-- waybar status: volume, battery with time remaining, uptime, clock
-- gvfs for USB automount in Thunar
-- GNOME Keyring auto-unlock (passwordless, LUKS-protected)
-
-** bash
-
-Shell configuration:
-- Colored output for ~ls~ and ~grep~
-- Minimal prompt showing current directory
-- PATH additions for =$HOME/.local/bin=
-- ~toggle-record~ alias for Super+r screen recording (gpu-screen-recorder)
-
-** emacs-easy
-
-Clean Emacs setup:
-- CUA keybindings (Ctrl+C/X/V/Z work as expected)
-- Modus Vivendi dark theme with ~#000000~ background
-- Custom modeline: rounded pill indicator with modified dot
-- Magit with quick-push (~C-c p~)
-- ~C-c r~ — cmake build and run
-- Auto-close compilation buffer on success
-- Org mode with clock persistence
-- Emacs server for fast ~emacsclient~ usage
-
-** fastfetch
-
-System info display with compact logo.
-
-** gdb
-
-GDB config enabling ~debuginfod~ for automatic debug symbol downloads.
-
-* Installation
-
-** Dependencies (Arch Linux)
+** 1. Install packages
 
 #+begin_src bash
-# Hyprland core
-sudo pacman -S hyprland hyprlock hypridle
+# Compositor and session
+sudo pacman -S labwc kanshi swaybg swaylock swayidle wlopm
 
-# Terminal, launcher, status bar
-sudo pacman -S foot fuzzel waybar
+# Terminal and launcher
+sudo pacman -S foot fuzzel
 
-# Utilities
-sudo pacman -S grim slurp wl-clipboard dunst gvfs
+# Status bar
+sudo pacman -S waybar
 
-# File manager (with USB automount)
-sudo pacman -S thunar
+# Notifications and screenshots
+sudo pacman -S dunst grim slurp
 
-# Screen recording (hardware encoding)
-sudo pacman -S gpu-screen-recorder
-
-# Secrets/SSH
-sudo pacman -S gnome-keyring
-
-# GTK theme (Adwaita-dark)
-sudo pacman -S gnome-themes-extra
+# Audio and brightness
+sudo pacman -S pipewire wireplumber brightnessctl
 
 # Fonts
-sudo pacman -S adwaita-fonts ttf-jetbrains-mono-nerd
+sudo pacman -S ttf-jetbrains-mono-nerd adwaita-fonts
 
-# Optional
-sudo pacman -S fastfetch gdb stow git
+# GTK dark theme
+sudo pacman -S gnome-themes-extra
+
+# Stow and git
+sudo pacman -S stow git
+
+# Clipboard
+sudo pacman -S wl-clipboard
+
+# Emacs (optional)
+sudo pacman -S emacs
 #+end_src
 
-** Setup
+** 2. Clone and stow
 
 #+begin_src bash
-cd ~/dotfiles
-stow hyprland
-stow bash
-stow emacs-easy  # optional
+cd ~
+git clone <your-repo-url> dotfiles
+cd dotfiles
+
+# Core desktop (stow all required packages)
+stow labwc foot fuzzel dunst waybar wallpapers bash
+
+# Optional
+stow emacs-easy
+stow fastfetch
+stow gdb
+stow scripts
 #+end_src
 
-** First Login
+** 3. Build workspace-watch
 
-From TTY1, simply login — Hyprland starts automatically.
+The workspace indicator in waybar uses a small C program that reads
+the active workspace from labwc via the =ext-workspace-v1= Wayland
+protocol.
 
-* Configuration Highlights
+#+begin_src bash
+cd ~/.config/labwc/scripts
+
+# Install build dependencies
+sudo pacman -S wayland wayland-protocols pkg-config gcc
+
+# Generate the protocol header
+wayland-scanner client-header \
+  /usr/share/wayland-protocols/staging/ext-workspace/ext-workspace-v1.xml \
+  ext-workspace-v1-client-protocol.h
+
+# Generate the protocol glue code
+wayland-scanner private-code \
+  /usr/share/wayland-protocols/staging/ext-workspace/ext-workspace-v1.xml \
+  ext-workspace-v1-protocol.c
+
+# Compile
+gcc -o workspace-watch workspace-watch.c ext-workspace-v1-protocol.c \
+  $(pkg-config --cflags --libs wayland-client) -Wall
+
+# Clean up build artifacts (keep only the binary and source)
+rm -f ext-workspace-v1-client-protocol.h ext-workspace-v1-protocol.c
+#+end_src
+
+** 4. Start labwc
+
+From a TTY (Ctrl+Alt+F2), log in and run:
+
+#+begin_src bash
+exec labwc
+#+end_src
+
+Or add to =~/.bash_profile= to auto-start on login:
+
+#+begin_src bash
+if [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    exec labwc
+fi
+#+end_src
+
+* What You Get
+
+** Desktop
+
+- Zero gaps, zero borders -- every pixel is usable space
+- Bottom bar (waybar) with taskbar, window title, workspace indicator,
+  volume, battery, and clock
+- Nerd Font icons for volume and battery levels
+- Natural scrolling on touchpad, two-finger click for right-click
+- HiDPI scaling at 1.8x via kanshi (2880x1800 laptop display)
+- Dark theme everywhere (Adwaita-dark)
+- GNU wildebeest wallpaper
 
 ** Keybindings
 
-All dwm-style bindings work:
+| Key               | Action                    |
+|-------------------+---------------------------|
+| Super+Return      | Open terminal (footclient)|
+| Super+Space       | Open launcher (fuzzel)    |
+| Super+BackSpace   | Close window              |
+| Super+Shift+BackSpace | Exit labwc            |
+| Alt+Tab           | Next window               |
+| Alt+Shift+Tab     | Previous window           |
+| Super+M           | Toggle maximize           |
+| Super+F           | Toggle always-on-top      |
+| Super+B           | Toggle waybar             |
+| Super+L           | Lock screen               |
+| Super+1/2/3/4     | Switch workspace          |
+| Super+Shift+1/2/3/4 | Move window to workspace |
+| Super+Left/Right  | Previous/next workspace   |
+| Print             | Screenshot (select region)|
+| Super+V           | Voice input (live-whisper)|
+| Volume/Brightness | Hardware keys work        |
 
-| Key | Action |
-|-----|--------|
-| Super+Return | Open foot terminal |
-| Super+Space | Open fuzzel launcher |
-| Super+BackSpace | Kill focused window |
-| Super+Tab | Last workspace |
-| Super+Left/Right | Previous/next workspace |
-| Super+1/2/3/4 | Switch to workspace |
-| Super+Shift+Left/Right | Move window to adjacent workspace |
-| Super+Shift+Space | Toggle floating |
-| Super+Shift+BackSpace | Force kill window |
-| Super+J/K | Focus next/previous window |
-| Super+Shift+J/K | Swap window with next/previous |
-| Super+H/L | Decrease/increase master size |
-| Super+T | Set master layout |
-| Super+F | Toggle float script |
-| Super+M | Fullscreen |
-| Super+B | Toggle waybar |
-| Super+R | Toggle screen recording |
-| Super+L | Lock screen (hyprlock) |
+** Mouse
 
-** Window Rules
+| Action              | Result      |
+|---------------------+-------------|
+| Super+Left drag     | Move window |
+| Super+Right drag    | Resize window |
+| 1-finger click      | Left click  |
+| 2-finger click      | Right click |
+| 2-finger scroll     | Natural scroll |
 
-Floating by default:
-- GIMP
-- VibeCut
-- wxWidgets apps (class "main")
+** Autostart Services
 
-All floating windows have 8px rounded corners. Tiled windows have zero
-borders, zero gaps.
+- =emacs --daemon= -- Emacs server
+- =ssh-agent=
+- =foot --server= -- Terminal multiplexer
+- =kanshi= -- Display auto-configuration
+- =waybar= -- Status bar
+- =swayidle= -- Lock at 20min, screen off at 22.5min, suspend at 25min
+- =swaybg= -- Wallpaper
 
-** Autostart
+* Customization
 
-- emacs --daemon
-- ssh-agent
-- foot --server
-- waybar
-- hypridle
-- battery-watch.sh (red tint when battery < 8%)
-- gsettings (GTK theme: Adwaita-dark, dark mode)
+** Adding a monitor
 
-** Monitor Configuration
+Edit =~/.config/kanshi/config=:
 
-- eDP-1: 2880x1800 @ 120Hz, scale 1.8
-- DP-2: external monitor, auto-detect
+#+begin_src
+profile docked {
+    output eDP-1 mode 2880x1800@120Hz position 0,0 scale 1.8
+    output DP-2 mode 3840x2560@60Hz position 1600,0 scale 1.6
+}
+#+end_src
 
-* Tips
+** Changing wallpaper
 
-- Screen recording: Super+r (select region, press again to stop)
-- USB drives: Plug in → auto-mounts in Thunar
-- Terminal: foot client (fast startup via server mode)
-- Lock: Automatically after 20min idle, suspend 30s after lock
-- GTK theme: Adwaita-dark (classic dark theme)
-- Voice input: Super+v or Copilot key (requires [[https://github.com/lszl84/live-whisper][live-whisper]])
+Wallpapers live in =~/.local/share/wallpapers/=. Change the filename
+in =~/.config/labwc/autostart=:
 
-** GTK apps look wrong
-
-Run manually or restart Hyprland:
 #+begin_src bash
-gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
-gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+swaybg -i ~/.local/share/wallpapers/your-wallpaper.jpg &
+#+end_src
+
+** Changing workspace count
+
+Edit =~/.config/labwc/rc.xml=, find the =<desktops>= section:
+
+#+begin_src xml
+<desktops>
+  <number>4</number>
+  <names>
+    <name>1</name>
+    <name>2</name>
+    <name>3</name>
+    <name>4</name>
+  </names>
+</desktops>
 #+end_src

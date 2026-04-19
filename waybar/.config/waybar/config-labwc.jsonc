@@ -5,7 +5,13 @@
     "exclusive": true,
     "modules-left": ["wlr/taskbar"],
     "modules-center": ["wlr/window"],
-    "modules-right": ["pulseaudio", "battery", "clock"],
+    "modules-right": ["custom/workspace", "pulseaudio", "battery", "clock"],
+
+    "custom/workspace": {
+        "exec": "~/.config/labwc/scripts/workspace-watch",
+        "format": "󰍹 {}",
+        "restart-interval": 1
+    },
 
     "wlr/taskbar": {
         "format": "{icon}",
@@ -26,14 +32,20 @@
     },
 
     "pulseaudio": {
-        "format": "🔊{volume}% ·",
-        "format-muted": "🔇Muted ·",
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
 
     "battery": {
-        "format": "🔋{capacity}% ·",
-        "format-charging": "🔋{capacity}%+ ·",
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%+",
+        "format-icons": {
+            "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+        },
         "interval": 30,
         "states": {
             "warning": 10

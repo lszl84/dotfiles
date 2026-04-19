@@ -1,7 +1,7 @@
 /* waybar style — matching dwm bar appearance */
 
 * {
-    font-family: "Adwaita Mono", monospace;
+    font-family: "JetBrainsMono Nerd Font", "Adwaita Mono", monospace;
     font-size: 13px;
     min-height: 0;
 }
@@ -11,29 +11,16 @@ window#waybar {
     color: #bbbbbb;
 }
 
-#workspaces button {
-    padding: 0 6px;
-    color: #bbbbbb;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-}
-
-#workspaces button.active {
-    color: #eeeeee;
-    background-color: #333333;
-}
-
 #window {
     color: #eeeeee;
     padding: 0 8px;
 }
 
+#custom-workspace,
 #pulseaudio,
 #battery,
-#custom-uptime,
 #clock {
-    padding: 0 4px;
+    padding: 0 10px;
     color: #bbbbbb;
 }
 
