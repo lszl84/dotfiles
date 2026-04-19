@@ -83,37 +83,7 @@ stow gdb
 stow scripts
 #+end_src
 
-** 3. Build workspace-watch
-
-The workspace indicator uses a small C program that reads
-the active workspace from labwc via the =ext-workspace-v1= Wayland
-protocol.
-
-#+begin_src bash
-cd ~/.config/labwc/scripts
-
-# Install build dependencies
-sudo pacman -S wayland wayland-protocols pkg-config gcc
-
-# Generate the protocol header
-wayland-scanner client-header \
-  /usr/share/wayland-protocols/staging/ext-workspace/ext-workspace-v1.xml \
-  ext-workspace-v1-client-protocol.h
-
-# Generate the protocol glue code
-wayland-scanner private-code \
-  /usr/share/wayland-protocols/staging/ext-workspace/ext-workspace-v1.xml \
-  ext-workspace-v1-protocol.c
-
-# Compile
-gcc -o workspace-watch workspace-watch.c ext-workspace-v1-protocol.c \
-  $(pkg-config --cflags --libs wayland-client) -Wall
-
-# Clean up build artifacts (keep only the binary and source)
-rm -f ext-workspace-v1-client-protocol.h ext-workspace-v1-protocol.c
-#+end_src
-
-** 4. Start labwc
+** 3. Start labwc
 
 From a TTY (Ctrl+Alt+F2), log in and run:
 
