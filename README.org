@@ -134,7 +134,7 @@ fi
 ** Desktop
 
 - Zero gaps, zero borders -- every pixel is usable space
-- Bottom bar ([[https://github.com/lukaszromeek/simpbar][simpbar]]) with workspace indicators, volume, battery, and clock
+- Bottom bar ([[https://github.com/lszl84/simpbar][simpbar]]) with workspace indicators, volume, battery, and clock
 - HiDPI window buttons (close only) from the GTK theme
 - Drop shadows on floating windows
 - Natural scrolling on touchpad, two-finger click for right-click
