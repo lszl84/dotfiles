@@ -18,15 +18,18 @@ simpbar &
 
 # Idle management (using swayidle instead of hypridle)
 swayidle -w \
-  timeout 1200 'swaylock -f -c 0d1117' \
+  timeout 1200 'swaylock -f -c 000000' \
   timeout 1350 'wlopm --off \*' \
   resume 'wlopm --on \*' \
   timeout 1500 'systemctl suspend' \
-  before-sleep 'swaylock -f -c 0d1117' &
+  before-sleep 'swaylock -f -c 000000' &
 
 # GTK theme
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+
+# Audio: force ALSA card profile activation
+sleep 2 && wpctl set-profile 42 0 && wpctl set-profile 42 1 &
 
 # Set wallpaper
 swaybg -i ~/.local/share/wallpapers/gnu-wildebeest-4k.jpg &
