@@ -13,8 +13,8 @@ foot --server &
 # Output management
 kanshi >/dev/null 2>&1 &
 
-# Waybar (labwc version)
-waybar -c ~/.config/waybar/config-labwc.jsonc &
+# Status bar
+simpbar &
 
 # Idle management (using swayidle instead of hypridle)
 swayidle -w \

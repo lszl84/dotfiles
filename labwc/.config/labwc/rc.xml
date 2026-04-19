@@ -15,19 +15,21 @@
     <keepBorder>no</keepBorder>
     <dropShadows>yes</dropShadows>
     <font place="ActiveWindow">
-      <name>Adwaita Mono</name>
+      <name>Noto Sans</name>
       <size>10</size>
+      <weight>bold</weight>
     </font>
     <font place="InactiveWindow">
-      <name>Adwaita Mono</name>
+      <name>Noto Sans</name>
       <size>10</size>
+      <weight>bold</weight>
     </font>
     <font place="MenuItem">
-      <name>Adwaita Mono</name>
+      <name>Noto Sans</name>
       <size>10</size>
     </font>
     <font place="OnScreenDisplay">
-      <name>Adwaita Mono</name>
+      <name>Noto Sans</name>
       <size>10</size>
     </font>
   </theme>
@@ -59,12 +61,7 @@
 
     <!-- Lock screen -->
     <keybind key="W-l">
-      <action name="Execute" command="swaylock -f -c 0d1117" />
-    </keybind>
-
-    <!-- Toggle waybar -->
-    <keybind key="W-b">
-      <action name="Execute" command="pkill -SIGUSR1 waybar" />
+      <action name="Execute" command="swaylock -f -c 1a1a2e" />
     </keybind>
 
     <!-- Window cycling -->
