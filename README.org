@@ -10,7 +10,7 @@ fast, and simple.
 Managed with [[https://www.gnu.org/software/stow/][GNU Stow]]. Each top-level directory is a stow package that
 symlinks into =$HOME=.
 
-The status bar is [[https://github.com/lukaszromeek/simpbar][simpbar]] -- a lightweight Wayland bar written in pure C
+The status bar is [[https://github.com/lszl84/simpbar][simpbar]] -- a lightweight Wayland bar written in pure C
 with Cairo rendering, HiDPI support, and workspace indicators via the
 =ext-workspace-v1= protocol.
 
