@@ -7,9 +7,13 @@
   </core>
 
   <theme>
+    <name>GTK</name>
+    <titlebar>
+      <layout>:close</layout>
+    </titlebar>
     <cornerRadius>0</cornerRadius>
     <keepBorder>no</keepBorder>
-    <dropShadows>no</dropShadows>
+    <dropShadows>yes</dropShadows>
     <font place="ActiveWindow">
       <name>Adwaita Mono</name>
       <size>10</size>
