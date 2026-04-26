@@ -8,7 +8,7 @@ set -eu
 
 DIR="${1:-up}"
 STEP_PCT="${2:-2}"
-MIN_RAW=16
+MIN_RAW=1
 
 CUR=$(brightnessctl get)
 MAX=$(brightnessctl max)
