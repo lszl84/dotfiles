@@ -1,27 +1,28 @@
 #!/bin/bash
-# brightness up|down [step%]
-# Wrapper around brightnessctl that floors at MIN_RAW.
-# Avoids the panel-firmware quirk at raw=0 (looks brighter than raw=16 on this OLED)
-# and brightnessctl 0.5's broken -n flag for relative decreases.
+# brightness up|down [steps]
+# Geometric stepping so each press feels equal to the human eye.
+# Factor = (MAX/MIN)^(1/STEPS); each press multiplies/divides by it.
+# Forces a minimum 1-raw-unit move so we don't get stuck near the floor.
 
 set -eu
 
 DIR="${1:-up}"
-STEP_PCT="${2:-2}"
+STEPS="${2:-20}"
 MIN_RAW=1
 
 CUR=$(brightnessctl get)
 MAX=$(brightnessctl max)
-STEP=$(( MAX * STEP_PCT / 100 ))
-[ "$STEP" -lt 1 ] && STEP=1
 
-case "$DIR" in
-    up)   NEW=$(( CUR + STEP ));;
-    down) NEW=$(( CUR - STEP ));;
-    *) echo "usage: $0 up|down [step%]" >&2; exit 2;;
-esac
-
-[ "$NEW" -gt "$MAX" ] && NEW=$MAX
-[ "$NEW" -lt "$MIN_RAW" ] && NEW=$MIN_RAW
+NEW=$(awk -v cur="$CUR" -v max="$MAX" -v min="$MIN_RAW" -v steps="$STEPS" -v dir="$DIR" '
+BEGIN {
+    f = (max / min) ^ (1.0 / steps)
+    n = (dir == "up") ? cur * f : cur / f
+    n = int(n + 0.5)
+    if (dir == "up"   && n <= cur) n = cur + 1
+    if (dir == "down" && n >= cur) n = cur - 1
+    if (n > max) n = max
+    if (n < min) n = min
+    print n
+}')
 
 brightnessctl set "$NEW" >/dev/null
