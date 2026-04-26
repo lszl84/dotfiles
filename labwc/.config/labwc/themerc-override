@@ -7,8 +7,8 @@ window.titlebar.padding.width: 6
 window.button.width: 26
 window.button.height: 26
 
-# Circular hover effect (radius = half of width/height)
-window.button.hover.bg.corner-radius: 13
+# Circular hover effect — slightly smaller than button (2px smaller diameter)
+window.button.hover.bg.corner-radius: 12
 window.button.hover.bg.color: #ffffff20
 
 # Titlebar background — match Brave's default dark toolbar color
