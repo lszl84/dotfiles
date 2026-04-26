@@ -194,41 +194,43 @@ Edit =~/.config/labwc/rc.xml=, find the =<desktops>= section:
 
 * Fedora: automatic security updates
 
-On Fedora, =dnf-automatic= can apply security updates unattended. Combined
-with an hourly =dnf needs-restarting -r= check (planned for simpbar), this
-gives a hands-off update flow with a visible reboot indicator.
+On Fedora 43+, the =dnf5-plugin-automatic= package (already part of the base
+system) can apply security updates unattended. Combined with an hourly
+=dnf needs-restarting -r= check (planned for simpbar), this gives a hands-off
+update flow with a visible reboot indicator.
 
 ** Setup
 
-#+begin_src bash
-sudo dnf install -y dnf-automatic
-#+end_src
-
-Edit =/etc/dnf/automatic.conf=:
-
-#+begin_src ini
-[commands]
-upgrade_type = security
-apply_updates = yes
-
-[emitters]
-emit_via = stdio
-#+end_src
-
-Enable the daily timer:
+The plugin ships a config template; copy it into place, then flip two values:
 
 #+begin_src bash
-sudo systemctl enable --now dnf-automatic.timer
+sudo install -m 0644 /usr/share/dnf5/dnf5-plugins/automatic.conf /etc/dnf/automatic.conf
+
+sudo sed -i \
+  -e 's/^apply_updates = .*/apply_updates = yes/' \
+  -e 's/^upgrade_type = .*/upgrade_type = security/' \
+  /etc/dnf/automatic.conf
+#+end_src
+
+Defaults that are already correct: =download_updates = yes=, =emit_via = stdio=,
+=reboot = never= (we surface the reboot need via simpbar instead).
+
+Enable the daily timer (note the =5= — the legacy =dnf-automatic.timer= is a
+compat shim, prefer the native one):
+
+#+begin_src bash
+sudo systemctl enable --now dnf5-automatic.timer
 #+end_src
 
 ** Verifying
 
 #+begin_src bash
-systemctl list-timers dnf-automatic.timer
-journalctl -u dnf-automatic.service --since '1 day ago'
-dnf needs-restarting -r          # exit 1 = reboot needed
+systemctl list-timers dnf5-automatic.timer
+sudo systemctl start dnf5-automatic.service   # trigger one run now
+journalctl -u dnf5-automatic.service --since '1 day ago'
+dnf needs-restarting -r                       # exit 1 = reboot needed
 #+end_src
 
-=stdio= output lands in journald, so =journalctl -u dnf-automatic.service=
+=stdio= output lands in journald, so =journalctl -u dnf5-automatic.service=
 shows what was installed. Non-security updates are still applied manually
 with =sudo dnf upgrade=.
