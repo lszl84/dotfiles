@@ -11,17 +11,17 @@
     <titlebar>
       <layout>:close</layout>
     </titlebar>
-    <cornerRadius>0</cornerRadius>
+    <cornerRadius>4</cornerRadius>
     <keepBorder>no</keepBorder>
     <dropShadows>yes</dropShadows>
     <font place="ActiveWindow">
       <name>Noto Sans</name>
-      <size>10</size>
+      <size>9</size>
       <weight>bold</weight>
     </font>
     <font place="InactiveWindow">
       <name>Noto Sans</name>
-      <size>10</size>
+      <size>9</size>
       <weight>bold</weight>
     </font>
     <font place="MenuItem">

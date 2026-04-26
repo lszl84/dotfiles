@@ -32,4 +32,4 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 sleep 2 && wpctl set-profile 42 0 && wpctl set-profile 42 1 &
 
 # Set wallpaper
-swaybg -i ~/.local/share/wallpapers/gnu-wildebeest-4k.jpg &
+swaybg -i ~/.local/share/wallpapers/earth_oled.png -m fill &

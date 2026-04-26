@@ -1,0 +1,25 @@
+# Bigger titlebar — extra vertical padding around the label.
+# Titlebar height = font size + (padding.height * 2).
+window.titlebar.padding.height: 3
+window.titlebar.padding.width: 6
+
+# Slightly bigger close button to match
+window.button.width: 26
+window.button.height: 26
+
+# Circular hover effect (radius = half of width/height)
+window.button.hover.bg.corner-radius: 13
+window.button.hover.bg.color: #ffffff20
+
+# Titlebar background — match Brave's default dark toolbar color
+window.active.title.bg.color: #1f1f23
+window.inactive.title.bg.color: #1f1f23
+window.active.label.text.color: #e8e8e8
+window.inactive.label.text.color: #666666
+
+# Dim button icons on inactive windows (background stays the same)
+window.active.button.unpressed.image.color: #e8e8e8
+window.inactive.button.unpressed.image.color: #666666
+
+# Hide the white outline shown around the currently-selected window during alt-tab
+osd.window-switcher.preview.border.width: 0
