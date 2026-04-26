@@ -8,6 +8,7 @@ set -eu
 
 DIR="${1:-up}"
 STEPS="${2:-20}"
+# MIN_RAW=1 skips raw=0; some panels (this laptop's OLED) misbehave at 0.
 MIN_RAW=1
 
 CUR=$(brightnessctl get)
