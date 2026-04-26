@@ -1,0 +1,12 @@
+#!/bin/bash
+# set-scale: change eDP-1 scale live for screencasts/demos.
+# Usage: set-scale 1.625|2.0|2.5
+
+scale="${1:-1.625}"
+case "$scale" in
+    1.625|2.0|2.5) ;;
+    *) echo "Usage: set-scale 1.625|2.0|2.5" >&2; exit 1 ;;
+esac
+
+wlr-randr --output eDP-1 --scale "$scale"
+notify-send -t 1500 "Display scale" "${scale}x" 2>/dev/null || true

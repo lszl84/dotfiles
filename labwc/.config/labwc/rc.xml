@@ -112,6 +112,17 @@
       <action name="Execute" command="~/.local/bin/live-whisper" />
     </keybind>
 
+    <!-- Display scale (for screencasts) -->
+    <keybind key="W-F1">
+      <action name="Execute" command="set-scale 1.625" />
+    </keybind>
+    <keybind key="W-F2">
+      <action name="Execute" command="set-scale 2.0" />
+    </keybind>
+    <keybind key="W-F3">
+      <action name="Execute" command="set-scale 2.5" />
+    </keybind>
+
     <!-- Workspace switching -->
     <keybind key="W-1">
       <action name="GoToDesktop" to="1" />
