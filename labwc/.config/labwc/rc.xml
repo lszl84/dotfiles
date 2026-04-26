@@ -61,7 +61,7 @@
 
     <!-- Lock screen -->
     <keybind key="W-l">
-      <action name="Execute" command="swaylock -f -c 1a1a2e" />
+      <action name="Execute" command="swaylock -f -c 000000" />
     </keybind>
 
     <!-- Window cycling -->
