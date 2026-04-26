@@ -1,6 +1,6 @@
 # Bigger titlebar — extra vertical padding around the label.
 # Titlebar height = font size + (padding.height * 2).
-window.titlebar.padding.height: 3
+window.titlebar.padding.height: 4
 window.titlebar.padding.width: 6
 
 # Close button — larger hover circle
