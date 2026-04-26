@@ -101,10 +101,10 @@
       <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
     </keybind>
     <keybind key="XF86MonBrightnessUp">
-      <action name="Execute" command="brightnessctl set +2%" />
+      <action name="Execute" command="~/.local/bin/brightness up" />
     </keybind>
     <keybind key="XF86MonBrightnessDown">
-      <action name="Execute" command="brightnessctl set 2%-" />
+      <action name="Execute" command="~/.local/bin/brightness down" />
     </keybind>
 
     <!-- Voice input -->

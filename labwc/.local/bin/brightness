@@ -1,0 +1,27 @@
+#!/bin/bash
+# brightness up|down [step%]
+# Wrapper around brightnessctl that floors at MIN_RAW.
+# Avoids the panel-firmware quirk at raw=0 (looks brighter than raw=16 on this OLED)
+# and brightnessctl 0.5's broken -n flag for relative decreases.
+
+set -eu
+
+DIR="${1:-up}"
+STEP_PCT="${2:-2}"
+MIN_RAW=16
+
+CUR=$(brightnessctl get)
+MAX=$(brightnessctl max)
+STEP=$(( MAX * STEP_PCT / 100 ))
+[ "$STEP" -lt 1 ] && STEP=1
+
+case "$DIR" in
+    up)   NEW=$(( CUR + STEP ));;
+    down) NEW=$(( CUR - STEP ));;
+    *) echo "usage: $0 up|down [step%]" >&2; exit 2;;
+esac
+
+[ "$NEW" -gt "$MAX" ] && NEW=$MAX
+[ "$NEW" -lt "$MIN_RAW" ] && NEW=$MIN_RAW
+
+brightnessctl set "$NEW" >/dev/null
