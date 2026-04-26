@@ -231,6 +231,27 @@ journalctl -u dnf5-automatic.service --since '1 day ago'
 dnf needs-restarting -r                       # exit 1 = reboot needed
 #+end_src
 
-=stdio= output lands in journald, so =journalctl -u dnf5-automatic.service=
-shows what was installed. Non-security updates are still applied manually
-with =sudo dnf upgrade=.
+** Inspecting what was installed
+
+The =stdio= emitter sends output to journald, and every transaction is also
+recorded in =dnf history= and =/var/log/dnf5.log=:
+
+#+begin_src bash
+# All runs of the automatic service
+journalctl -u dnf5-automatic.service
+
+# This boot only
+journalctl -u dnf5-automatic.service -b 0
+
+# When the timer fired (regardless of output)
+journalctl -u dnf5-automatic.timer
+
+# All transactions, manual + automatic
+sudo dnf history list
+sudo dnf history info <id>
+
+# Raw rpm/dnf log
+less /var/log/dnf5.log
+#+end_src
+
+Non-security updates are still applied manually with =sudo dnf upgrade=.
