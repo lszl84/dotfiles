@@ -3,11 +3,11 @@
 window.titlebar.padding.height: 3
 window.titlebar.padding.width: 6
 
-# Slightly bigger close button to match
-window.button.width: 26
-window.button.height: 26
+# Slightly smaller close button for tighter hover circle
+window.button.width: 22
+window.button.height: 22
 
-# Circular hover effect — smaller than button (radius 11 = 22px dia on 26px button)
+# Circular hover effect (radius = half of button width/height for perfect circle)
 window.button.hover.bg.corner-radius: 11
 window.button.hover.bg.color: #ffffff20
 
