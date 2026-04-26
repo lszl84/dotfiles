@@ -3,12 +3,12 @@
 window.titlebar.padding.height: 3
 window.titlebar.padding.width: 6
 
-# Tighter close button for smaller hover circle
-window.button.width: 21
-window.button.height: 21
+# Close button — larger hover circle
+window.button.width: 24
+window.button.height: 24
 
 # Circular hover effect
-window.button.hover.bg.corner-radius: 10
+window.button.hover.bg.corner-radius: 12
 window.button.hover.bg.color: #ffffff20
 
 # Titlebar background — match Brave's default dark toolbar color
