@@ -28,6 +28,7 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 | =fastfetch=  | System info display                             |
 | =gdb=        | GDB with debuginfod                             |
 | =hyprland=   | Hyprland compositor (alternative, not required) |
+| =wireplumber= | Per-sink speaker EQ/HPF (Huawei MateBook X)    |
 
 * Installation on Fresh Arch Linux
 
