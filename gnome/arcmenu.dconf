@@ -1,0 +1,11 @@
+[/]
+arcmenu-hotkey=['Super_L']
+arcmenu-hotkey-overlay-key-enabled=true
+hide-overview-on-startup=true
+hotkey-open-primary-monitor=false
+menu-button-icon='fedora-logo-sprite'
+menu-button-icon-size=27
+prefs-visible-page=0
+recently-installed-apps=['calf.desktop']
+search-entry-border-radius=(true, 25)
+update-notifier-project-version=71

@@ -193,6 +193,40 @@ Edit =~/.config/labwc/rc.xml=, find the =<desktops>= section:
 </desktops>
 #+end_src
 
+* GNOME: replicate this setup on a new machine
+
+The =gnome/= directory ships a single script that installs and configures the
+extension stack used here (Dash to Panel, ArcMenu, Tiling Shell) plus
+=dnf5-plugin-automatic= for security updates.
+
+#+begin_src bash
+git clone <this-repo> ~/dotfiles
+~/dotfiles/gnome/install.sh
+# log out, log back in
+#+end_src
+
+The script:
+- installs =gnome-extensions-cli= via =pipx=
+- installs the three extensions from extensions.gnome.org
+- detects the target monitor ID via Mutter's DBus (vendor + serial), substitutes
+  it into the Dash to Panel config (the source machine's ID was =VXN-0x19c5fee7=
+  — different on every laptop)
+- loads dconf snapshots for all three extensions
+- configures =dnf5-automatic.timer= for security-only updates
+
+Refresh the snapshots before committing if you've tweaked anything:
+
+#+begin_src bash
+cd ~/dotfiles/gnome
+dconf dump /org/gnome/shell/extensions/dash-to-panel/ | \
+  sed 's/VXN-0x19c5fee7/__MONITOR_ID__/g' > dash-to-panel.dconf
+dconf dump /org/gnome/shell/extensions/arcmenu/        > arcmenu.dconf
+dconf dump /org/gnome/shell/extensions/tilingshell/    > tilingshell.dconf
+#+end_src
+
+(Use your own monitor ID in the =sed= — find it with the same =busctl= snippet
+the install script uses.)
+
 * Fedora: automatic security updates
 
 On Fedora 43+, the =dnf5-plugin-automatic= package (already part of the base
