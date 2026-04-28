@@ -114,7 +114,7 @@
 
     <!-- Display scale (for screencasts) -->
     <keybind key="W-F1">
-      <action name="Execute" command="set-scale 1.625" />
+      <action name="Execute" command="set-scale 1.8" />
     </keybind>
     <keybind key="W-F2">
       <action name="Execute" command="set-scale 2.0" />
