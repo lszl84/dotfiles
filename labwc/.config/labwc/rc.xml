@@ -2,7 +2,7 @@
 <labwc_config>
   <core>
     <gap>0</gap>
-    <adaptiveSync>no</adaptiveSync>
+    <adaptiveSync>yes</adaptiveSync>
     <reuseOutputMode>no</reuseOutputMode>
   </core>
 
@@ -114,13 +114,13 @@
 
     <!-- Display scale (for screencasts) -->
     <keybind key="W-F1">
-      <action name="Execute" command="set-scale 1.8" />
+      <action name="Execute" command="/home/luke/.local/bin/set-scale 1.75" />
     </keybind>
     <keybind key="W-F2">
-      <action name="Execute" command="set-scale 2.0" />
+      <action name="Execute" command="/home/luke/.local/bin/set-scale 2" />
     </keybind>
     <keybind key="W-F3">
-      <action name="Execute" command="set-scale 2.5" />
+      <action name="Execute" command="/home/luke/.local/bin/set-scale 2.5" />
     </keybind>
 
     <!-- Workspace switching -->
