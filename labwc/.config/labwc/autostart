@@ -17,14 +17,18 @@ kanshi >/dev/null 2>&1 &
 simpbar &
 
 # Idle management
-# before-sleep: keep the inhibitor held for 1s after swaylock daemonizes so
-# the compositor finishes rendering and the display scans out the lock
-# surface BEFORE the framebuffer is frozen by suspend. Without this, on
-# resume the display briefly shows the pre-suspend frame (desktop content).
+# before-sleep: lock, then turn the display off via wlopm BEFORE suspend
+# freezes the framebuffer. Without this, on resume the display briefly
+# shows the pre-suspend frame (desktop content) before the lock surface
+# composites — a security leak. With the panel off through the suspend/
+# resume gap, there is no "last-presented frame" to leak.
+# after-resume: turn the panel back on; by then labwc has already
+# composited the lock surface, so the panel lights up showing the lock.
 swayidle -w \
   timeout 900 'swaylock -f -c 000000' \
   timeout 3600 'systemctl suspend' \
-  before-sleep 'swaylock -f -c 000000; sleep 1' \
+  before-sleep 'swaylock -f -c 000000; wlopm --off "*"' \
+  after-resume 'wlopm --on "*"' \
   lock 'swaylock -f -c 000000' &
 
 # GTK theme
