@@ -17,10 +17,15 @@ kanshi >/dev/null 2>&1 &
 simpbar &
 
 # Idle management
+# before-sleep: keep the inhibitor held for 1s after swaylock daemonizes so
+# the compositor finishes rendering and the display scans out the lock
+# surface BEFORE the framebuffer is frozen by suspend. Without this, on
+# resume the display briefly shows the pre-suspend frame (desktop content).
 swayidle -w \
   timeout 900 'swaylock -f -c 000000' \
   timeout 3600 'systemctl suspend' \
-  before-sleep 'swaylock -f -c 000000' &
+  before-sleep 'swaylock -f -c 000000; sleep 1' \
+  lock 'swaylock -f -c 000000' &
 
 # GTK theme
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
