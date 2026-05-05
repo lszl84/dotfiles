@@ -1,6 +1,9 @@
 #!/bin/bash
 # labwc autostart
 
+# Activate systemd graphical session target (required for portals/keyring)
+systemctl --user start graphical-session.target &
+
 # Emacs daemon
 emacs --daemon &
 
@@ -9,6 +12,9 @@ ssh-agent -D &
 
 # Terminal server
 foot --server &
+
+# Notification daemon
+dunst &
 
 # Output management
 kanshi >/dev/null 2>&1 &
@@ -32,8 +38,9 @@ swayidle -w \
   lock 'swaylock -f -c 000000' &
 
 # GTK theme
-gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
+gsettings set org.gnome.desktop.interface gtk-theme Breeze-Dark
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+gsettings set org.gnome.desktop.interface cursor-size 24
 
 # Audio: force ALSA card profile activation
 sleep 2 && wpctl set-profile 42 0 && wpctl set-profile 42 1 &
