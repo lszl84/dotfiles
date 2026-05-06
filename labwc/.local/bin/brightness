@@ -1,43 +1,41 @@
 #!/bin/bash
 # brightness up|down [steps]
-# If cursor is on Apple Studio Display → asdbctl
-# Otherwise → brightnessctl (laptop panel)
+# Detects which output the cursor is on. DP-* → asdbctl, otherwise → brightnessctl.
 
 set -eu
 DIR="${1:-up}"
 STEPS="${2:-20}"
 
-# --- Get external DP display logical geometry from wlr-randr ---
-# Only returns DP-* outputs (external displays), not eDP-* (laptop panel).
-# Each line: x y w h
-dp_geometry() {
-    wlr-randr 2>/dev/null | awk '
+# --- Get cursor output name (eDP-1, DP-2, etc.) by checking which output
+#     rectangle contains the cursor position. ---
+cursor_output() {
+    local cx cy pos
+    pos=$(wl-find-cursor -p 2>/dev/null) || return 1
+    [ -z "$pos" ] && return 1
+    read -r cx cy <<< "$pos"
+
+    wlr-randr 2>/dev/null | awk -v cx="$cx" -v cy="$cy" '
         /^[^ ]+[-][0-9]/ {
-            # New output block — flush previous if it was a DP output
-            if (in_block && raw_w > 0 && name ~ /^DP-[0-9]/)
-                printf "%.0f %.0f %.0f %.0f\n", x, y, raw_w/s, raw_h/s
+            if (in_block && raw_w > 0) {
+                lw = raw_w / s; lh = raw_h / s
+                if (cx >= x && cx <= x + lw && cy >= y && cy <= y + lh) {
+                    print name
+                    exit
+                }
+            }
             name=$1; in_block=1; raw_w=0; raw_h=0; x=0; y=0; s=1; next
         }
         in_block && /current/ && raw_w==0 { split($1,a,"x"); raw_w=(a[1]+0); raw_h=(a[2]+0) }
         in_block && /Position:/ { split($2,p,","); x=(p[1]+0); y=(p[2]+0) }
         in_block && /Scale:/    { s=($2+0) }
         END {
-            if (in_block && raw_w > 0 && name ~ /^DP-[0-9]/)
-                printf "%.0f %.0f %.0f %.0f\n", x, y, raw_w/s, raw_h/s
+            if (in_block && raw_w > 0) {
+                lw = raw_w / s; lh = raw_h / s
+                if (cx >= x && cx <= x + lw && cy >= y && cy <= y + lh)
+                    print name
+            }
         }
     '
-}
-
-# --- Check if cursor is within given rectangle (logical coords) ---
-cursor_in_rect() {
-    local gx="$1" gy="$2" gw="$3" gh="$4"
-    local cx cy pos
-    pos=$(wl-find-cursor -p 2>/dev/null) || return 1
-    [ -z "$pos" ] && return 1
-    read -r cx cy <<< "$pos"
-    # 2px tolerance for sub-pixel rounding at output edges
-    [ "$cx" -ge "$((gx - 2))" ] && [ "$cx" -le "$((gx + gw + 2))" ] && \
-    [ "$cy" -ge "$((gy - 2))" ] && [ "$cy" -le "$((gy + gh + 2))" ]
 }
 
 # --- Geometric stepping ---
@@ -57,16 +55,17 @@ geometric_step() {
 }
 
 # --- Main ---
-GEOM=$(dp_geometry)
-if [ -n "$GEOM" ] && cursor_in_rect $GEOM; then
-    # External DP display — try Apple brightness, fall back to nothing
+OUT=$(cursor_output)
+
+if [ -n "$OUT" ] && [[ "$OUT" =~ ^DP- ]]; then
+    # External DP display → try asdbctl
     CUR=$(asdbctl get 2>/dev/null | grep -oP '[\d.]+' || true)
     if [ -n "$CUR" ]; then
         NEW=$(geometric_step "$CUR" 100)
         asdbctl set "$NEW" >/dev/null 2>&1 || true
     fi
 else
-    # Laptop panel
+    # Laptop panel or unknown → brightnessctl
     CUR=$(brightnessctl get)
     MAX=$(brightnessctl max)
     NEW=$(geometric_step "$CUR" "$MAX" 1)
