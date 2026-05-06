@@ -8,5 +8,18 @@ case "$scale" in
     *) echo "Usage: set-scale 1.75|2|2.5" >&2; exit 1 ;;
 esac
 
-wlr-randr --output eDP-1 --scale "$scale"
-notify-send -t 1500 "Display scale" "${scale}x" 2>/dev/null || true
+# If Apple Studio Display is connected: scale it so physical px size matches
+# the laptop (ratio 1.2), and place laptop centered below it.
+if wlr-randr | grep -q '^DP-2 '; then
+    asd_scale=$(awk -v s="$scale" 'BEGIN { printf "%.4f", s / 1.2 }')
+    read -r lx ly < <(awk -v ls="$scale" -v as="$asd_scale" 'BEGIN {
+        printf "%d %d\n", (5120/as - 3120/ls) / 2, 2880/as
+    }')
+    wlr-randr \
+        --output DP-2  --scale "$asd_scale" --pos 0,0 \
+        --output eDP-1 --scale "$scale"     --pos "$lx,$ly"
+    notify-send -t 1500 "Display scale" "eDP-1 ${scale}x · DP-2 ${asd_scale}x" 2>/dev/null || true
+else
+    wlr-randr --output eDP-1 --scale "$scale"
+    notify-send -t 1500 "Display scale" "${scale}x" 2>/dev/null || true
+fi
