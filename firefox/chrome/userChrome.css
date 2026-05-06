@@ -42,3 +42,12 @@
 .titlebar-button.titlebar-close:hover:active > .toolbarbutton-icon {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
+
+/* Titlebar / tab strip background — match labwc themerc-override */
+#navigator-toolbox,
+#TabsToolbar,
+#nav-bar,
+.browser-titlebar {
+  background-color: #202326 !important;
+  background-image: none !important;
+}

@@ -11,9 +11,9 @@ window.button.height: 24
 window.button.hover.bg.corner-radius: 12
 window.button.hover.bg.color: #ffffff20
 
-# Titlebar background — match Brave's default dark toolbar color
-window.active.title.bg.color: #1f1f23
-window.inactive.title.bg.color: #1f1f23
+# Titlebar background
+window.active.title.bg.color: #202326
+window.inactive.title.bg.color: #202326
 window.active.label.text.color: #e8e8e8
 window.inactive.label.text.color: #666666
 
