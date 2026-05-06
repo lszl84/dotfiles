@@ -8,19 +8,22 @@ DIR="${1:-up}"
 STEPS="${2:-20}"
 
 # --- Get Apple Display logical geometry from wlr-randr ---
-# Output order: Name → ... → Modes (w/ current) → Position → Scale → blank
-# We compute logical size = raw_w / scale at the blank-line boundary.
+# Returns: x y w h (empty if no DP output found)
+# wlr-randr blocks have NO blank line between them; we detect header lines.
 apple_geometry() {
     wlr-randr 2>/dev/null | awk '
-        /^DP-[0-9]/   { name=$1; in_block=1; mode_w=0; mode_h=0; x=0; y=0; s=1 }
-        in_block && /current/ && mode_w==0 { split($1,a,"x"); mode_w=(a[1]+0); mode_h=(a[2]+0) }
-        in_block && /Position:/ { x=($2+0); y=($3+0) }
-        in_block && /Scale:/    { s=($2+0) }
-        in_block && /^$/ {
-            if (mode_w > 0) printf "%.0f %.0f %.0f %.0f\n", x, y, mode_w/s, mode_h/s
-            in_block=0
+        /^[^ ]+[-][0-9]/ {
+            if (in_block && raw_w > 0)
+                printf "%.0f %.0f %.0f %.0f\n", x, y, raw_w/s, raw_h/s
+            name=$1; in_block=1; raw_w=0; raw_h=0; x=0; y=0; s=1; next
         }
-        END { if (in_block && mode_w > 0) printf "%.0f %.0f %.0f %.0f\n", x, y, mode_w/s, mode_h/s }
+        in_block && /current/ && raw_w==0 { split($1,a,"x"); raw_w=(a[1]+0); raw_h=(a[2]+0) }
+        in_block && /Position:/ { split($2,p,","); x=(p[1]+0); y=(p[2]+0) }
+        in_block && /Scale:/    { s=($2+0) }
+        END {
+            if (in_block && raw_w > 0)
+                printf "%.0f %.0f %.0f %.0f\n", x, y, raw_w/s, raw_h/s
+        }
     '
 }
 
