@@ -1,14 +1,40 @@
 #!/bin/bash
 # brightness up|down [steps]
-# If Apple Studio Display is connected → asdbctl, otherwise → brightnessctl.
-#
-# Dependencies: asdbctl (AUR), brightnessctl
+# Detects which output the cursor is on (DP-* → asdbctl, else → brightnessctl).
+# wl-find-cursor returns global layout coordinates (layer surface covers full layout).
 
 set -eu
 DIR="${1:-up}"
 STEPS="${2:-20}"
 
-# --- Geometric stepping ---
+cursor_output() {
+    local cx cy pos
+    pos=$(wl-find-cursor -p 2>/dev/null) || return 1
+    [ -z "$pos" ] && return 1
+    read -r cx cy <<< "$pos"
+
+    wlr-randr 2>/dev/null | awk -v cx="$cx" -v cy="$cy" '
+        /^[^ ]+[-][0-9]/ {
+            if (in_block && raw_w > 0) {
+                lw = raw_w / s; lh = raw_h / s
+                if (cx >= x && cx <= x + lw && cy >= y && cy <= y + lh)
+                    { print name; found=1; exit }
+            }
+            name=$1; in_block=1; raw_w=0; raw_h=0; x=0; y=0; s=1; next
+        }
+        in_block && /current/ && raw_w==0 { split($1,a,"x"); raw_w=(a[1]+0); raw_h=(a[2]+0) }
+        in_block && /Position:/ { split($2,p,","); x=(p[1]+0); y=(p[2]+0) }
+        in_block && /Scale:/    { s=($2+0) }
+        END {
+            if (!found && in_block && raw_w > 0) {
+                lw = raw_w / s; lh = raw_h / s
+                if (cx >= x && cx <= x + lw && cy >= y && cy <= y + lh)
+                    print name
+            }
+        }
+    '
+}
+
 geometric_step() {
     local cur="$1" max="$2" min="${3:-1}"
     awk -v cur="$cur" -v max="$max" -v min="$min" -v steps="$STEPS" -v dir="$DIR" '
@@ -24,15 +50,15 @@ geometric_step() {
     }'
 }
 
-# --- Main ---
-CUR=$(asdbctl get 2>/dev/null | grep -oP '[\d.]+' || true)
+OUT=$(cursor_output)
 
-if [ -n "$CUR" ]; then
-    # Apple Studio Display connected
-    NEW=$(geometric_step "$CUR" 100)
-    asdbctl set "$NEW" >/dev/null 2>&1 || true
+if [ -n "$OUT" ] && [[ "$OUT" =~ ^DP- ]]; then
+    CUR=$(asdbctl get 2>/dev/null | grep -oP '[\d.]+' || true)
+    if [ -n "$CUR" ]; then
+        NEW=$(geometric_step "$CUR" 100)
+        asdbctl set "$NEW" >/dev/null 2>&1 || true
+    fi
 else
-    # Laptop panel
     CUR=$(brightnessctl get)
     MAX=$(brightnessctl max)
     NEW=$(geometric_step "$CUR" "$MAX" 1)
