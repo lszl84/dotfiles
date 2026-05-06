@@ -2,10 +2,6 @@
 # ~/.bash_profile
 #
 
+[[ -f ~/.profile ]] && . ~/.profile
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-# Start Hyprland on TTY1 login
-if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec labwc #start-hyprland
-fi
-. "$HOME/.cargo/env"

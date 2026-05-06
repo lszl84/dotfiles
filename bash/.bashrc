@@ -12,8 +12,6 @@ alias ccd='claude --continue --dangerously-skip-permissions'
 alias ooc='opencode --continue'
 export PS1='\W\$ '
 
-export PATH="$HOME/.local/bin:$PATH"
-
 alias ffgrab='ffmpeg -use_wallclock_as_timestamps 1 \
   -f x11grab -framerate 30 -i :0.0 \
   -f pulse -i default \
@@ -24,6 +22,3 @@ alias ffgrab='ffmpeg -use_wallclock_as_timestamps 1 \
   -c:a aac -b:a 192k'
 
 
-# opencode
-export PATH=/home/luke/.opencode/bin:$PATH
-. "$HOME/.cargo/env"
