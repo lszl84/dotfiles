@@ -22,7 +22,8 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 | =dunst=      | Notification daemon                             |
 | =waybar=     | Status bar configs + shared style (for hyprland)|
 | =wallpapers= | Desktop wallpapers                              |
-| =bash=       | Shell config, prompt, aliases                   |
+| =bash=       | Shell config, prompt, aliases, PATH             |
+| =environment=| System-wide environment variables via environment.d |
 | =emacs-easy= | Emacs with CUA keys, Modus Vivendi theme        |
 | =scripts=    | Utility scripts in =~/.local/bin=               |
 | =fastfetch=  | System info display                             |
@@ -75,7 +76,7 @@ git clone <your-repo-url> dotfiles
 cd dotfiles
 
 # Core desktop
-stow labwc foot fuzzel dunst wallpapers bash
+stow labwc foot fuzzel dunst wallpapers bash environment
 
 # If using waybar (hyprland or as fallback for labwc)
 stow waybar
@@ -168,6 +169,42 @@ profile docked {
     output DP-2 mode 3840x2560@60Hz position 1646,0 scale 1.6
 }
 #+end_src
+
+** Apple Studio Display
+
+For Apple Studio Display brightness control, install [[https://aur.archlinux.org/packages/asdbctl][asdbctl]] from the AUR:
+
+#+begin_src bash
+yay -S asdbctl
+#+end_src
+
+Set up udev rules for user access:
+
+#+begin_src bash
+sudo tee /etc/udev/rules.d/50-apple-studio.rules << 'EOF'
+KERNEL=="hiddev*", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="1114", GROUP="users", OWNER="root", MODE="0660"
+EOF
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+#+end_src
+
+The =brightness= script in =~/.local/bin= automatically detects cursor position
+(via =wl-find-cursor=) and routes brightness keys to the correct display:
+
+- Cursor on Apple Studio Display → =asdbctl=
+- Cursor elsewhere → =brightnessctl= (laptop panel)
+
+Build =wl-find-cursor= for cursor-position detection:
+
+#+begin_src bash
+git clone https://github.com/cjacker/wl-find-cursor /tmp/wl-find-cursor
+cd /tmp/wl-find-cursor
+make
+sudo cp wl-find-cursor /usr/local/bin/
+#+end_src
+
+=simpbar= (status bar) polls =asdbctl get= and shows the brightness indicator
+whenever either the laptop panel or Apple display brightness changes.
 
 ** Changing wallpaper
 
