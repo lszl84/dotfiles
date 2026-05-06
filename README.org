@@ -29,6 +29,7 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 | =gdb=        | GDB with debuginfod                             |
 | =hyprland=   | Hyprland compositor (alternative, not required) |
 | =wireplumber= | Per-sink speaker EQ/HPF (Huawei MateBook X)    |
+| =firefox=    | userChrome.css + user.js (non-stow, see below)  |
 
 * Installation on Fresh Arch Linux
 
@@ -226,6 +227,27 @@ dconf dump /org/gnome/shell/extensions/tilingshell/    > tilingshell.dconf
 
 (Use your own monitor ID in the =sed= — find it with the same =busctl= snippet
 the install script uses.)
+
+* Firefox: userChrome.css across installs
+
+The =firefox/= directory ships =userChrome.css= (close-button styled to match the
+labwc theme — minimize/maximize hidden) plus =user.js= (enables
+=toolkit.legacyUserProfileCustomizations.stylesheets=). It's not a stow package
+because the profile dir has a random prefix (=w4i6feme.default-release=) that
+differs per install.
+
+#+begin_src bash
+# Launch Firefox once on a fresh machine to create the profile, then:
+~/dotfiles/firefox/install.sh
+#+end_src
+
+The script finds the =*.default-release= profile under
+=~/.config/mozilla/firefox/= (or =~/.mozilla/firefox/= for upstream builds) and
+symlinks both files into it. Idempotent — re-runs replace existing symlinks but
+refuse to overwrite real files. Doesn't handle Flatpak Firefox.
+
+Edit =firefox/chrome/userChrome.css= in the repo; changes take effect on next
+Firefox restart (full quit, not soft reload).
 
 * Fedora: automatic security updates
 

@@ -64,7 +64,7 @@
        opacity="0"
        id="circle3" />
     <path
-       d="M11 11L21 21M21 11L11 21"
+       d="M12 12L20 20M20 12L12 20"
        stroke="#ffffff"
        stroke-width="2.2"
        stroke-linecap="square"

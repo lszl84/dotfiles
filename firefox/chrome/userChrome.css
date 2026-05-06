@@ -1,0 +1,44 @@
+/* Refs:
+ *   Firefox 150 source: browser/themes/linux/browser.css (.titlebar-button etc.)
+ *   labwc theme:        themerc-override + close-active.svg (path M11 11L21 21M21 11L11 21,
+ *                       stroke-width 2.2, stroke-linecap square, viewBox 0 0 32 32) */
+
+/* Hide minimize and maximize/restore */
+.titlebar-min,
+.titlebar-max,
+.titlebar-restore {
+  display: none !important;
+}
+
+/* Symmetric padding. Firefox's source applies extra padding-inline-end based on
+   GTK CSD close-button position; with min/max hidden the close button still
+   reports as rightmost, so the X gets shifted left. Force both sides equal. */
+.titlebar-button.titlebar-close {
+  padding-inline: var(--titlebar-button-spacing) !important;
+}
+
+/* X glyph: replace GTK's window-close-symbolic with the labwc path.
+   Stroke color hard-coded in the SVG (%23 = #) to avoid context-stroke
+   resolution issues. background-size pinned to 16px to match Firefox's
+   default min(16px, ...). */
+.titlebar-button.titlebar-close > .toolbarbutton-icon {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M11 11L21 21M21 11L11 21' stroke='%23e8e8e8' stroke-width='2.2' stroke-linecap='square' fill='none'/></svg>") !important;
+  background-size: 20px 20px !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  padding: calc(var(--toolbarbutton-inner-padding, 8px) + 2px) !important;
+}
+
+/* Inactive X color (matches labwc window.inactive.button.unpressed.image.color) */
+:root:-moz-window-inactive .titlebar-button.titlebar-close > .toolbarbutton-icon {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M11 11L21 21M21 11L11 21' stroke='%23666666' stroke-width='2.2' stroke-linecap='square' fill='none'/></svg>") !important;
+}
+
+/* Hover circle — overrides the Breeze theme's #ff98a2 red.
+   Matches labwc window.button.hover.bg.color (#ffffff20). */
+.titlebar-button.titlebar-close:hover > .toolbarbutton-icon {
+  background-color: rgba(255, 255, 255, 0.125) !important;
+}
+.titlebar-button.titlebar-close:hover:active > .toolbarbutton-icon {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
