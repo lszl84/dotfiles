@@ -1,7 +1,8 @@
 #!/bin/bash
 # brightness up|down [steps]
-# wl-find-cursor returns "0 0" when cursor is NOT on the active output (DP-2).
-# Non-zero → cursor on DP-2 → asdbctl. "0 0" → cursor on laptop → brightnessctl.
+# Routes to asdbctl when the focused toplevel is on an external DisplayPort
+# output (Apple Studio Display), otherwise brightnessctl on the laptop panel.
+# focused-output prints the wl_output name of the activated toplevel.
 
 set -eu
 DIR="${1:-up}"
@@ -22,17 +23,15 @@ geometric_step() {
     }'
 }
 
-POS=$(wl-find-cursor -p 2>/dev/null || true)
+OUTPUT=$(focused-output 2>/dev/null || true)
 
-if [ "$POS" != "0 0" ] && [ -n "$POS" ]; then
-    # Cursor on DP-* (same output as layer surface → Apple display)
+if [[ "$OUTPUT" == DP-* ]]; then
     CUR=$(asdbctl get 2>/dev/null | grep -oP '[\d.]+' || true)
     if [ -n "$CUR" ]; then
         NEW=$(geometric_step "$CUR" 100)
         asdbctl set "$NEW" >/dev/null 2>&1 || true
     fi
 else
-    # Cursor on different output (laptop) or detection failed → brightnessctl
     CUR=$(brightnessctl get)
     MAX=$(brightnessctl max)
     NEW=$(geometric_step "$CUR" "$MAX" 1)
