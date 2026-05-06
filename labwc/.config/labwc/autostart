@@ -19,6 +19,19 @@ dunst &
 # Output management
 kanshi >/dev/null 2>&1 &
 
+# Apple Studio Display sometimes comes up blank at login — the output is
+# enabled but the panel only ever shows black until physically unplugged
+# and replugged. Mimic a replug by toggling DP-2 off/on a few seconds in;
+# kanshi re-applies the docked profile automatically. No-op if DP-2 isn't
+# connected.
+(
+  sleep 0.5
+  wlr-randr 2>/dev/null | grep -q '^DP-2 ' || exit 0
+  wlr-randr --output DP-2 --off
+  sleep 0.2
+  wlr-randr --output DP-2 --on
+) &
+
 # Status bar
 simpbar &
 
