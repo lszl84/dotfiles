@@ -1,29 +1,68 @@
 #!/bin/bash
 # brightness up|down [steps]
-# Geometric stepping so each press feels equal to the human eye.
-# Factor = (MAX/MIN)^(1/STEPS); each press multiplies/divides by it.
-# Forces a minimum 1-raw-unit move so we don't get stuck near the floor.
+# If cursor is on Apple Studio Display → asdbctl
+# Otherwise → brightnessctl (laptop panel)
 
 set -eu
-
 DIR="${1:-up}"
 STEPS="${2:-20}"
-# MIN_RAW=1 skips raw=0; some panels (this laptop's OLED) misbehave at 0.
-MIN_RAW=1
 
-CUR=$(brightnessctl get)
-MAX=$(brightnessctl max)
+# --- Get Apple Display logical geometry from wlr-randr ---
+# Output order: Name → ... → Modes (w/ current) → Position → Scale → blank
+# We compute logical size = raw_w / scale at the blank-line boundary.
+apple_geometry() {
+    wlr-randr 2>/dev/null | awk '
+        /^DP-[0-9]/   { name=$1; in_block=1; mode_w=0; mode_h=0; x=0; y=0; s=1 }
+        in_block && /current/ && mode_w==0 { split($1,a,"x"); mode_w=(a[1]+0); mode_h=(a[2]+0) }
+        in_block && /Position:/ { x=($2+0); y=($3+0) }
+        in_block && /Scale:/    { s=($2+0) }
+        in_block && /^$/ {
+            if (mode_w > 0) printf "%.0f %.0f %.0f %.0f\n", x, y, mode_w/s, mode_h/s
+            in_block=0
+        }
+        END { if (in_block && mode_w > 0) printf "%.0f %.0f %.0f %.0f\n", x, y, mode_w/s, mode_h/s }
+    '
+}
 
-NEW=$(awk -v cur="$CUR" -v max="$MAX" -v min="$MIN_RAW" -v steps="$STEPS" -v dir="$DIR" '
-BEGIN {
-    f = (max / min) ^ (1.0 / steps)
-    n = (dir == "up") ? cur * f : cur / f
-    n = int(n + 0.5)
-    if (dir == "up"   && n <= cur) n = cur + 1
-    if (dir == "down" && n >= cur) n = cur - 1
-    if (n > max) n = max
-    if (n < min) n = min
-    print n
-}')
+# --- Check if cursor is within given rectangle (logical coords) ---
+cursor_in_rect() {
+    local gx="$1" gy="$2" gw="$3" gh="$4"
+    local cx cy pos
+    pos=$(wl-find-cursor -p 2>/dev/null) || return 1
+    [ -z "$pos" ] && return 1
+    read -r cx cy <<< "$pos"
+    # 2px tolerance for sub-pixel rounding at output edges
+    [ "$cx" -ge "$((gx - 2))" ] && [ "$cx" -le "$((gx + gw + 2))" ] && \
+    [ "$cy" -ge "$((gy - 2))" ] && [ "$cy" -le "$((gy + gh + 2))" ]
+}
 
-brightnessctl set "$NEW" >/dev/null
+# --- Geometric stepping ---
+geometric_step() {
+    local cur="$1" max="$2" min="${3:-1}"
+    awk -v cur="$cur" -v max="$max" -v min="$min" -v steps="$STEPS" -v dir="$DIR" '
+    BEGIN {
+        f = (max / min) ^ (1.0 / steps)
+        n = (dir == "up") ? cur * f : cur / f
+        n = int(n + 0.5)
+        if (dir == "up"   && n <= cur) n = cur + 1
+        if (dir == "down" && n >= cur) n = cur - 1
+        if (n > max) n = max
+        if (n < min) n = min
+        print n
+    }'
+}
+
+# --- Main ---
+GEOM=$(apple_geometry)
+if [ -n "$GEOM" ] && cursor_in_rect $GEOM; then
+    # Apple Studio Display
+    CUR=$(asdbctl get 2>/dev/null | grep -oP '[\d.]+' || echo 50)
+    NEW=$(geometric_step "$CUR" 100)
+    asdbctl set "$NEW" >/dev/null 2>&1
+else
+    # Laptop panel
+    CUR=$(brightnessctl get)
+    MAX=$(brightnessctl max)
+    NEW=$(geometric_step "$CUR" "$MAX" 1)
+    brightnessctl set "$NEW" >/dev/null
+fi
