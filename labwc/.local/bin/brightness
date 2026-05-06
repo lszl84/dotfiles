@@ -1,6 +1,7 @@
 #!/bin/bash
 # brightness up|down [steps]
-# cursor-output tells us which output the cursor is on. DP-* → asdbctl, else → brightnessctl.
+# wl-find-cursor returns "0 0" when cursor is NOT on the active output (DP-2).
+# Non-zero → cursor on DP-2 → asdbctl. "0 0" → cursor on laptop → brightnessctl.
 
 set -eu
 DIR="${1:-up}"
@@ -21,15 +22,17 @@ geometric_step() {
     }'
 }
 
-OUT=$(cursor-output 2>/dev/null || true)
+POS=$(wl-find-cursor -p 2>/dev/null || true)
 
-if [ -n "$OUT" ] && [[ "$OUT" =~ ^DP- ]]; then
+if [ "$POS" != "0 0" ] && [ -n "$POS" ]; then
+    # Cursor on DP-* (same output as layer surface → Apple display)
     CUR=$(asdbctl get 2>/dev/null | grep -oP '[\d.]+' || true)
     if [ -n "$CUR" ]; then
         NEW=$(geometric_step "$CUR" 100)
         asdbctl set "$NEW" >/dev/null 2>&1 || true
     fi
 else
+    # Cursor on different output (laptop) or detection failed → brightnessctl
     CUR=$(brightnessctl get)
     MAX=$(brightnessctl max)
     NEW=$(geometric_step "$CUR" "$MAX" 1)
