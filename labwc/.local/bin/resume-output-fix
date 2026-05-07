@@ -16,12 +16,12 @@ case "$1" in
     ;;
   post)
     [ -f "$STATE_FILE" ] || exit 0
-    sleep 1  # let kernel settle
+    sleep 2  # let kernel settle connector state after resume
     while read -r dir; do
         if [ "$(cat "$dir/status" 2>/dev/null)" != "connected" ]; then
             # External DP disappeared — toggle laptop panel
             wlr-randr --output eDP-1 --off 2>/dev/null
-            sleep 0.2
+            sleep 0.5
             wlr-randr --output eDP-1 --on --preferred 2>/dev/null
             pkill -x kanshi 2>/dev/null
             setsid kanshi &
