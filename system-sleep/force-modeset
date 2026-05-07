@@ -1,0 +1,30 @@
+#!/bin/sh
+# /usr/lib/systemd/system-sleep/force-modeset
+# If an external DP output was connected before sleep but gone on resume,
+# force DPMS toggle on laptop panel to fix stale GPU connector state.
+set -e
+
+STATE_FILE=/run/force-modeset-dp
+
+case "$1" in
+  pre)
+    rm -f "$STATE_FILE"
+    for s in /sys/class/drm/card*-DP-*/status; do
+        [ -f "$s" ] || continue
+        [ "$(cat "$s")" = "connected" ] && dirname "$s" >> "$STATE_FILE"
+    done
+    ;;
+  post)
+    [ -f "$STATE_FILE" ] || exit 0
+    sleep 1
+    while read -r dir; do
+        if [ "$(cat "$dir/status" 2>/dev/null)" != "connected" ]; then
+            for dpms in /sys/class/drm/card*-eDP-*/dpms; do
+                [ -w "$dpms" ] && echo Off > "$dpms" && sleep 0.1 && echo On > "$dpms"
+            done
+            break
+        fi
+    done < "$STATE_FILE"
+    rm -f "$STATE_FILE"
+    ;;
+esac
