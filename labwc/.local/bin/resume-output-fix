@@ -1,0 +1,33 @@
+#!/bin/sh
+# ~/.local/bin/resume-output-fix
+# If external DP outputs disappeared during sleep, force eDP-1 off/on
+# to trigger a modeset via the compositor (works around wlroots resume bug).
+# Called from swayidle after-resume.
+
+STATE_FILE="$XDG_RUNTIME_DIR/resume-dp-state"
+
+case "$1" in
+  pre)
+    rm -f "$STATE_FILE"
+    for s in /sys/class/drm/card*-DP-*/status; do
+        [ -f "$s" ] || continue
+        [ "$(cat "$s")" = "connected" ] && dirname "$s" >> "$STATE_FILE"
+    done
+    ;;
+  post)
+    [ -f "$STATE_FILE" ] || exit 0
+    sleep 1  # let kernel settle
+    while read -r dir; do
+        if [ "$(cat "$dir/status" 2>/dev/null)" != "connected" ]; then
+            # External DP disappeared — toggle laptop panel
+            wlr-randr --output eDP-1 --off 2>/dev/null
+            sleep 0.2
+            wlr-randr --output eDP-1 --on --preferred 2>/dev/null
+            pkill -x kanshi 2>/dev/null
+            setsid kanshi &
+            break
+        fi
+    done < "$STATE_FILE"
+    rm -f "$STATE_FILE"
+    ;;
+esac

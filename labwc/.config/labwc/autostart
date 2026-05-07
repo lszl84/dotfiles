@@ -46,8 +46,8 @@ simpbar &
 swayidle -w \
   timeout 900 'swaylock -f -c 000000' \
   timeout 3600 'systemctl suspend' \
-  before-sleep 'swaylock -f -c 000000; wlopm --off "*"' \
-  after-resume 'wlopm --on "*"' \
+  before-sleep 'swaylock -f -c 000000; wlopm --off "*"; resume-output-fix pre' \
+  after-resume 'wlopm --on "*"; resume-output-fix post' \
   lock 'swaylock -f -c 000000' &
 
 # GTK theme
