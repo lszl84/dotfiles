@@ -1,0 +1,12 @@
+[Unit]
+Description=Restart kanshi after suspend (fix display hotplug during sleep)
+After=suspend.target
+
+[Service]
+Type=oneshot
+User=luke
+ExecStart=/usr/bin/pkill -x kanshi
+ExecStart=/usr/bin/setsid /usr/bin/kanshi
+
+[Install]
+WantedBy=suspend.target
