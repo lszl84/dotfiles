@@ -47,7 +47,7 @@ swayidle -w \
   timeout 900 'swaylock -f -c 000000' \
   timeout 3600 'systemctl suspend' \
   before-sleep 'swaylock -f -c 000000; wlopm --off "*"' \
-  after-resume 'wlopm --on "*"; pkill -x kanshi; setsid kanshi &' \
+  after-resume 'wlopm --on "*"' \
   lock 'swaylock -f -c 000000' &
 
 # GTK theme

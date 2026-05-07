@@ -30,6 +30,7 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 | =gdb=        | GDB with debuginfod                             |
 | =hyprland=   | Hyprland compositor (alternative, not required) |
 | =wireplumber= | Per-sink speaker EQ/HPF (Huawei MateBook X)    |
+| =system=     | System-level units (requires sudo, see below)   |
 | =firefox=    | userChrome.css + user.js (non-stow, see below)  |
 
 * Installation on Fresh Arch Linux
@@ -77,6 +78,11 @@ cd dotfiles
 
 # Core desktop
 stow labwc foot fuzzel dunst wallpapers bash environment
+
+# System-level units (requires root)
+# System-level units (copy manually — stow to / is dangerous)
+sudo cp system/etc/systemd/system/kanshi-resume.service /etc/systemd/system/
+sudo systemctl enable kanshi-resume.service
 
 # If using waybar (hyprland or as fallback for labwc)
 stow waybar
