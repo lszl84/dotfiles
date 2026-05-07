@@ -80,7 +80,8 @@ cd dotfiles
 stow labwc foot fuzzel dunst wallpapers bash environment
 
 # System-level units (requires root)
-sudo stow -t / system
+# System-level units (copy manually — stow to / is dangerous)
+sudo cp system/etc/systemd/system/kanshi-resume.service /etc/systemd/system/
 sudo systemctl enable kanshi-resume.service
 
 # If using waybar (hyprland or as fallback for labwc)
