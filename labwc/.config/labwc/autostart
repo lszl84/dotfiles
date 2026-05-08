@@ -59,5 +59,9 @@ gsettings set org.gnome.desktop.interface cursor-size 24
 sleep 2 && wpctl set-profile 42 0 && wpctl set-profile 42 1 &
 
 # Set wallpaper
-# Wallpaper
-swaybg -i ~/.local/share/wallpapers/earth_oled.png -m fill &
+# Wallpaper — per-output
+swaybg -i ~/.local/share/wallpapers/earth_oled.png -m fill -o eDP-1 &
+# External display wallpaper (replace with your image)
+if [ -f /sys/class/drm/card1-DP-2/status ] && [ "$(cat /sys/class/drm/card1-DP-2/status)" = "connected" ]; then
+    swaybg -i ~/.local/share/wallpapers/gnu-wildebeest-4k.jpg -m fill -o DP-2 &
+fi
