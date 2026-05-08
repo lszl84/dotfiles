@@ -1,0 +1,12 @@
+#!/bin/sh
+# ~/.local/bin/lid-watch
+# Toggle eDP-1 based on lid state. Start from autostart, runs forever.
+while true; do
+    state=$(cat /proc/acpi/button/lid/LID0/state 2>/dev/null | awk '{print $2}')
+    if [ "$state" = "closed" ]; then
+        wlr-randr --output eDP-1 --off 2>/dev/null
+    else
+        wlr-randr --output eDP-1 --on 2>/dev/null
+    fi
+    sleep 2
+done
