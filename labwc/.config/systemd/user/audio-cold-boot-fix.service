@@ -1,0 +1,11 @@
+[Unit]
+Description=Restart wireplumber after login (SOF deferred-probe race workaround)
+After=pipewire.service wireplumber.service pipewire-pulse.service
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sleep 4
+ExecStart=/usr/bin/systemctl --user try-restart wireplumber
+
+[Install]
+WantedBy=default.target
