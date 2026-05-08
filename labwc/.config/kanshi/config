@@ -2,6 +2,10 @@ profile laptop-only {
     output eDP-1 mode 3120x2080@120Hz position 0,0 scale 1.8
 }
 
+profile external-only {
+    output DP-2 mode 5120x2880@60Hz position 0,0 scale 1.5
+}
+
 profile docked {
     output DP-2 mode 5120x2880@60Hz position 0,0 scale 1.5
     output eDP-1 mode 3120x2080@120Hz position 840,1920 scale 1.8
