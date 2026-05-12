@@ -31,7 +31,7 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 | =hyprland=   | Hyprland compositor (alternative, not required) |
 | =wireplumber= | Per-sink speaker EQ/HPF (Huawei MateBook X)    |
 | =pipewire=   | Quantum clamp (1024 @ 48 kHz) to reduce USB-audio crackles |
-| =system=     | System-level units (requires sudo, see below)   |
+| =focused-output= | Wayland tool: prints output of the focused window (non-stow, see below) |
 | =firefox=    | userChrome.css + user.js (non-stow, see below)  |
 
 * Installation on Fresh Arch Linux
@@ -80,10 +80,8 @@ cd dotfiles
 # Core desktop
 stow labwc foot fuzzel dunst wallpapers bash environment
 
-# System-level units (requires root)
-# System-level units (copy manually — stow to / is dangerous)
-sudo cp system/etc/systemd/system/kanshi-resume.service /etc/systemd/system/
-sudo systemctl enable kanshi-resume.service
+# Audio: PipeWire quantum clamp + per-sink speaker DSP
+stow pipewire wireplumber
 
 # If using waybar (hyprland or as fallback for labwc)
 stow waybar
@@ -195,19 +193,21 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 #+end_src
 
-The =brightness= script in =~/.local/bin= automatically detects cursor position
-(via =wl-find-cursor=) and routes brightness keys to the correct display:
+The =brightness= script in =~/.local/bin= routes brightness keys based on the
+focused window's output:
 
-- Cursor on Apple Studio Display → =asdbctl=
-- Cursor elsewhere → =brightnessctl= (laptop panel)
+- Focused window on a DisplayPort output → =asdbctl= (Apple Studio Display)
+- Otherwise → =brightnessctl= (laptop panel)
 
-Build =wl-find-cursor= for cursor-position detection:
+The =focused-output/= directory ships a small Wayland client that prints the
+=wl_output= name of the currently activated toplevel. It binds
+=zwlr_foreign_toplevel_management_v1=, no surfaces or input emulation. Build
+and install:
 
 #+begin_src bash
-git clone https://github.com/cjacker/wl-find-cursor /tmp/wl-find-cursor
-cd /tmp/wl-find-cursor
+cd ~/dotfiles/focused-output
 make
-sudo cp wl-find-cursor /usr/local/bin/
+make install   # drops binary to ~/.local/bin/focused-output
 #+end_src
 
 =simpbar= (status bar) polls =asdbctl get= and shows the brightness indicator
