@@ -87,7 +87,11 @@
 
     <!-- Screenshot -->
     <keybind key="Print">
-      <action name="Execute" command="grim -g $(slurp) ~/Screenshots/$(date +%Y%m%d_%H%M%S).png" />
+      <action name="Execute" command='sh -c "mkdir -p ~/Screenshots &amp;&amp; grim -g \"$(slurp)\" ~/Screenshots/$(date +%Y%m%d_%H%M%S).png"' />
+    </keybind>
+    <!-- Fn+Pts on the external Mac-style keyboard sends XF86Calculator -->
+    <keybind key="XF86Calculator">
+      <action name="Execute" command='sh -c "mkdir -p ~/Screenshots &amp;&amp; grim -g \"$(slurp)\" ~/Screenshots/$(date +%Y%m%d_%H%M%S).png"' />
     </keybind>
 
     <!-- Media keys -->
