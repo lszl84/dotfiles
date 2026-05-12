@@ -30,6 +30,7 @@ with Cairo rendering, HiDPI support, and workspace indicators via the
 | =gdb=        | GDB with debuginfod                             |
 | =hyprland=   | Hyprland compositor (alternative, not required) |
 | =wireplumber= | Per-sink speaker EQ/HPF (Huawei MateBook X)    |
+| =pipewire=   | Quantum clamp (1024 @ 48 kHz) to reduce USB-audio crackles |
 | =system=     | System-level units (requires sudo, see below)   |
 | =firefox=    | userChrome.css + user.js (non-stow, see below)  |
 
@@ -211,6 +212,23 @@ sudo cp wl-find-cursor /usr/local/bin/
 
 =simpbar= (status bar) polls =asdbctl get= and shows the brightness indicator
 whenever either the laptop panel or Apple display brightness changes.
+
+** PipeWire quantum (USB-audio crackles)
+
+The Apple Studio Display is a USB audio sink and is sensitive to small buffer
+sizes — applications occasionally request a low quantum (32–256 samples) and the
+amp crackles randomly during playback. The =pipewire= package ships a drop-in at
+=~/.config/pipewire/pipewire.conf.d/10-quantum.conf= that clamps the minimum
+quantum to 1024 @ 48 kHz.
+
+#+begin_src bash
+stow pipewire
+systemctl --user restart pipewire pipewire-pulse wireplumber
+pw-metadata -n settings 0 | grep quantum   # min-quantum should read 1024
+#+end_src
+
+If crackles persist, the next suspect is CPU C-state latency (deep sleep states
+causing the audio thread to miss USB deadlines).
 
 ** Changing wallpaper
 
