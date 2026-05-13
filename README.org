@@ -256,6 +256,35 @@ If the audio thread is still at priority 20, you're either not in the =realtime=
 group yet (=groups= in a fresh shell must list it) or PipeWire wasn't restarted
 after re-login.
 
+** Disable USB autosuspend on the Studio Display
+
+Even with the quantum clamp and RT priority in place, crackling can persist if
+the kernel autosuspends the Studio Display's USB endpoint between buffer
+transfers (=power/control = auto=, default 2000ms idle). =pw-top= reports zero
+xruns in this case because the glitch happens below PipeWire, between ALSA/USB
+and the device firmware.
+
+Permanent fix via udev:
+
+#+begin_src bash
+sudo tee /etc/udev/rules.d/51-apple-studio-power.rules > /dev/null << 'EOF'
+# Disable USB autosuspend for Apple Studio Display (audio crackle workaround)
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="05ac", ATTR{idProduct}=="1114", ATTR{power/control}="on"
+EOF
+sudo udevadm control --reload-rules
+sudo udevadm trigger --attr-match=idVendor=05ac --attr-match=idProduct=1114
+#+end_src
+
+Verify (the device's bus path differs per machine; check =lsusb -t= if needed):
+
+#+begin_src bash
+for d in /sys/bus/usb/devices/*/product; do
+    [[ "$(cat "$d")" == "Studio Display" ]] && cat "$(dirname "$d")/power/control"
+done   # should print: on
+#+end_src
+
+To revert, delete =/etc/udev/rules.d/51-apple-studio-power.rules= and reload.
+
 ** Changing wallpaper
 
 Wallpapers live in =~/.local/share/wallpapers/=. Change the filename
