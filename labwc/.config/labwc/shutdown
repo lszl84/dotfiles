@@ -1,11 +1,8 @@
 #!/bin/bash
 # labwc shutdown script
 
-# Kill waybar
+# Kill persistent apps so they don't survive a compositor restart
 pkill waybar
-
-# Kill foot server
 pkill -f "foot --server"
-
-# Kill swayidle
 pkill swayidle
+pkill firefox
